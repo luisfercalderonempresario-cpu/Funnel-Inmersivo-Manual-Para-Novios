@@ -10,6 +10,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   FUNNEL_SCREENS,
   getNextScreenId,
@@ -50,6 +51,8 @@ const FunnelContext = createContext<FunnelContextValue | null>(null);
 export const FunnelProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [state, setState] = useState<FunnelState>(() => loadPersistedState());
 
   // Automatically persist changes
@@ -58,7 +61,7 @@ export const FunnelProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [state]);
 
   const setCurrentScreen = useCallback(
-    (screenId: ScreenId, options?: { isDev?: boolean }) => {
+    (screenId: ScreenId, options?: { isDev?: boolean; replace?: boolean }) => {
       setState((prev) => {
         if (prev.currentScreen === screenId) return prev;
         return {
@@ -66,11 +69,17 @@ export const FunnelProvider: React.FC<{ children: React.ReactNode }> = ({
           currentScreen: screenId,
         };
       });
+
+      const targetRoute = FUNNEL_SCREENS[screenId]?.route;
+      if (targetRoute && location.pathname !== targetRoute) {
+        navigate(targetRoute, { replace: options?.replace ?? false });
+      }
+
       if (options?.isDev) {
         console.debug(`[MPN DEV] Navigated directly to ${screenId}`);
       }
     },
-    []
+    [location.pathname, navigate]
   );
 
   const markCaseStarted = useCallback(() => {
@@ -79,7 +88,12 @@ export const FunnelProvider: React.FC<{ children: React.ReactNode }> = ({
       caseStarted: true,
       currentScreen: "S01_02_VIDEO",
     }));
-  }, []);
+
+    const targetRoute = FUNNEL_SCREENS["S01_02_VIDEO"]?.route;
+    if (targetRoute && location.pathname !== targetRoute) {
+      navigate(targetRoute);
+    }
+  }, [location.pathname, navigate]);
 
   const setInitialDecision = useCallback(
     (decision: InitialDecisionValue) => {
@@ -149,25 +163,34 @@ export const FunnelProvider: React.FC<{ children: React.ReactNode }> = ({
     };
     setState(newState);
     savePersistedState(newState);
+    navigate("/funnel/s01/intro", { replace: true });
     console.debug("[MPN] S01 reset completed");
-  }, [state]);
+  }, [state, navigate]);
 
   const resetFunnel = useCallback(() => {
     clearPersistedState();
     const fresh = { ...INITIAL_FUNNEL_STATE };
     setState(fresh);
     savePersistedState(fresh);
+    navigate("/funnel/s01/intro", { replace: true });
     console.debug("[MPN] Entire funnel reset completed");
-  }, []);
+  }, [navigate]);
 
-  const applyPreset = useCallback((presetKey: string) => {
-    const preset = DEV_PRESETS[presetKey];
-    if (!preset) return;
-    const nextState = { ...preset.state };
-    setState(nextState);
-    savePersistedState(nextState);
-    console.debug(`[MPN DEV] Applied preset "${preset.name}"`, nextState);
-  }, []);
+  const applyPreset = useCallback(
+    (presetKey: string) => {
+      const preset = DEV_PRESETS[presetKey];
+      if (!preset) return;
+      const nextState = { ...preset.state };
+      setState(nextState);
+      savePersistedState(nextState);
+      const targetRoute = FUNNEL_SCREENS[nextState.currentScreen]?.route;
+      if (targetRoute) {
+        navigate(targetRoute);
+      }
+      console.debug(`[MPN DEV] Applied preset "${preset.name}"`, nextState);
+    },
+    [navigate]
+  );
 
   const navigateToNextScreen = useCallback(
     (isDev = false) => {

@@ -35,17 +35,23 @@ export function canAccessScreenInProduction(
 
   // S01_03_DECISION requires case started
   if (targetScreenId === "S01_03_DECISION") {
-    return state.caseStarted;
+    return state.caseStarted || state.currentScreen === "S01_03_DECISION";
   }
 
   // S01_04_INTERPRETATION requires initialDecision made
   if (targetScreenId === "S01_04_INTERPRETATION") {
-    return state.initialDecision !== null;
+    return (
+      state.initialDecision !== null ||
+      state.currentScreen === "S01_04_INTERPRETATION"
+    );
   }
 
   // S01_05_EXIT requires initialInterpretation made
   if (targetScreenId === "S01_05_EXIT") {
-    return state.initialDecision !== null && state.initialInterpretation !== null;
+    return (
+      (state.initialDecision !== null && state.initialInterpretation !== null) ||
+      state.currentScreen === "S01_05_EXIT"
+    );
   }
 
   return false;

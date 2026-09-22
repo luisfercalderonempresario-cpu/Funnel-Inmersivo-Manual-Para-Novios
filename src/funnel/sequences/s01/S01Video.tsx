@@ -36,13 +36,13 @@ export const S01Video: React.FC = () => {
     const video = videoRef.current;
     if (!video) return;
 
+    let hasHandledEnded = false;
+
     const handleEnded = () => {
-      setHasEnded(true);
+      if (hasHandledEnded) return;
+      hasHandledEnded = true;
       markVideoCompleted();
-      // Brief cinematic dark beat (350ms) before auto-advancing to decision
-      setTimeout(() => {
-        setCurrentScreen("S01_03_DECISION");
-      }, 350);
+      setCurrentScreen("S01_03_DECISION");
     };
 
     const handleError = () => {

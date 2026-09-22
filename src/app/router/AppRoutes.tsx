@@ -4,7 +4,7 @@
  * and unrestricted direct access in DEV mode.
  */
 
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   BrowserRouter,
   Navigate,
@@ -32,9 +32,9 @@ import { S01Exit } from "../../funnel/sequences/s01/S01Exit";
 
 /**
  * Route sync component:
- * Keeps React Router URL and FunnelContext state bidirectionally in sync.
- * In DEV mode: entering any route directly automatically synchronizes currentScreen
- * without forcing previous steps.
+ * Synchronizes browser direct navigation / popstate (Back/Forward buttons) with FunnelContext.
+ *
+ * In DEV mode: entering any route directly automatically synchronizes currentScreen.
  * In PRODUCTION mode: enforces sequence progression gates.
  */
 const RouteSyncManager: React.FC<{ children: React.ReactNode }> = ({
@@ -44,42 +44,44 @@ const RouteSyncManager: React.FC<{ children: React.ReactNode }> = ({
   const navigate = useNavigate();
   const { state, setCurrentScreen } = useFunnel();
   const isDev = Boolean(import.meta.env.DEV);
+  const stateRef = useRef(state);
+  stateRef.current = state;
 
-  // Sync route -> state on direct URL entry or back/forward browser buttons
+  // React ONLY to browser URL changes (direct entry or back/forward)
   useEffect(() => {
     const screenDef = getScreenByRoute(location.pathname);
-    if (!screenDef) return;
+    if (!screenDef) {
+      navigate("/funnel/s01/intro", { replace: true });
+      return;
+    }
+
+    const currentState = stateRef.current;
+
+    // If currentScreen is ALREADY aligned with this route, do not re-sync or trigger state transitions
+    if (currentState.currentScreen === screenDef.id) {
+      return;
+    }
 
     if (isDev) {
       // In DEV: unconditionally allow direct screen entry
-      if (state.currentScreen !== screenDef.id) {
-        setCurrentScreen(screenDef.id as ScreenId, { isDev: true });
-      }
+      setCurrentScreen(screenDef.id as ScreenId, { isDev: true });
     } else {
-      // In Production: enforce sequential progression
+      // In Production: enforce sequential progression gates
       const allowed = canAccessScreenInProduction(
         screenDef.id as ScreenId,
-        state
+        currentState
       );
       if (!allowed) {
         const legitimateRoute =
-          FUNNEL_SCREENS[state.currentScreen]?.route ?? "/funnel/s01/intro";
+          FUNNEL_SCREENS[currentState.currentScreen]?.route ?? "/funnel/s01/intro";
         if (location.pathname !== legitimateRoute) {
           navigate(legitimateRoute, { replace: true });
         }
-      } else if (state.currentScreen !== screenDef.id) {
+      } else {
         setCurrentScreen(screenDef.id as ScreenId);
       }
     }
-  }, [location.pathname, isDev, state, setCurrentScreen, navigate]);
-
-  // Sync state -> route when user advances through in-app interactions
-  useEffect(() => {
-    const targetRoute = FUNNEL_SCREENS[state.currentScreen]?.route;
-    if (targetRoute && location.pathname !== targetRoute) {
-      navigate(targetRoute);
-    }
-  }, [state.currentScreen, navigate, location.pathname]);
+  }, [location.pathname, isDev, setCurrentScreen, navigate]);
 
   return <>{children}</>;
 };

@@ -17,11 +17,8 @@ export const S01Intro: React.FC = () => {
     setIsTransitioning(true);
     const success = await playWithAudioGesture();
     if (success) {
-      // Cinematic transition duration 200ms
-      setTimeout(() => {
-        markCaseStarted();
-        setCurrentScreen("S01_02_VIDEO");
-      }, 200);
+      markCaseStarted();
+      setCurrentScreen("S01_02_VIDEO");
     } else {
       setIsTransitioning(false);
     }
@@ -31,10 +28,8 @@ export const S01Intro: React.FC = () => {
     setIsTransitioning(true);
     const success = await retryPlayback();
     if (success) {
-      setTimeout(() => {
-        markCaseStarted();
-        setCurrentScreen("S01_02_VIDEO");
-      }, 200);
+      markCaseStarted();
+      setCurrentScreen("S01_02_VIDEO");
     } else {
       setIsTransitioning(false);
     }

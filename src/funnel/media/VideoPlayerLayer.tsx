@@ -4,8 +4,7 @@
  * direct user gesture playback, and zero latency transitions.
  */
 
-import React from "react";
-import { useLocation } from "react-router-dom";
+import React, { useEffect } from "react";
 import { VIDEO_ASSETS } from "../config/assetRegistry";
 import { useMedia } from "./MediaContext";
 import { useFunnel } from "../state/FunnelContext";
@@ -13,11 +12,16 @@ import { useFunnel } from "../state/FunnelContext";
 export const VideoPlayerLayer: React.FC = () => {
   const { videoRef } = useMedia();
   const { state } = useFunnel();
-  const location = useLocation();
 
-  const isVideoScreen =
-    state.currentScreen === "S01_02_VIDEO" ||
-    location.pathname === "/funnel/s01/video";
+  // SINGLE SOURCE OF TRUTH: visible ONLY when canonical active screen is VIDEO
+  const isVideoScreen = state.currentScreen === "S01_02_VIDEO";
+
+  // Guarantee playback pauses whenever leaving the VIDEO screen
+  useEffect(() => {
+    if (!isVideoScreen && videoRef.current && !videoRef.current.paused) {
+      videoRef.current.pause();
+    }
+  }, [isVideoScreen, videoRef]);
 
   return (
     <div
