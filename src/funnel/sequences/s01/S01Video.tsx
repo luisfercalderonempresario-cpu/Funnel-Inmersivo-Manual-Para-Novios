@@ -68,10 +68,10 @@ export const S01Video: React.FC = () => {
   return (
     <div
       id="screen-s01-02-video"
-      className="relative w-full h-[100dvh] bg-black flex items-center justify-center overflow-hidden select-none"
+      className="relative w-full h-[100dvh] bg-transparent flex items-center justify-center overflow-hidden select-none pointer-events-none"
     >
-      {/* 9:16 Centered Container (covers mobile, centered letterbox on desktop) */}
-      <div className="relative w-full h-full max-w-[calc(100dvh*9/16)] max-h-[100dvh] aspect-[9/16] bg-black flex items-center justify-center">
+      {/* 9:16 Centered Container (transparent overlay layer for fallbacks & controls) */}
+      <div className="relative w-full h-full max-w-[calc(100dvh*9/16)] max-h-[100dvh] aspect-[9/16] bg-transparent flex items-center justify-center">
         {/* The persistent video component is rendered by VideoPlayerLayer,
             so S01Video provides the interactive touch layer & refresh gestures */}
 
@@ -79,7 +79,7 @@ export const S01Video: React.FC = () => {
         {needsGestureToResume && status !== "playing" && !hasEnded && (
           <div
             id="video-resume-overlay"
-            className="absolute inset-0 z-30 bg-black/85 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center"
+            className="absolute inset-0 z-30 bg-black/85 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center pointer-events-auto"
           >
             <div className="max-w-xs flex flex-col items-center gap-6 animate-fade-in">
               <span className="text-xs uppercase tracking-[0.2em] text-neutral-400 font-medium">
@@ -105,7 +105,7 @@ export const S01Video: React.FC = () => {
         {status === "audio_blocked" && !needsGestureToResume && (
           <div
             id="video-audio-blocked-overlay"
-            className="absolute inset-0 z-30 bg-black/90 flex flex-col items-center justify-center p-6 text-center"
+            className="absolute inset-0 z-30 bg-black/90 flex flex-col items-center justify-center p-6 text-center pointer-events-auto"
           >
             <div className="max-w-xs flex flex-col items-center gap-4">
               <p className="text-neutral-200 text-base">
@@ -128,7 +128,7 @@ export const S01Video: React.FC = () => {
         {status === "load_error" && (
           <div
             id="video-load-error-overlay"
-            className="absolute inset-0 z-30 bg-black/95 flex flex-col items-center justify-center p-6 text-center"
+            className="absolute inset-0 z-30 bg-black/95 flex flex-col items-center justify-center p-6 text-center pointer-events-auto"
           >
             <div className="max-w-xs flex flex-col items-center gap-4">
               <p className="text-neutral-300 text-base">

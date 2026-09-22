@@ -5,6 +5,7 @@
  */
 
 import React from "react";
+import { useLocation } from "react-router-dom";
 import { VIDEO_ASSETS } from "../config/assetRegistry";
 import { useMedia } from "./MediaContext";
 import { useFunnel } from "../state/FunnelContext";
@@ -12,15 +13,20 @@ import { useFunnel } from "../state/FunnelContext";
 export const VideoPlayerLayer: React.FC = () => {
   const { videoRef } = useMedia();
   const { state } = useFunnel();
+  const location = useLocation();
 
-  const isVideoScreen = state.currentScreen === "S01_02_VIDEO";
+  const isVideoScreen =
+    state.currentScreen === "S01_02_VIDEO" ||
+    location.pathname === "/funnel/s01/video";
 
   return (
     <div
       id="persistent-video-layer"
       aria-hidden={!isVideoScreen}
-      className={`fixed inset-0 z-10 flex items-center justify-center bg-black transition-opacity duration-300 pointer-events-none ${
-        isVideoScreen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
+      className={`fixed inset-0 z-10 flex items-center justify-center bg-black transition-opacity duration-300 ${
+        isVideoScreen
+          ? "opacity-100 visible pointer-events-auto"
+          : "opacity-0 invisible pointer-events-none"
       }`}
     >
       <div className="relative w-full h-full max-w-[calc(100dvh*9/16)] max-h-[100dvh] aspect-[9/16] overflow-hidden bg-black flex items-center justify-center">
@@ -33,9 +39,10 @@ export const VideoPlayerLayer: React.FC = () => {
           webkit-playsinline="true"
           disablePictureInPicture
           controls={false}
-          className="w-full h-full object-cover select-none pointer-events-auto"
+          className="w-full h-full object-cover select-none block"
         />
       </div>
     </div>
   );
 };
+
