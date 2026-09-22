@@ -8,9 +8,8 @@ import React, { useEffect, useState } from "react";
 import { useFunnel } from "../../state/FunnelContext";
 
 export const S01Exit: React.FC = () => {
-  const { completeSequence } = useFunnel();
+  const { completeSequence, setCurrentScreen } = useFunnel();
   const [phase, setPhase] = useState<"sense" | "pause" | "reveal">("sense");
-  const isDev = Boolean(import.meta.env.DEV);
 
   useEffect(() => {
     // Record sequence completion
@@ -26,11 +25,17 @@ export const S01Exit: React.FC = () => {
       setPhase("reveal");
     }, 1800);
 
+    // Seamless bridge to S02 Continuation (1.4s after "Veamos qué pasa." is revealed)
+    const timer3 = setTimeout(() => {
+      setCurrentScreen("S02_01_CONTINUATION");
+    }, 3200);
+
     return () => {
       clearTimeout(timer1);
       clearTimeout(timer2);
+      clearTimeout(timer3);
     };
-  }, [completeSequence]);
+  }, [completeSequence, setCurrentScreen]);
 
   return (
     <div
@@ -74,21 +79,6 @@ export const S01Exit: React.FC = () => {
             >
               Veamos qué pasa.
             </p>
-
-            {/* In DEV mode: display technical boundary without inventing S02 */}
-            {isDev && (
-              <div
-                id="dev-boundary-indicator"
-                className="mt-8 p-4 rounded-lg bg-neutral-900/90 border border-neutral-800 text-neutral-400 text-xs text-center max-w-xs space-y-1.5"
-              >
-                <p className="font-mono text-neutral-300 font-semibold">
-                  NEXT_SEQUENCE_NOT_IMPLEMENTED
-                </p>
-                <p className="font-sans text-neutral-400">
-                  S01 ha concluido satisfactoriamente. S02 se integrará en la siguiente fase.
-                </p>
-              </div>
-            )}
           </div>
         )}
       </main>

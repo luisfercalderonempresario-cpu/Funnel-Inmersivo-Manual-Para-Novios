@@ -9,6 +9,11 @@ export const FUNNEL_SEQUENCES = {
     name: "S01 — EL CASO",
     order: 1,
   },
+  S02_ALGO_SALIO_MAL: {
+    id: "S02_ALGO_SALIO_MAL",
+    name: "S02 — ALGO SALIÓ MAL",
+    order: 2,
+  },
 } as const;
 
 export type SequenceId = keyof typeof FUNNEL_SEQUENCES;
@@ -53,9 +58,51 @@ export const FUNNEL_SCREENS = {
   S01_05_EXIT: {
     id: "S01_05_EXIT",
     sequence: "S01_EL_CASO",
-    name: "Salida",
+    name: "Salida S01",
     route: "/funnel/s01/exit",
     stepIndex: 4,
+  },
+  S02_01_CONTINUATION: {
+    id: "S02_01_CONTINUATION",
+    sequence: "S02_ALGO_SALIO_MAL",
+    name: "Continuación",
+    route: "/funnel/s02/continuation",
+    stepIndex: 5,
+  },
+  S02_02_PROBLEM_ORIGIN: {
+    id: "S02_02_PROBLEM_ORIGIN",
+    sequence: "S02_ALGO_SALIO_MAL",
+    name: "¿Dónde empezó el problema?",
+    route: "/funnel/s02/problem-origin",
+    stepIndex: 6,
+  },
+  S02_03_REWIND: {
+    id: "S02_03_REWIND",
+    sequence: "S02_ALGO_SALIO_MAL",
+    name: "Rewind",
+    route: "/funnel/s02/rewind",
+    stepIndex: 7,
+  },
+  S02_04_MIRROR: {
+    id: "S02_04_MIRROR",
+    sequence: "S02_ALGO_SALIO_MAL",
+    name: "Tú también interpretaste",
+    route: "/funnel/s02/mirror",
+    stepIndex: 8,
+  },
+  S02_05_DISCOVERY: {
+    id: "S02_05_DISCOVERY",
+    sequence: "S02_ALGO_SALIO_MAL",
+    name: "El problema de interpretar",
+    route: "/funnel/s02/discovery",
+    stepIndex: 9,
+  },
+  S02_06_EXIT: {
+    id: "S02_06_EXIT",
+    sequence: "S02_ALGO_SALIO_MAL",
+    name: "Lo que no viste",
+    route: "/funnel/s02/exit",
+    stepIndex: 10,
   },
 } as const satisfies Record<string, ScreenDefinition>;
 
@@ -67,7 +114,21 @@ export const SCREEN_ORDER: readonly ScreenId[] = [
   "S01_03_DECISION",
   "S01_04_INTERPRETATION",
   "S01_05_EXIT",
+  "S02_01_CONTINUATION",
+  "S02_02_PROBLEM_ORIGIN",
+  "S02_03_REWIND",
+  "S02_04_MIRROR",
+  "S02_05_DISCOVERY",
+  "S02_06_EXIT",
 ] as const;
+
+export function isVideoScreenId(screenId: ScreenId): boolean {
+  return (
+    screenId === "S01_02_VIDEO" ||
+    screenId === "S02_01_CONTINUATION" ||
+    screenId === "S02_03_REWIND"
+  );
+}
 
 export function getScreenById(id: string): ScreenDefinition | undefined {
   return (FUNNEL_SCREENS as Record<string, ScreenDefinition>)[id];

@@ -28,12 +28,25 @@ export interface InitialInterpretationValue {
   label: string;
 }
 
+export type ProblemOriginGuessId =
+  | "asked_again"
+  | "assumed_about_him"
+  | "called_her_weird"
+  | "unsure";
+
+export interface ProblemOriginGuessValue {
+  id: ProblemOriginGuessId;
+  label: string;
+}
+
 export interface FunnelState {
   currentSequence: SequenceId;
   currentScreen: ScreenId;
   caseStarted: boolean;
   initialDecision: InitialDecisionValue | null;
   initialInterpretation: InitialInterpretationValue | null;
+  problemOriginGuess: ProblemOriginGuessValue | null;
+  sequence02Completed?: boolean;
   completedSequences: SequenceId[];
 }
 
@@ -52,5 +65,7 @@ export const INITIAL_FUNNEL_STATE: FunnelState = {
   caseStarted: false,
   initialDecision: null,
   initialInterpretation: null,
+  problemOriginGuess: null,
+  sequence02Completed: false,
   completedSequences: [],
 };

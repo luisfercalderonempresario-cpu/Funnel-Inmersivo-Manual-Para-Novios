@@ -13,7 +13,12 @@ export type FunnelEventName =
   | "video_completed"
   | "initial_decision_selected"
   | "initial_interpretation_selected"
-  | "sequence_01_completed";
+  | "sequence_01_completed"
+  | "sequence_02_started"
+  | "problem_origin_guess"
+  | "interpretation_mirror_viewed"
+  | "context_gap_teased"
+  | "sequence_02_completed";
 
 export interface FunnelEventPayload {
   event: FunnelEventName;

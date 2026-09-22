@@ -13,6 +13,7 @@ import React, {
   useState,
 } from "react";
 import { VIDEO_ASSETS } from "../config/assetRegistry";
+import { ScreenId, SequenceId } from "../config/screenRegistry";
 import { trackEvent } from "../tracking/trackEvent";
 
 export type PlaybackStatus =
@@ -32,9 +33,17 @@ export interface MediaContextValue {
   currentTime: number;
   duration: number;
   playWithAudioGesture: () => Promise<boolean>;
+  playAsset: (
+    assetUrl: string,
+    metadata: { sequence: SequenceId; screen: ScreenId }
+  ) => Promise<boolean>;
   retryPlayback: () => Promise<boolean>;
   resetPlayback: () => void;
-  markVideoCompleted: () => void;
+  markVideoCompleted: (metadata?: {
+    sequence: SequenceId;
+    screen: ScreenId;
+    asset?: string;
+  }) => void;
 }
 
 const MediaContext = createContext<MediaContextValue | null>(null);
@@ -53,6 +62,11 @@ export const MediaProvider: React.FC<{ children: React.ReactNode }> = ({
     if (!video) return false;
 
     try {
+      if (video.src !== VIDEO_ASSETS.S01_CASE) {
+        video.src = VIDEO_ASSETS.S01_CASE;
+        video.load();
+      }
+
       // Rule U: explicitly configure audio & inline playback inside user gesture
       video.muted = false;
       video.volume = 1;
@@ -112,6 +126,64 @@ export const MediaProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }, []);
 
+  const playAsset = useCallback(
+    async (
+      assetUrl: string,
+      metadata: { sequence: SequenceId; screen: ScreenId }
+    ): Promise<boolean> => {
+      const video = videoRef.current;
+      if (!video) return false;
+
+      try {
+        if (video.src !== assetUrl) {
+          video.src = assetUrl;
+          video.load();
+        }
+        video.currentTime = 0;
+        video.muted = false;
+        video.volume = 1;
+        video.playsInline = true;
+        video.removeAttribute("controls");
+        video.setAttribute("playsinline", "true");
+        video.setAttribute("webkit-playsinline", "true");
+
+        setStatus("preparing");
+
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          await playPromise;
+        }
+
+        setStatus("playing");
+        setHasAudioStarted(true);
+
+        trackEvent({
+          event: "video_started",
+          sequence: metadata.sequence,
+          screen: metadata.screen,
+          metadata: { asset: assetUrl },
+        });
+
+        return true;
+      } catch (err: unknown) {
+        console.warn("[MPN Media] Play asset failed:", err);
+
+        const isMediaError =
+          video.error !== null ||
+          (err instanceof DOMException &&
+            (err.name === "NotSupportedError" || err.name === "NetworkError"));
+
+        if (isMediaError) {
+          setStatus("load_error");
+        } else {
+          setStatus("audio_blocked");
+        }
+        return false;
+      }
+    },
+    []
+  );
+
   const retryPlayback = useCallback(async (): Promise<boolean> => {
     const video = videoRef.current;
     if (!video) return false;
@@ -119,8 +191,21 @@ export const MediaProvider: React.FC<{ children: React.ReactNode }> = ({
     if (video.error) {
       video.load();
     }
-    return startPlaybackWithAudio();
-  }, [startPlaybackWithAudio]);
+    try {
+      video.muted = false;
+      video.volume = 1;
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        await playPromise;
+      }
+      setStatus("playing");
+      setHasAudioStarted(true);
+      return true;
+    } catch (e) {
+      setStatus("audio_blocked");
+      return false;
+    }
+  }, []);
 
   const resetPlayback = useCallback(() => {
     const video = videoRef.current;
@@ -136,14 +221,22 @@ export const MediaProvider: React.FC<{ children: React.ReactNode }> = ({
     setCurrentTime(0);
   }, []);
 
-  const markVideoCompleted = useCallback(() => {
-    setStatus("completed");
-    trackEvent({
-      event: "video_completed",
-      sequence: "S01_EL_CASO",
-      screen: "S01_02_VIDEO",
-    });
-  }, []);
+  const markVideoCompleted = useCallback(
+    (metadata?: {
+      sequence: SequenceId;
+      screen: ScreenId;
+      asset?: string;
+    }) => {
+      setStatus("completed");
+      trackEvent({
+        event: "video_completed",
+        sequence: metadata?.sequence ?? "S01_EL_CASO",
+        screen: metadata?.screen ?? "S01_02_VIDEO",
+        metadata: metadata?.asset ? { asset: metadata.asset } : undefined,
+      });
+    },
+    []
+  );
 
   const isPlaying = status === "playing";
 
@@ -157,6 +250,7 @@ export const MediaProvider: React.FC<{ children: React.ReactNode }> = ({
         currentTime,
         duration,
         playWithAudioGesture: startPlaybackWithAudio,
+        playAsset,
         retryPlayback,
         resetPlayback,
         markVideoCompleted,

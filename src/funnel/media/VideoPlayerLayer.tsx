@@ -6,6 +6,7 @@
 
 import React, { useEffect } from "react";
 import { VIDEO_ASSETS } from "../config/assetRegistry";
+import { isVideoScreenId } from "../config/screenRegistry";
 import { useMedia } from "./MediaContext";
 import { useFunnel } from "../state/FunnelContext";
 
@@ -13,8 +14,8 @@ export const VideoPlayerLayer: React.FC = () => {
   const { videoRef } = useMedia();
   const { state } = useFunnel();
 
-  // SINGLE SOURCE OF TRUTH: visible ONLY when canonical active screen is VIDEO
-  const isVideoScreen = state.currentScreen === "S01_02_VIDEO";
+  // SINGLE SOURCE OF TRUTH: visible ONLY when canonical active screen is a VIDEO screen
+  const isVideoScreen = isVideoScreenId(state.currentScreen);
 
   // Guarantee playback pauses whenever leaving the VIDEO screen
   useEffect(() => {

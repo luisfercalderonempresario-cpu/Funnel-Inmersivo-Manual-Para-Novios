@@ -44,6 +44,14 @@ export function loadPersistedState(): FunnelState {
               label: funnel.initialInterpretation.label || "",
             }
           : null,
+      problemOriginGuess:
+        funnel.problemOriginGuess && typeof funnel.problemOriginGuess === "object"
+          ? {
+              id: funnel.problemOriginGuess.id,
+              label: funnel.problemOriginGuess.label || "",
+            }
+          : null,
+      sequence02Completed: Boolean(funnel.sequence02Completed),
       completedSequences: Array.isArray(funnel.completedSequences)
         ? funnel.completedSequences
         : [],

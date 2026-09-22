@@ -29,6 +29,12 @@ import { S01Video } from "../../funnel/sequences/s01/S01Video";
 import { S01Decision } from "../../funnel/sequences/s01/S01Decision";
 import { S01Interpretation } from "../../funnel/sequences/s01/S01Interpretation";
 import { S01Exit } from "../../funnel/sequences/s01/S01Exit";
+import { S02Continuation } from "../../funnel/sequences/s02/S02Continuation";
+import { S02ProblemOrigin } from "../../funnel/sequences/s02/S02ProblemOrigin";
+import { S02Rewind } from "../../funnel/sequences/s02/S02Rewind";
+import { S02Mirror } from "../../funnel/sequences/s02/S02Mirror";
+import { S02Discovery } from "../../funnel/sequences/s02/S02Discovery";
+import { S02Exit } from "../../funnel/sequences/s02/S02Exit";
 
 /**
  * Route sync component:
@@ -114,6 +120,30 @@ export const AppRoutes: React.FC = () => {
                     element={<S01Interpretation />}
                   />
                   <Route path="/funnel/s01/exit" element={<S01Exit />} />
+                  <Route
+                    path="/funnel/s02/continuation"
+                    element={<S02Continuation />}
+                  />
+                  <Route
+                    path="/funnel/s02/problem-origin"
+                    element={<S02ProblemOrigin />}
+                  />
+                  <Route
+                    path="/funnel/s02/rewind"
+                    element={<S02Rewind />}
+                  />
+                  <Route
+                    path="/funnel/s02/mirror"
+                    element={<S02Mirror />}
+                  />
+                  <Route
+                    path="/funnel/s02/discovery"
+                    element={<S02Discovery />}
+                  />
+                  <Route
+                    path="/funnel/s02/exit"
+                    element={<S02Exit />}
+                  />
                   {/* Catch-all route */}
                   <Route
                     path="*"

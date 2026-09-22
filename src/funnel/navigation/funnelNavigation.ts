@@ -54,6 +54,57 @@ export function canAccessScreenInProduction(
     );
   }
 
+  // S02_01_CONTINUATION requires S01 completed or already on screen
+  if (targetScreenId === "S02_01_CONTINUATION") {
+    return (
+      (state.initialDecision !== null && state.initialInterpretation !== null) ||
+      state.completedSequences.includes("S01_EL_CASO") ||
+      state.currentScreen === "S02_01_CONTINUATION"
+    );
+  }
+
+  // S02_02_PROBLEM_ORIGIN requires S01 completed or already on screen
+  if (targetScreenId === "S02_02_PROBLEM_ORIGIN") {
+    return (
+      (state.initialDecision !== null && state.initialInterpretation !== null) ||
+      state.completedSequences.includes("S01_EL_CASO") ||
+      state.currentScreen === "S02_02_PROBLEM_ORIGIN"
+    );
+  }
+
+  // S02_03_REWIND requires problemOriginGuess or already on screen
+  if (targetScreenId === "S02_03_REWIND") {
+    return (
+      state.problemOriginGuess !== null ||
+      state.currentScreen === "S02_03_REWIND"
+    );
+  }
+
+  // S02_04_MIRROR requires problemOriginGuess or already on screen
+  if (targetScreenId === "S02_04_MIRROR") {
+    return (
+      state.problemOriginGuess !== null ||
+      state.currentScreen === "S02_04_MIRROR"
+    );
+  }
+
+  // S02_05_DISCOVERY requires problemOriginGuess or already on screen
+  if (targetScreenId === "S02_05_DISCOVERY") {
+    return (
+      state.problemOriginGuess !== null ||
+      state.currentScreen === "S02_05_DISCOVERY"
+    );
+  }
+
+  // S02_06_EXIT requires problemOriginGuess or sequence02Completed or already on screen
+  if (targetScreenId === "S02_06_EXIT") {
+    return (
+      state.problemOriginGuess !== null ||
+      Boolean(state.sequence02Completed) ||
+      state.currentScreen === "S02_06_EXIT"
+    );
+  }
+
   return false;
 }
 

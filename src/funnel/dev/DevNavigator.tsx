@@ -40,6 +40,10 @@ const DevNavigatorPanel: React.FC = () => {
   );
   const [selectedPreset, setSelectedPreset] = useState<string>("FRESH");
 
+  React.useEffect(() => {
+    setSelectedScreenId(state.currentScreen);
+  }, [state.currentScreen]);
+
   const handleGoToScreen = () => {
     setCurrentScreen(selectedScreenId, { isDev: true });
   };
@@ -209,6 +213,18 @@ const DevNavigatorPanel: React.FC = () => {
                   ? `[${state.initialInterpretation.id}] "${state.initialInterpretation.label}"`
                   : "null"}
               </span>
+            </div>
+            <div className="flex flex-col pt-0.5">
+              <span className="text-neutral-400">problemOriginGuess:</span>
+              <span className="text-neutral-200 truncate">
+                {state.problemOriginGuess
+                  ? `[${state.problemOriginGuess.id}] "${state.problemOriginGuess.label}"`
+                  : "null"}
+              </span>
+            </div>
+            <div className="flex justify-between pt-0.5">
+              <span className="text-neutral-400">sequence02Completed:</span>
+              <span className="text-neutral-200">{String(Boolean(state.sequence02Completed))}</span>
             </div>
           </div>
 

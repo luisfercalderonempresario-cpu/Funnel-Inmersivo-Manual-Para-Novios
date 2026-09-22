@@ -1,6 +1,6 @@
 {
   "name": "Manual Para Novios",
-  "description": "Funnel interactivo inmersivo — S01: El Caso.",
+  "description": "Funnel interactivo inmersivo — Manual Para Novios.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

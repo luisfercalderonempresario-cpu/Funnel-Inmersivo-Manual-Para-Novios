@@ -29,6 +29,7 @@ import {
   INITIAL_FUNNEL_STATE,
   InitialDecisionValue,
   InitialInterpretationValue,
+  ProblemOriginGuessValue,
 } from "./funnelTypes";
 import { trackEvent } from "../tracking/trackEvent";
 
@@ -36,9 +37,11 @@ export interface FunnelContextValue {
   state: FunnelState;
   setInitialDecision: (decision: InitialDecisionValue) => void;
   setInitialInterpretation: (interpretation: InitialInterpretationValue) => void;
+  setProblemOriginGuess: (guess: ProblemOriginGuessValue) => void;
   setCurrentScreen: (screenId: ScreenId, options?: { isDev?: boolean }) => void;
   markCaseStarted: () => void;
   completeSequence: (sequenceId: SequenceId) => void;
+  markSequence02Completed: () => void;
   resetS01: () => void;
   resetFunnel: () => void;
   applyPreset: (presetKey: string) => void;
@@ -62,15 +65,22 @@ export const FunnelProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const setCurrentScreen = useCallback(
     (screenId: ScreenId, options?: { isDev?: boolean; replace?: boolean }) => {
+      const screenDef = FUNNEL_SCREENS[screenId];
       setState((prev) => {
-        if (prev.currentScreen === screenId) return prev;
+        if (
+          prev.currentScreen === screenId &&
+          (!screenDef || prev.currentSequence === screenDef.sequence)
+        ) {
+          return prev;
+        }
         return {
           ...prev,
           currentScreen: screenId,
+          currentSequence: screenDef ? screenDef.sequence : prev.currentSequence,
         };
       });
 
-      const targetRoute = FUNNEL_SCREENS[screenId]?.route;
+      const targetRoute = screenDef?.route;
       if (targetRoute && location.pathname !== targetRoute) {
         navigate(targetRoute, { replace: options?.replace ?? false });
       }
@@ -129,6 +139,23 @@ export const FunnelProvider: React.FC<{ children: React.ReactNode }> = ({
     []
   );
 
+  const setProblemOriginGuess = useCallback(
+    (guess: ProblemOriginGuessValue) => {
+      setState((prev) => ({
+        ...prev,
+        problemOriginGuess: guess,
+      }));
+      trackEvent({
+        event: "problem_origin_guess",
+        sequence: "S02_ALGO_SALIO_MAL",
+        screen: "S02_02_PROBLEM_ORIGIN",
+        value: guess.id,
+        metadata: { label: guess.label },
+      });
+    },
+    []
+  );
+
   const completeSequence = useCallback(
     (sequenceId: SequenceId) => {
       setState((prev) => {
@@ -140,14 +167,40 @@ export const FunnelProvider: React.FC<{ children: React.ReactNode }> = ({
           completedSequences: completed,
         };
       });
-      trackEvent({
-        event: "sequence_01_completed",
-        sequence: sequenceId,
-        screen: "S01_05_EXIT",
-      });
+      if (sequenceId === "S01_EL_CASO") {
+        trackEvent({
+          event: "sequence_01_completed",
+          sequence: sequenceId,
+          screen: "S01_05_EXIT",
+        });
+      }
     },
     []
   );
+
+  const markSequence02Completed = useCallback(() => {
+    setState((prev) => {
+      const s02Seq: SequenceId = "S02_ALGO_SALIO_MAL";
+      const completed: SequenceId[] = prev.completedSequences.includes(s02Seq)
+        ? prev.completedSequences
+        : [...prev.completedSequences, s02Seq];
+      return {
+        ...prev,
+        sequence02Completed: true,
+        completedSequences: completed,
+      };
+    });
+    trackEvent({
+      event: "context_gap_teased",
+      sequence: "S02_ALGO_SALIO_MAL",
+      screen: "S02_06_EXIT",
+    });
+    trackEvent({
+      event: "sequence_02_completed",
+      sequence: "S02_ALGO_SALIO_MAL",
+      screen: "S02_06_EXIT",
+    });
+  }, []);
 
   const resetS01 = useCallback(() => {
     const newState: FunnelState = {
@@ -216,9 +269,11 @@ export const FunnelProvider: React.FC<{ children: React.ReactNode }> = ({
     state,
     setInitialDecision,
     setInitialInterpretation,
+    setProblemOriginGuess,
     setCurrentScreen,
     markCaseStarted,
     completeSequence,
+    markSequence02Completed,
     resetS01,
     resetFunnel,
     applyPreset,
