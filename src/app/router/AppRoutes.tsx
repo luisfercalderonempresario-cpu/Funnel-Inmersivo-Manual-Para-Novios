@@ -42,6 +42,14 @@ import { S03ActionShift } from "../../funnel/sequences/s03/S03ActionShift";
 import { S03Reconstruction } from "../../funnel/sequences/s03/S03Reconstruction";
 import { S03ContextDiscovery } from "../../funnel/sequences/s03/S03ContextDiscovery";
 import { S03Exit } from "../../funnel/sequences/s03/S03Exit";
+import { S04MissingPiece } from "../../funnel/sequences/s04/S04MissingPiece";
+import { S04CycleExplained } from "../../funnel/sequences/s04/S04CycleExplained";
+import { S04Guardrail } from "../../funnel/sequences/s04/S04Guardrail";
+import { S04Utility } from "../../funnel/sequences/s04/S04Utility";
+import { S04AskBetter } from "../../funnel/sequences/s04/S04AskBetter";
+import { S04BeliefCheck } from "../../funnel/sequences/s04/S04BeliefCheck";
+import { S04MasterBelief } from "../../funnel/sequences/s04/S04MasterBelief";
+import { S04Exit } from "../../funnel/sequences/s04/S04Exit";
 
 /**
  * Route sync component:
@@ -178,6 +186,38 @@ export const AppRoutes: React.FC = () => {
                   <Route
                     path="/funnel/s03/exit"
                     element={<S03Exit />}
+                  />
+                  <Route
+                    path="/funnel/s04/missing-piece"
+                    element={<S04MissingPiece />}
+                  />
+                  <Route
+                    path="/funnel/s04/cycle-explained"
+                    element={<S04CycleExplained />}
+                  />
+                  <Route
+                    path="/funnel/s04/guardrail"
+                    element={<S04Guardrail />}
+                  />
+                  <Route
+                    path="/funnel/s04/utility"
+                    element={<S04Utility />}
+                  />
+                  <Route
+                    path="/funnel/s04/ask-better"
+                    element={<S04AskBetter />}
+                  />
+                  <Route
+                    path="/funnel/s04/belief-check"
+                    element={<S04BeliefCheck />}
+                  />
+                  <Route
+                    path="/funnel/s04/master-belief"
+                    element={<S04MasterBelief />}
+                  />
+                  <Route
+                    path="/funnel/s04/exit"
+                    element={<S04Exit />}
                   />
                   {/* Catch-all route */}
                   <Route

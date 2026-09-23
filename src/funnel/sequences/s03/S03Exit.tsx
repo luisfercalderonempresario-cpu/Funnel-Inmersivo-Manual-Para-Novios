@@ -11,9 +11,8 @@ import React, { useEffect, useRef } from "react";
 import { useFunnel } from "../../state/FunnelContext";
 
 export const S03Exit: React.FC = () => {
-  const { markSequence03Completed } = useFunnel();
+  const { markSequence03Completed, setCurrentScreen } = useFunnel();
   const hasCompletedRef = useRef<boolean>(false);
-  const isDev = Boolean(import.meta.env.DEV);
 
   useEffect(() => {
     if (hasCompletedRef.current) return;
@@ -21,7 +20,16 @@ export const S03Exit: React.FC = () => {
 
     // Marks sequence03Completed and fires tracking events once
     markSequence03Completed();
-  }, [markSequence03Completed]);
+
+    // Narrative pause before seamless transition into Sequence 04
+    const timer = setTimeout(() => {
+      setCurrentScreen("S04_01_MISSING_PIECE");
+    }, 2800);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [markSequence03Completed, setCurrentScreen]);
 
   return (
     <div
@@ -65,21 +73,6 @@ export const S03Exit: React.FC = () => {
           >
             Faltaba una pieza más.
           </p>
-
-          {/* Dev indicator for QA inspection */}
-          {isDev && (
-            <div
-              id="dev-s03-boundary-indicator"
-              className="mt-10 p-4 rounded-lg bg-neutral-900/90 border border-neutral-800 text-neutral-400 text-xs text-center max-w-xs space-y-1.5"
-            >
-              <p className="font-mono text-emerald-400 font-semibold">
-                S03_COMPLETED_SUCCESSFULLY
-              </p>
-              <p className="font-sans text-neutral-400">
-                Secuencia 03 completada. Pantalla estable. S04 se integrará en la siguiente fase.
-              </p>
-            </div>
-          )}
         </div>
       </main>
 

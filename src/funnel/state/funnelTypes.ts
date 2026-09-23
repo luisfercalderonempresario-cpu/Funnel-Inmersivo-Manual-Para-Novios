@@ -43,6 +43,12 @@ export type SleepContextShiftId = "significant" | "some" | "little";
 
 export type ContextChangesActionId = "yes" | "probably" | "not_necessarily";
 
+export type CycleUnderstandingId =
+  | "predict_feelings"
+  | "add_context"
+  | "know_approach"
+  | "unsure";
+
 export interface FunnelState {
   currentSequence: SequenceId;
   currentScreen: ScreenId;
@@ -54,6 +60,8 @@ export interface FunnelState {
   sleepContextShift: SleepContextShiftId | null;
   contextChangesAction: ContextChangesActionId | null;
   sequence03Completed?: boolean;
+  cycleUnderstanding: CycleUnderstandingId | null;
+  sequence04Completed?: boolean;
   completedSequences: SequenceId[];
 }
 
@@ -77,5 +85,7 @@ export const INITIAL_FUNNEL_STATE: FunnelState = {
   sleepContextShift: null,
   contextChangesAction: null,
   sequence03Completed: false,
+  cycleUnderstanding: null,
+  sequence04Completed: false,
   completedSequences: [],
 };

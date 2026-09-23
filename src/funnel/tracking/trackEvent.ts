@@ -26,7 +26,16 @@ export type FunnelEventName =
   | "context_changes_action"
   | "context_reconstruction_viewed"
   | "context_mechanism_exposed"
-  | "sequence_03_completed";
+  | "sequence_03_completed"
+  | "sequence_04_started"
+  | "cycle_piece_revealed"
+  | "cycle_explanation_viewed"
+  | "cycle_guardrail_viewed"
+  | "cycle_utility_viewed"
+  | "ask_better_viewed"
+  | "cycle_understanding_selected"
+  | "master_belief_viewed"
+  | "sequence_04_completed";
 
 export interface FunnelEventPayload {
   event: FunnelEventName;

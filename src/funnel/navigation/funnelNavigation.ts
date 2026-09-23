@@ -164,6 +164,42 @@ export function canAccessScreenInProduction(
     );
   }
 
+  const hasCompletedS03 =
+    Boolean(state.sequence03Completed) ||
+    state.completedSequences.includes("S03_LO_QUE_NO_VISTE") ||
+    state.currentSequence === "S04_LA_PIEZA_INESPERADA";
+
+  // S04 screens require completion of S03
+  if (
+    targetScreenId === "S04_01_MISSING_PIECE" ||
+    targetScreenId === "S04_02_CYCLE_EXPLAINED" ||
+    targetScreenId === "S04_03_GUARDRAIL" ||
+    targetScreenId === "S04_04_UTILITY" ||
+    targetScreenId === "S04_05_ASK_BETTER" ||
+    targetScreenId === "S04_06_BELIEF_CHECK"
+  ) {
+    return hasCompletedS03 || state.currentScreen === targetScreenId;
+  }
+
+  // S04_07_MASTER_BELIEF requires cycleUnderstanding or already on screen
+  if (targetScreenId === "S04_07_MASTER_BELIEF") {
+    return (
+      hasCompletedS03 &&
+      (state.cycleUnderstanding !== null ||
+        state.currentScreen === "S04_07_MASTER_BELIEF")
+    );
+  }
+
+  // S04_08_EXIT requires cycleUnderstanding or sequence04Completed or already on screen
+  if (targetScreenId === "S04_08_EXIT") {
+    return (
+      hasCompletedS03 &&
+      (state.cycleUnderstanding !== null ||
+        Boolean(state.sequence04Completed) ||
+        state.currentScreen === "S04_08_EXIT")
+    );
+  }
+
   return false;
 }
 

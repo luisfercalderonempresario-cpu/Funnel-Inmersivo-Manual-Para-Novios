@@ -19,6 +19,11 @@ export const FUNNEL_SEQUENCES = {
     name: "S03 — LO QUE NO VISTE",
     order: 3,
   },
+  S04_LA_PIEZA_INESPERADA: {
+    id: "S04_LA_PIEZA_INESPERADA",
+    name: "S04 — LA PIEZA INESPERADA",
+    order: 4,
+  },
 } as const;
 
 export type SequenceId = keyof typeof FUNNEL_SEQUENCES;
@@ -158,6 +163,62 @@ export const FUNNEL_SCREENS = {
     route: "/funnel/s03/exit",
     stepIndex: 17,
   },
+  S04_01_MISSING_PIECE: {
+    id: "S04_01_MISSING_PIECE",
+    sequence: "S04_LA_PIEZA_INESPERADA",
+    name: "La pieza que faltaba",
+    route: "/funnel/s04/missing-piece",
+    stepIndex: 18,
+  },
+  S04_02_CYCLE_EXPLAINED: {
+    id: "S04_02_CYCLE_EXPLAINED",
+    sequence: "S04_LA_PIEZA_INESPERADA",
+    name: "El ciclo menstrual",
+    route: "/funnel/s04/cycle-explained",
+    stepIndex: 19,
+  },
+  S04_03_GUARDRAIL: {
+    id: "S04_03_GUARDRAIL",
+    sequence: "S04_LA_PIEZA_INESPERADA",
+    name: "El guardarraíl",
+    route: "/funnel/s04/guardrail",
+    stepIndex: 20,
+  },
+  S04_04_UTILITY: {
+    id: "S04_04_UTILITY",
+    sequence: "S04_LA_PIEZA_INESPERADA",
+    name: "Para qué sirve",
+    route: "/funnel/s04/utility",
+    stepIndex: 21,
+  },
+  S04_05_ASK_BETTER: {
+    id: "S04_05_ASK_BETTER",
+    sequence: "S04_LA_PIEZA_INESPERADA",
+    name: "Mejores preguntas",
+    route: "/funnel/s04/ask-better",
+    stepIndex: 22,
+  },
+  S04_06_BELIEF_CHECK: {
+    id: "S04_06_BELIEF_CHECK",
+    sequence: "S04_LA_PIEZA_INESPERADA",
+    name: "Comprobación de creencia",
+    route: "/funnel/s04/belief-check",
+    stepIndex: 23,
+  },
+  S04_07_MASTER_BELIEF: {
+    id: "S04_07_MASTER_BELIEF",
+    sequence: "S04_LA_PIEZA_INESPERADA",
+    name: "Creencia maestra",
+    route: "/funnel/s04/master-belief",
+    stepIndex: 24,
+  },
+  S04_08_EXIT: {
+    id: "S04_08_EXIT",
+    sequence: "S04_LA_PIEZA_INESPERADA",
+    name: "Salida S04",
+    route: "/funnel/s04/exit",
+    stepIndex: 25,
+  },
 } as const satisfies Record<string, ScreenDefinition>;
 
 export type ScreenId = keyof typeof FUNNEL_SCREENS;
@@ -181,6 +242,14 @@ export const SCREEN_ORDER: readonly ScreenId[] = [
   "S03_05_RECONSTRUCTION",
   "S03_06_CONTEXT_DISCOVERY",
   "S03_07_EXIT",
+  "S04_01_MISSING_PIECE",
+  "S04_02_CYCLE_EXPLAINED",
+  "S04_03_GUARDRAIL",
+  "S04_04_UTILITY",
+  "S04_05_ASK_BETTER",
+  "S04_06_BELIEF_CHECK",
+  "S04_07_MASTER_BELIEF",
+  "S04_08_EXIT",
 ] as const;
 
 export function isVideoScreenId(screenId: ScreenId): boolean {

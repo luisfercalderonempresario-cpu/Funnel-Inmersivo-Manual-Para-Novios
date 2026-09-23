@@ -32,6 +32,7 @@ import {
   ProblemOriginGuessValue,
   SleepContextShiftId,
   ContextChangesActionId,
+  CycleUnderstandingId,
 } from "./funnelTypes";
 import { trackEvent } from "../tracking/trackEvent";
 
@@ -42,11 +43,13 @@ export interface FunnelContextValue {
   setProblemOriginGuess: (guess: ProblemOriginGuessValue) => void;
   setSleepContextShift: (shift: SleepContextShiftId) => void;
   setContextChangesAction: (action: ContextChangesActionId) => void;
+  setCycleUnderstanding: (understanding: CycleUnderstandingId) => void;
   setCurrentScreen: (screenId: ScreenId, options?: { isDev?: boolean }) => void;
   markCaseStarted: () => void;
   completeSequence: (sequenceId: SequenceId) => void;
   markSequence02Completed: () => void;
   markSequence03Completed: () => void;
+  markSequence04Completed: () => void;
   resetS01: () => void;
   resetFunnel: () => void;
   applyPreset: (presetKey: string) => void;
@@ -193,6 +196,22 @@ export const FunnelProvider: React.FC<{ children: React.ReactNode }> = ({
     []
   );
 
+  const setCycleUnderstanding = useCallback(
+    (understanding: CycleUnderstandingId) => {
+      setState((prev) => ({
+        ...prev,
+        cycleUnderstanding: understanding,
+      }));
+      trackEvent({
+        event: "cycle_understanding_selected",
+        sequence: "S04_LA_PIEZA_INESPERADA",
+        screen: "S04_06_BELIEF_CHECK",
+        value: understanding,
+      });
+    },
+    []
+  );
+
   const completeSequence = useCallback(
     (sequenceId: SequenceId) => {
       setState((prev) => {
@@ -255,6 +274,25 @@ export const FunnelProvider: React.FC<{ children: React.ReactNode }> = ({
       event: "sequence_03_completed",
       sequence: "S03_LO_QUE_NO_VISTE",
       screen: "S03_07_EXIT",
+    });
+  }, []);
+
+  const markSequence04Completed = useCallback(() => {
+    setState((prev) => {
+      const s04Seq: SequenceId = "S04_LA_PIEZA_INESPERADA";
+      const completed: SequenceId[] = prev.completedSequences.includes(s04Seq)
+        ? prev.completedSequences
+        : [...prev.completedSequences, s04Seq];
+      return {
+        ...prev,
+        sequence04Completed: true,
+        completedSequences: completed,
+      };
+    });
+    trackEvent({
+      event: "sequence_04_completed",
+      sequence: "S04_LA_PIEZA_INESPERADA",
+      screen: "S04_08_EXIT",
     });
   }, []);
 
@@ -328,11 +366,13 @@ export const FunnelProvider: React.FC<{ children: React.ReactNode }> = ({
     setProblemOriginGuess,
     setSleepContextShift,
     setContextChangesAction,
+    setCycleUnderstanding,
     setCurrentScreen,
     markCaseStarted,
     completeSequence,
     markSequence02Completed,
     markSequence03Completed,
+    markSequence04Completed,
     resetS01,
     resetFunnel,
     applyPreset,

@@ -65,6 +65,14 @@ export function loadPersistedState(): FunnelState {
           ? funnel.contextChangesAction
           : null,
       sequence03Completed: Boolean(funnel.sequence03Completed),
+      cycleUnderstanding:
+        funnel.cycleUnderstanding === "predict_feelings" ||
+        funnel.cycleUnderstanding === "add_context" ||
+        funnel.cycleUnderstanding === "know_approach" ||
+        funnel.cycleUnderstanding === "unsure"
+          ? funnel.cycleUnderstanding
+          : null,
+      sequence04Completed: Boolean(funnel.sequence04Completed),
       completedSequences: Array.isArray(funnel.completedSequences)
         ? funnel.completedSequences
         : [],
