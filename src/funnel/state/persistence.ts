@@ -88,6 +88,21 @@ export function loadPersistedState(): FunnelState {
           ? funnel.beliefShift
           : null,
       sequence05Completed: Boolean(funnel.sequence05Completed),
+      personalProblemRecognition:
+        funnel.personalProblemRecognition === "yes" ||
+        funnel.personalProblemRecognition === "multiple" ||
+        funnel.personalProblemRecognition === "none_recalled"
+          ? funnel.personalProblemRecognition
+          : null,
+      desiredTransformation:
+        funnel.desiredTransformation === "understand_better" ||
+        funnel.desiredTransformation === "listen_better" ||
+        funnel.desiredTransformation === "react_calmly" ||
+        funnel.desiredTransformation === "approach_or_space" ||
+        funnel.desiredTransformation === "feel_supported"
+          ? funnel.desiredTransformation
+          : null,
+      sequence06Completed: Boolean(funnel.sequence06Completed),
       completedSequences: Array.isArray(funnel.completedSequences)
         ? funnel.completedSequences
         : [],

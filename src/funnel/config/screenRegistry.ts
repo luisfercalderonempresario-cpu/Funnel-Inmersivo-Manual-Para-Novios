@@ -29,6 +29,11 @@ export const FUNNEL_SEQUENCES = {
     name: "S05 — VUELVE A MIRAR",
     order: 5,
   },
+  S06_AHORA_PIENSA_EN_ELLA: {
+    id: "S06_AHORA_PIENSA_EN_ELLA",
+    name: "S06 — AHORA PIENSA EN ELLA",
+    order: 6,
+  },
 } as const;
 
 export type SequenceId = keyof typeof FUNNEL_SEQUENCES;
@@ -266,6 +271,41 @@ export const FUNNEL_SCREENS = {
     route: "/funnel/s05/exit",
     stepIndex: 31,
   },
+  S06_01_PERSONALIZE: {
+    id: "S06_01_PERSONALIZE",
+    sequence: "S06_AHORA_PIENSA_EN_ELLA",
+    name: "Piensa en ella",
+    route: "/funnel/s06/personalize",
+    stepIndex: 32,
+  },
+  S06_02_RECOGNITION: {
+    id: "S06_02_RECOGNITION",
+    sequence: "S06_AHORA_PIENSA_EN_ELLA",
+    name: "Reconocimiento",
+    route: "/funnel/s06/recognition",
+    stepIndex: 33,
+  },
+  S06_03_DESIRE: {
+    id: "S06_03_DESIRE",
+    sequence: "S06_AHORA_PIENSA_EN_ELLA",
+    name: "Deseo",
+    route: "/funnel/s06/desire",
+    stepIndex: 34,
+  },
+  S06_04_REFLECTION: {
+    id: "S06_04_REFLECTION",
+    sequence: "S06_AHORA_PIENSA_EN_ELLA",
+    name: "Reflexión",
+    route: "/funnel/s06/reflection",
+    stepIndex: 35,
+  },
+  S06_05_EXIT: {
+    id: "S06_05_EXIT",
+    sequence: "S06_AHORA_PIENSA_EN_ELLA",
+    name: "Salida S06",
+    route: "/funnel/s06/exit",
+    stepIndex: 36,
+  },
 } as const satisfies Record<string, ScreenDefinition>;
 
 export type ScreenId = keyof typeof FUNNEL_SCREENS;
@@ -303,6 +343,11 @@ export const SCREEN_ORDER: readonly ScreenId[] = [
   "S05_04_DEMONSTRATION",
   "S05_05_BELIEF_SHIFT",
   "S05_06_EXIT",
+  "S06_01_PERSONALIZE",
+  "S06_02_RECOGNITION",
+  "S06_03_DESIRE",
+  "S06_04_REFLECTION",
+  "S06_05_EXIT",
 ] as const;
 
 export function isVideoScreenId(screenId: ScreenId): boolean {

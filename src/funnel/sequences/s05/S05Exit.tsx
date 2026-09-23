@@ -14,7 +14,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useFunnel } from "../../state/FunnelContext";
 
 export const S05Exit: React.FC = () => {
-  const { markSequence05Completed } = useFunnel();
+  const { markSequence05Completed, setCurrentScreen } = useFunnel();
   const hasCompletedRef = useRef<boolean>(false);
   const isDev = Boolean(import.meta.env.DEV);
 
@@ -32,12 +32,17 @@ export const S05Exit: React.FC = () => {
 
     const t1 = setTimeout(() => setStage(1), 1000);
     const t2 = setTimeout(() => setStage(2), 2600);
+    // Canonical narrative progression to S06_01_PERSONALIZE
+    const t3 = setTimeout(() => {
+      setCurrentScreen("S06_01_PERSONALIZE");
+    }, 4800);
 
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
+      clearTimeout(t3);
     };
-  }, [markSequence05Completed]);
+  }, [markSequence05Completed, setCurrentScreen]);
 
   return (
     <div

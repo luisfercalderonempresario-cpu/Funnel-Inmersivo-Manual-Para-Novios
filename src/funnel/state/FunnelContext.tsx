@@ -35,6 +35,8 @@ import {
   CycleUnderstandingId,
   SecondDecisionValue,
   BeliefShiftId,
+  PersonalProblemRecognition,
+  DesiredTransformation,
   getDecisionChanged,
 } from "./funnelTypes";
 import { trackEvent } from "../tracking/trackEvent";
@@ -50,6 +52,13 @@ export interface FunnelContextValue {
   setCycleUnderstanding: (understanding: CycleUnderstandingId) => void;
   setSecondDecision: (decision: SecondDecisionValue) => void;
   setBeliefShift: (shift: BeliefShiftId) => void;
+  setPersonalProblemRecognition: (
+    recognition: PersonalProblemRecognition
+  ) => void;
+  setDesiredTransformation: (
+    transformation: DesiredTransformation,
+    label: string
+  ) => void;
   setCurrentScreen: (screenId: ScreenId, options?: { isDev?: boolean }) => void;
   markCaseStarted: () => void;
   completeSequence: (sequenceId: SequenceId) => void;
@@ -57,6 +66,7 @@ export interface FunnelContextValue {
   markSequence03Completed: () => void;
   markSequence04Completed: () => void;
   markSequence05Completed: () => void;
+  markSequence06Completed: () => void;
   resetS01: () => void;
   resetFunnel: () => void;
   applyPreset: (presetKey: string) => void;
@@ -261,6 +271,46 @@ export const FunnelProvider: React.FC<{ children: React.ReactNode }> = ({
     });
   }, []);
 
+  const setPersonalProblemRecognition = useCallback(
+    (recognition: PersonalProblemRecognition) => {
+      setState((prev) => ({
+        ...prev,
+        personalProblemRecognition: recognition,
+      }));
+      if (recognition !== null) {
+        trackEvent({
+          event: "personal_problem_recognition",
+          sequence: "S06_AHORA_PIENSA_EN_ELLA",
+          screen: "S06_02_RECOGNITION",
+          value: recognition,
+        });
+      }
+    },
+    []
+  );
+
+  const setDesiredTransformation = useCallback(
+    (transformation: DesiredTransformation, label: string) => {
+      setState((prev) => ({
+        ...prev,
+        desiredTransformation: transformation,
+      }));
+      if (transformation !== null) {
+        trackEvent({
+          event: "desired_transformation_selected",
+          sequence: "S06_AHORA_PIENSA_EN_ELLA",
+          screen: "S06_03_DESIRE",
+          value: transformation,
+          metadata: {
+            desiredTransformationId: transformation,
+            desiredTransformationLabel: label,
+          },
+        });
+      }
+    },
+    []
+  );
+
   const completeSequence = useCallback(
     (sequenceId: SequenceId) => {
       setState((prev) => {
@@ -364,6 +414,25 @@ export const FunnelProvider: React.FC<{ children: React.ReactNode }> = ({
     });
   }, []);
 
+  const markSequence06Completed = useCallback(() => {
+    setState((prev) => {
+      const s06Seq: SequenceId = "S06_AHORA_PIENSA_EN_ELLA";
+      const completed: SequenceId[] = prev.completedSequences.includes(s06Seq)
+        ? prev.completedSequences
+        : [...prev.completedSequences, s06Seq];
+      return {
+        ...prev,
+        sequence06Completed: true,
+        completedSequences: completed,
+      };
+    });
+    trackEvent({
+      event: "sequence_06_completed",
+      sequence: "S06_AHORA_PIENSA_EN_ELLA",
+      screen: "S06_05_EXIT",
+    });
+  }, []);
+
   const resetS01 = useCallback(() => {
     const newState: FunnelState = {
       ...state,
@@ -443,6 +512,8 @@ export const FunnelProvider: React.FC<{ children: React.ReactNode }> = ({
     setCycleUnderstanding,
     setSecondDecision,
     setBeliefShift,
+    setPersonalProblemRecognition,
+    setDesiredTransformation,
     setCurrentScreen,
     markCaseStarted,
     completeSequence,
@@ -450,6 +521,7 @@ export const FunnelProvider: React.FC<{ children: React.ReactNode }> = ({
     markSequence03Completed,
     markSequence04Completed,
     markSequence05Completed,
+    markSequence06Completed,
     resetS01,
     resetFunnel,
     applyPreset,

@@ -41,7 +41,13 @@ export type FunnelEventName =
   | "second_decision_selected"
   | "decision_comparison_viewed"
   | "belief_shift_selected"
-  | "sequence_05_completed";
+  | "sequence_05_completed"
+  | "sequence_06_started"
+  | "personal_reflection_prompted"
+  | "personal_problem_recognition"
+  | "desired_transformation_selected"
+  | "desired_transformation_reflected"
+  | "sequence_06_completed";
 
 export interface FunnelEventPayload {
   event: FunnelEventName;

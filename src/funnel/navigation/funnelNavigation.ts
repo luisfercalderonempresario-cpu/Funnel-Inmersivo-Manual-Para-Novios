@@ -243,6 +243,47 @@ export function canAccessScreenInProduction(
     );
   }
 
+  const hasCompletedS05 =
+    Boolean(state.sequence05Completed) ||
+    state.completedSequences.includes("S05_VUELVE_A_MIRAR") ||
+    state.currentSequence === "S06_AHORA_PIENSA_EN_ELLA";
+
+  // S06_01_PERSONALIZE & S06_02_RECOGNITION require S05 completion
+  if (
+    targetScreenId === "S06_01_PERSONALIZE" ||
+    targetScreenId === "S06_02_RECOGNITION"
+  ) {
+    return hasCompletedS05 || state.currentScreen === targetScreenId;
+  }
+
+  // S06_03_DESIRE requires personalProblemRecognition or already on screen
+  if (targetScreenId === "S06_03_DESIRE") {
+    return (
+      hasCompletedS05 &&
+      (state.personalProblemRecognition !== null ||
+        state.currentScreen === "S06_03_DESIRE")
+    );
+  }
+
+  // S06_04_REFLECTION handles desiredTransformation (or safe fallback)
+  if (targetScreenId === "S06_04_REFLECTION") {
+    return (
+      hasCompletedS05 &&
+      (state.desiredTransformation !== null ||
+        state.currentScreen === "S06_04_REFLECTION")
+    );
+  }
+
+  // S06_05_EXIT requires desiredTransformation or sequence06Completed or already on screen
+  if (targetScreenId === "S06_05_EXIT") {
+    return (
+      hasCompletedS05 &&
+      (state.desiredTransformation !== null ||
+        Boolean(state.sequence06Completed) ||
+        state.currentScreen === "S06_05_EXIT")
+    );
+  }
+
   return false;
 }
 

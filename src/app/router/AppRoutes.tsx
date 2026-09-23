@@ -56,6 +56,11 @@ import { S05DecisionCompare } from "../../funnel/sequences/s05/S05DecisionCompar
 import { S05Demonstration } from "../../funnel/sequences/s05/S05Demonstration";
 import { S05BeliefShift } from "../../funnel/sequences/s05/S05BeliefShift";
 import { S05Exit } from "../../funnel/sequences/s05/S05Exit";
+import { S06Personalize } from "../../funnel/sequences/s06/S06Personalize";
+import { S06Recognition } from "../../funnel/sequences/s06/S06Recognition";
+import { S06Desire } from "../../funnel/sequences/s06/S06Desire";
+import { S06Reflection } from "../../funnel/sequences/s06/S06Reflection";
+import { S06Exit } from "../../funnel/sequences/s06/S06Exit";
 
 /**
  * Route sync component:
@@ -248,6 +253,26 @@ export const AppRoutes: React.FC = () => {
                   <Route
                     path="/funnel/s05/exit"
                     element={<S05Exit />}
+                  />
+                  <Route
+                    path="/funnel/s06/personalize"
+                    element={<S06Personalize />}
+                  />
+                  <Route
+                    path="/funnel/s06/recognition"
+                    element={<S06Recognition />}
+                  />
+                  <Route
+                    path="/funnel/s06/desire"
+                    element={<S06Desire />}
+                  />
+                  <Route
+                    path="/funnel/s06/reflection"
+                    element={<S06Reflection />}
+                  />
+                  <Route
+                    path="/funnel/s06/exit"
+                    element={<S06Exit />}
                   />
                   {/* Catch-all route */}
                   <Route

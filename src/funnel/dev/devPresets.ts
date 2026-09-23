@@ -838,4 +838,306 @@ export const DEV_PRESETS: Record<string, DevPreset> = {
       ],
     }
   ),
+
+  // ==========================================
+  // S06 PRESETS
+  // ==========================================
+  BEFORE_S06: createPreset(
+    "BEFORE_S06",
+    "BEFORE_S06 (Entrada a S06)",
+    "S05 completado, listo para iniciar S06_01_PERSONALIZE.",
+    "S06_01_PERSONALIZE",
+    {
+      currentSequence: "S06_AHORA_PIENSA_EN_ELLA",
+      currentScreen: "S06_01_PERSONALIZE",
+      caseStarted: true,
+      initialDecision: {
+        id: "give_space",
+        label: "Le daría espacio.",
+      },
+      secondDecision: {
+        id: "ask_again",
+        label: "Le preguntaría otra vez.",
+      },
+      sequence02Completed: true,
+      sleepContextShift: "significant",
+      contextChangesAction: "yes",
+      sequence03Completed: true,
+      cycleUnderstanding: "add_context",
+      sequence04Completed: true,
+      beliefShift: "understand_first",
+      sequence05Completed: true,
+      personalProblemRecognition: null,
+      desiredTransformation: null,
+      sequence06Completed: false,
+      completedSequences: [
+        "S01_EL_CASO",
+        "S02_ALGO_SALIO_MAL",
+        "S03_LO_QUE_NO_VISTE",
+        "S04_LA_PIEZA_INESPERADA",
+        "S05_VUELVE_A_MIRAR",
+      ],
+    }
+  ),
+
+  RECOGNITION_YES: createPreset(
+    "RECOGNITION_YES",
+    "RECOGNITION_YES (Reconocimiento: Sí)",
+    "personalProblemRecognition='yes', en S06_03_DESIRE.",
+    "S06_03_DESIRE",
+    {
+      currentSequence: "S06_AHORA_PIENSA_EN_ELLA",
+      currentScreen: "S06_03_DESIRE",
+      caseStarted: true,
+      sequence02Completed: true,
+      sequence03Completed: true,
+      sequence04Completed: true,
+      sequence05Completed: true,
+      personalProblemRecognition: "yes",
+      desiredTransformation: null,
+      sequence06Completed: false,
+      completedSequences: [
+        "S01_EL_CASO",
+        "S02_ALGO_SALIO_MAL",
+        "S03_LO_QUE_NO_VISTE",
+        "S04_LA_PIEZA_INESPERADA",
+        "S05_VUELVE_A_MIRAR",
+      ],
+    }
+  ),
+
+  RECOGNITION_MULTIPLE: createPreset(
+    "RECOGNITION_MULTIPLE",
+    "RECOGNITION_MULTIPLE (Reconocimiento: Más de una vez)",
+    "personalProblemRecognition='multiple', en S06_03_DESIRE.",
+    "S06_03_DESIRE",
+    {
+      currentSequence: "S06_AHORA_PIENSA_EN_ELLA",
+      currentScreen: "S06_03_DESIRE",
+      caseStarted: true,
+      sequence02Completed: true,
+      sequence03Completed: true,
+      sequence04Completed: true,
+      sequence05Completed: true,
+      personalProblemRecognition: "multiple",
+      desiredTransformation: null,
+      sequence06Completed: false,
+      completedSequences: [
+        "S01_EL_CASO",
+        "S02_ALGO_SALIO_MAL",
+        "S03_LO_QUE_NO_VISTE",
+        "S04_LA_PIEZA_INESPERADA",
+        "S05_VUELVE_A_MIRAR",
+      ],
+    }
+  ),
+
+  RECOGNITION_NONE: createPreset(
+    "RECOGNITION_NONE",
+    "RECOGNITION_NONE (Reconocimiento: Ninguna ahora)",
+    "personalProblemRecognition='none_recalled', en S06_03_DESIRE.",
+    "S06_03_DESIRE",
+    {
+      currentSequence: "S06_AHORA_PIENSA_EN_ELLA",
+      currentScreen: "S06_03_DESIRE",
+      caseStarted: true,
+      sequence02Completed: true,
+      sequence03Completed: true,
+      sequence04Completed: true,
+      sequence05Completed: true,
+      personalProblemRecognition: "none_recalled",
+      desiredTransformation: null,
+      sequence06Completed: false,
+      completedSequences: [
+        "S01_EL_CASO",
+        "S02_ALGO_SALIO_MAL",
+        "S03_LO_QUE_NO_VISTE",
+        "S04_LA_PIEZA_INESPERADA",
+        "S05_VUELVE_A_MIRAR",
+      ],
+    }
+  ),
+
+  DESIRE_UNDERSTAND: createPreset(
+    "DESIRE_UNDERSTAND",
+    "DESIRE_UNDERSTAND (Entenderla mejor)",
+    "desiredTransformation='understand_better', en S06_04_REFLECTION.",
+    "S06_04_REFLECTION",
+    {
+      currentSequence: "S06_AHORA_PIENSA_EN_ELLA",
+      currentScreen: "S06_04_REFLECTION",
+      caseStarted: true,
+      sequence02Completed: true,
+      sequence03Completed: true,
+      sequence04Completed: true,
+      sequence05Completed: true,
+      personalProblemRecognition: "yes",
+      desiredTransformation: "understand_better",
+      sequence06Completed: false,
+      completedSequences: [
+        "S01_EL_CASO",
+        "S02_ALGO_SALIO_MAL",
+        "S03_LO_QUE_NO_VISTE",
+        "S04_LA_PIEZA_INESPERADA",
+        "S05_VUELVE_A_MIRAR",
+      ],
+    }
+  ),
+
+  DESIRE_LISTEN: createPreset(
+    "DESIRE_LISTEN",
+    "DESIRE_LISTEN (Escucharla mejor)",
+    "desiredTransformation='listen_better', en S06_04_REFLECTION.",
+    "S06_04_REFLECTION",
+    {
+      currentSequence: "S06_AHORA_PIENSA_EN_ELLA",
+      currentScreen: "S06_04_REFLECTION",
+      caseStarted: true,
+      sequence02Completed: true,
+      sequence03Completed: true,
+      sequence04Completed: true,
+      sequence05Completed: true,
+      personalProblemRecognition: "yes",
+      desiredTransformation: "listen_better",
+      sequence06Completed: false,
+      completedSequences: [
+        "S01_EL_CASO",
+        "S02_ALGO_SALIO_MAL",
+        "S03_LO_QUE_NO_VISTE",
+        "S04_LA_PIEZA_INESPERADA",
+        "S05_VUELVE_A_MIRAR",
+      ],
+    }
+  ),
+
+  DESIRE_CALM: createPreset(
+    "DESIRE_CALM",
+    "DESIRE_CALM (Reaccionar con más calma)",
+    "desiredTransformation='react_calmly', en S06_04_REFLECTION.",
+    "S06_04_REFLECTION",
+    {
+      currentSequence: "S06_AHORA_PIENSA_EN_ELLA",
+      currentScreen: "S06_04_REFLECTION",
+      caseStarted: true,
+      sequence02Completed: true,
+      sequence03Completed: true,
+      sequence04Completed: true,
+      sequence05Completed: true,
+      personalProblemRecognition: "yes",
+      desiredTransformation: "react_calmly",
+      sequence06Completed: false,
+      completedSequences: [
+        "S01_EL_CASO",
+        "S02_ALGO_SALIO_MAL",
+        "S03_LO_QUE_NO_VISTE",
+        "S04_LA_PIEZA_INESPERADA",
+        "S05_VUELVE_A_MIRAR",
+      ],
+    }
+  ),
+
+  DESIRE_APPROACH_SPACE: createPreset(
+    "DESIRE_APPROACH_SPACE",
+    "DESIRE_APPROACH_SPACE (Acercarme o darle espacio)",
+    "desiredTransformation='approach_or_space', en S06_04_REFLECTION.",
+    "S06_04_REFLECTION",
+    {
+      currentSequence: "S06_AHORA_PIENSA_EN_ELLA",
+      currentScreen: "S06_04_REFLECTION",
+      caseStarted: true,
+      sequence02Completed: true,
+      sequence03Completed: true,
+      sequence04Completed: true,
+      sequence05Completed: true,
+      personalProblemRecognition: "yes",
+      desiredTransformation: "approach_or_space",
+      sequence06Completed: false,
+      completedSequences: [
+        "S01_EL_CASO",
+        "S02_ALGO_SALIO_MAL",
+        "S03_LO_QUE_NO_VISTE",
+        "S04_LA_PIEZA_INESPERADA",
+        "S05_VUELVE_A_MIRAR",
+      ],
+    }
+  ),
+
+  DESIRE_SUPPORTED: createPreset(
+    "DESIRE_SUPPORTED",
+    "DESIRE_SUPPORTED (Hacerla sentir acompañada)",
+    "desiredTransformation='feel_supported', en S06_04_REFLECTION.",
+    "S06_04_REFLECTION",
+    {
+      currentSequence: "S06_AHORA_PIENSA_EN_ELLA",
+      currentScreen: "S06_04_REFLECTION",
+      caseStarted: true,
+      sequence02Completed: true,
+      sequence03Completed: true,
+      sequence04Completed: true,
+      sequence05Completed: true,
+      personalProblemRecognition: "yes",
+      desiredTransformation: "feel_supported",
+      sequence06Completed: false,
+      completedSequences: [
+        "S01_EL_CASO",
+        "S02_ALGO_SALIO_MAL",
+        "S03_LO_QUE_NO_VISTE",
+        "S04_LA_PIEZA_INESPERADA",
+        "S05_VUELVE_A_MIRAR",
+      ],
+    }
+  ),
+
+  DESIRE_NULL_FALLBACK: createPreset(
+    "DESIRE_NULL_FALLBACK",
+    "DESIRE_NULL_FALLBACK (Sin selección previa)",
+    "desiredTransformation=null, prueba de fallback en S06_04_REFLECTION.",
+    "S06_04_REFLECTION",
+    {
+      currentSequence: "S06_AHORA_PIENSA_EN_ELLA",
+      currentScreen: "S06_04_REFLECTION",
+      caseStarted: true,
+      sequence02Completed: true,
+      sequence03Completed: true,
+      sequence04Completed: true,
+      sequence05Completed: true,
+      personalProblemRecognition: null,
+      desiredTransformation: null,
+      sequence06Completed: false,
+      completedSequences: [
+        "S01_EL_CASO",
+        "S02_ALGO_SALIO_MAL",
+        "S03_LO_QUE_NO_VISTE",
+        "S04_LA_PIEZA_INESPERADA",
+        "S05_VUELVE_A_MIRAR",
+      ],
+    }
+  ),
+
+  AFTER_S06: createPreset(
+    "AFTER_S06",
+    "AFTER_S06 (Secuencia 06 Completa)",
+    "S06 completado, en pantalla de cierre S06_05_EXIT.",
+    "S06_05_EXIT",
+    {
+      currentSequence: "S06_AHORA_PIENSA_EN_ELLA",
+      currentScreen: "S06_05_EXIT",
+      caseStarted: true,
+      sequence02Completed: true,
+      sequence03Completed: true,
+      sequence04Completed: true,
+      sequence05Completed: true,
+      personalProblemRecognition: "yes",
+      desiredTransformation: "understand_better",
+      sequence06Completed: true,
+      completedSequences: [
+        "S01_EL_CASO",
+        "S02_ALGO_SALIO_MAL",
+        "S03_LO_QUE_NO_VISTE",
+        "S04_LA_PIEZA_INESPERADA",
+        "S05_VUELVE_A_MIRAR",
+        "S06_AHORA_PIENSA_EN_ELLA",
+      ],
+    }
+  ),
 };

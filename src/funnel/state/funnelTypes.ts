@@ -62,6 +62,20 @@ export type BeliefShiftId =
   | "avoid_mistakes"
   | "unsure";
 
+export type PersonalProblemRecognition =
+  | "yes"
+  | "multiple"
+  | "none_recalled"
+  | null;
+
+export type DesiredTransformation =
+  | "understand_better"
+  | "listen_better"
+  | "react_calmly"
+  | "approach_or_space"
+  | "feel_supported"
+  | null;
+
 export function getDecisionChanged(
   initialDecision: InitialDecisionValue | null,
   secondDecision: SecondDecisionValue | null
@@ -86,6 +100,9 @@ export interface FunnelState {
   secondDecision: SecondDecisionValue | null;
   beliefShift: BeliefShiftId | null;
   sequence05Completed?: boolean;
+  personalProblemRecognition: PersonalProblemRecognition;
+  desiredTransformation: DesiredTransformation;
+  sequence06Completed?: boolean;
   completedSequences: SequenceId[];
 }
 
@@ -114,5 +131,8 @@ export const INITIAL_FUNNEL_STATE: FunnelState = {
   secondDecision: null,
   beliefShift: null,
   sequence05Completed: false,
+  personalProblemRecognition: null,
+  desiredTransformation: null,
+  sequence06Completed: false,
   completedSequences: [],
 };
