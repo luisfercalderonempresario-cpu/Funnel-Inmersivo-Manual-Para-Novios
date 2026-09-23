@@ -10,6 +10,7 @@ export const VIDEO_ASSETS = {
   S02_REWIND: "https://media.manualparanovios.com/S02_03_REWIND_WEB.mp4",
   S03_SLEEP_CONTEXT: "https://media.manualparanovios.com/S03_01_SLEEP_CONTEXT.mp4",
   S03_WORK_CONTEXT: "https://media.manualparanovios.com/S03_03_WORK_CONTEXT_WEB.mp4",
+  S05_RETURN_TO_CASE: "https://media.manualparanovios.com/S05_01_RETURN_TO_CASE_WEB.mp4",
 } as const;
 
 export type VideoAssetKey = keyof typeof VIDEO_ASSETS;

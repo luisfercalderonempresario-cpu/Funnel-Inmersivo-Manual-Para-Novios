@@ -33,23 +33,30 @@ import {
   SleepContextShiftId,
   ContextChangesActionId,
   CycleUnderstandingId,
+  SecondDecisionValue,
+  BeliefShiftId,
+  getDecisionChanged,
 } from "./funnelTypes";
 import { trackEvent } from "../tracking/trackEvent";
 
 export interface FunnelContextValue {
   state: FunnelState;
+  decisionChanged: boolean | null;
   setInitialDecision: (decision: InitialDecisionValue) => void;
   setInitialInterpretation: (interpretation: InitialInterpretationValue) => void;
   setProblemOriginGuess: (guess: ProblemOriginGuessValue) => void;
   setSleepContextShift: (shift: SleepContextShiftId) => void;
   setContextChangesAction: (action: ContextChangesActionId) => void;
   setCycleUnderstanding: (understanding: CycleUnderstandingId) => void;
+  setSecondDecision: (decision: SecondDecisionValue) => void;
+  setBeliefShift: (shift: BeliefShiftId) => void;
   setCurrentScreen: (screenId: ScreenId, options?: { isDev?: boolean }) => void;
   markCaseStarted: () => void;
   completeSequence: (sequenceId: SequenceId) => void;
   markSequence02Completed: () => void;
   markSequence03Completed: () => void;
   markSequence04Completed: () => void;
+  markSequence05Completed: () => void;
   resetS01: () => void;
   resetFunnel: () => void;
   applyPreset: (presetKey: string) => void;
@@ -212,6 +219,48 @@ export const FunnelProvider: React.FC<{ children: React.ReactNode }> = ({
     []
   );
 
+  const setSecondDecision = useCallback(
+    (decision: SecondDecisionValue) => {
+      setState((prev) => {
+        const changed =
+          prev.initialDecision !== null
+            ? prev.initialDecision.id !== decision.id
+            : null;
+
+        trackEvent({
+          event: "second_decision_selected",
+          sequence: "S05_VUELVE_A_MIRAR",
+          screen: "S05_02_SECOND_DECISION",
+          value: decision.id,
+          metadata: {
+            initialDecisionId: prev.initialDecision?.id ?? null,
+            secondDecisionId: decision.id,
+            decisionChanged: changed,
+          },
+        });
+
+        return {
+          ...prev,
+          secondDecision: decision,
+        };
+      });
+    },
+    []
+  );
+
+  const setBeliefShift = useCallback((shift: BeliefShiftId) => {
+    setState((prev) => ({
+      ...prev,
+      beliefShift: shift,
+    }));
+    trackEvent({
+      event: "belief_shift_selected",
+      sequence: "S05_VUELVE_A_MIRAR",
+      screen: "S05_05_BELIEF_SHIFT",
+      value: shift,
+    });
+  }, []);
+
   const completeSequence = useCallback(
     (sequenceId: SequenceId) => {
       setState((prev) => {
@@ -296,6 +345,25 @@ export const FunnelProvider: React.FC<{ children: React.ReactNode }> = ({
     });
   }, []);
 
+  const markSequence05Completed = useCallback(() => {
+    setState((prev) => {
+      const s05Seq: SequenceId = "S05_VUELVE_A_MIRAR";
+      const completed: SequenceId[] = prev.completedSequences.includes(s05Seq)
+        ? prev.completedSequences
+        : [...prev.completedSequences, s05Seq];
+      return {
+        ...prev,
+        sequence05Completed: true,
+        completedSequences: completed,
+      };
+    });
+    trackEvent({
+      event: "sequence_05_completed",
+      sequence: "S05_VUELVE_A_MIRAR",
+      screen: "S05_06_EXIT",
+    });
+  }, []);
+
   const resetS01 = useCallback(() => {
     const newState: FunnelState = {
       ...state,
@@ -359,20 +427,29 @@ export const FunnelProvider: React.FC<{ children: React.ReactNode }> = ({
     [state.currentScreen, setCurrentScreen]
   );
 
+  const decisionChanged = getDecisionChanged(
+    state.initialDecision,
+    state.secondDecision
+  );
+
   const value: FunnelContextValue = {
     state,
+    decisionChanged,
     setInitialDecision,
     setInitialInterpretation,
     setProblemOriginGuess,
     setSleepContextShift,
     setContextChangesAction,
     setCycleUnderstanding,
+    setSecondDecision,
+    setBeliefShift,
     setCurrentScreen,
     markCaseStarted,
     completeSequence,
     markSequence02Completed,
     markSequence03Completed,
     markSequence04Completed,
+    markSequence05Completed,
     resetS01,
     resetFunnel,
     applyPreset,

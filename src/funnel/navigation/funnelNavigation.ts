@@ -200,6 +200,49 @@ export function canAccessScreenInProduction(
     );
   }
 
+  const hasCompletedS04 =
+    Boolean(state.sequence04Completed) ||
+    state.completedSequences.includes("S04_LA_PIEZA_INESPERADA") ||
+    state.currentSequence === "S05_VUELVE_A_MIRAR";
+
+  // S05_01_RETURN_TO_CASE & S05_02_SECOND_DECISION require completion of S04
+  if (
+    targetScreenId === "S05_01_RETURN_TO_CASE" ||
+    targetScreenId === "S05_02_SECOND_DECISION"
+  ) {
+    return hasCompletedS04 || state.currentScreen === targetScreenId;
+  }
+
+  // S05_03_DECISION_COMPARE requires secondDecision or already on screen
+  if (targetScreenId === "S05_03_DECISION_COMPARE") {
+    return (
+      hasCompletedS04 &&
+      (state.secondDecision !== null ||
+        state.currentScreen === "S05_03_DECISION_COMPARE")
+    );
+  }
+
+  // S05_04_DEMONSTRATION & S05_05_BELIEF_SHIFT require secondDecision or already on screen
+  if (
+    targetScreenId === "S05_04_DEMONSTRATION" ||
+    targetScreenId === "S05_05_BELIEF_SHIFT"
+  ) {
+    return (
+      hasCompletedS04 &&
+      (state.secondDecision !== null || state.currentScreen === targetScreenId)
+    );
+  }
+
+  // S05_06_EXIT requires beliefShift or sequence05Completed or already on screen
+  if (targetScreenId === "S05_06_EXIT") {
+    return (
+      hasCompletedS04 &&
+      (state.beliefShift !== null ||
+        Boolean(state.sequence05Completed) ||
+        state.currentScreen === "S05_06_EXIT")
+    );
+  }
+
   return false;
 }
 

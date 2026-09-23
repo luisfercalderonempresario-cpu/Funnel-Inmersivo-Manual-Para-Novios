@@ -50,6 +50,12 @@ import { S04AskBetter } from "../../funnel/sequences/s04/S04AskBetter";
 import { S04BeliefCheck } from "../../funnel/sequences/s04/S04BeliefCheck";
 import { S04MasterBelief } from "../../funnel/sequences/s04/S04MasterBelief";
 import { S04Exit } from "../../funnel/sequences/s04/S04Exit";
+import { S05ReturnToCase } from "../../funnel/sequences/s05/S05ReturnToCase";
+import { S05SecondDecision } from "../../funnel/sequences/s05/S05SecondDecision";
+import { S05DecisionCompare } from "../../funnel/sequences/s05/S05DecisionCompare";
+import { S05Demonstration } from "../../funnel/sequences/s05/S05Demonstration";
+import { S05BeliefShift } from "../../funnel/sequences/s05/S05BeliefShift";
+import { S05Exit } from "../../funnel/sequences/s05/S05Exit";
 
 /**
  * Route sync component:
@@ -218,6 +224,30 @@ export const AppRoutes: React.FC = () => {
                   <Route
                     path="/funnel/s04/exit"
                     element={<S04Exit />}
+                  />
+                  <Route
+                    path="/funnel/s05/return-to-case"
+                    element={<S05ReturnToCase />}
+                  />
+                  <Route
+                    path="/funnel/s05/second-decision"
+                    element={<S05SecondDecision />}
+                  />
+                  <Route
+                    path="/funnel/s05/decision-compare"
+                    element={<S05DecisionCompare />}
+                  />
+                  <Route
+                    path="/funnel/s05/demonstration"
+                    element={<S05Demonstration />}
+                  />
+                  <Route
+                    path="/funnel/s05/belief-shift"
+                    element={<S05BeliefShift />}
+                  />
+                  <Route
+                    path="/funnel/s05/exit"
+                    element={<S05Exit />}
                   />
                   {/* Catch-all route */}
                   <Route

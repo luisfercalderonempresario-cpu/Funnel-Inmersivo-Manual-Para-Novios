@@ -15,7 +15,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useFunnel } from "../../state/FunnelContext";
 
 export const S04Exit: React.FC = () => {
-  const { markSequence04Completed } = useFunnel();
+  const { markSequence04Completed, setCurrentScreen } = useFunnel();
   const hasCompletedRef = useRef<boolean>(false);
   const isDev = Boolean(import.meta.env.DEV);
 
@@ -30,12 +30,16 @@ export const S04Exit: React.FC = () => {
 
     const t1 = setTimeout(() => setStage(1), 800);
     const t2 = setTimeout(() => setStage(2), 2200);
+    const t3 = setTimeout(() => {
+      setCurrentScreen("S05_01_RETURN_TO_CASE");
+    }, 4400);
 
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
+      clearTimeout(t3);
     };
-  }, [markSequence04Completed]);
+  }, [markSequence04Completed, setCurrentScreen]);
 
   return (
     <div

@@ -24,6 +24,11 @@ export const FUNNEL_SEQUENCES = {
     name: "S04 — LA PIEZA INESPERADA",
     order: 4,
   },
+  S05_VUELVE_A_MIRAR: {
+    id: "S05_VUELVE_A_MIRAR",
+    name: "S05 — VUELVE A MIRAR",
+    order: 5,
+  },
 } as const;
 
 export type SequenceId = keyof typeof FUNNEL_SEQUENCES;
@@ -219,6 +224,48 @@ export const FUNNEL_SCREENS = {
     route: "/funnel/s04/exit",
     stepIndex: 25,
   },
+  S05_01_RETURN_TO_CASE: {
+    id: "S05_01_RETURN_TO_CASE",
+    sequence: "S05_VUELVE_A_MIRAR",
+    name: "Vuelve al caso",
+    route: "/funnel/s05/return-to-case",
+    stepIndex: 26,
+  },
+  S05_02_SECOND_DECISION: {
+    id: "S05_02_SECOND_DECISION",
+    sequence: "S05_VUELVE_A_MIRAR",
+    name: "¿Qué harías tú ahora?",
+    route: "/funnel/s05/second-decision",
+    stepIndex: 27,
+  },
+  S05_03_DECISION_COMPARE: {
+    id: "S05_03_DECISION_COMPARE",
+    sequence: "S05_VUELVE_A_MIRAR",
+    name: "Comparación de decisión",
+    route: "/funnel/s05/decision-compare",
+    stepIndex: 28,
+  },
+  S05_04_DEMONSTRATION: {
+    id: "S05_04_DEMONSTRATION",
+    sequence: "S05_VUELVE_A_MIRAR",
+    name: "Demostración",
+    route: "/funnel/s05/demonstration",
+    stepIndex: 29,
+  },
+  S05_05_BELIEF_SHIFT: {
+    id: "S05_05_BELIEF_SHIFT",
+    sequence: "S05_VUELVE_A_MIRAR",
+    name: "Cambio de creencia",
+    route: "/funnel/s05/belief-shift",
+    stepIndex: 30,
+  },
+  S05_06_EXIT: {
+    id: "S05_06_EXIT",
+    sequence: "S05_VUELVE_A_MIRAR",
+    name: "Salida S05",
+    route: "/funnel/s05/exit",
+    stepIndex: 31,
+  },
 } as const satisfies Record<string, ScreenDefinition>;
 
 export type ScreenId = keyof typeof FUNNEL_SCREENS;
@@ -250,6 +297,12 @@ export const SCREEN_ORDER: readonly ScreenId[] = [
   "S04_06_BELIEF_CHECK",
   "S04_07_MASTER_BELIEF",
   "S04_08_EXIT",
+  "S05_01_RETURN_TO_CASE",
+  "S05_02_SECOND_DECISION",
+  "S05_03_DECISION_COMPARE",
+  "S05_04_DEMONSTRATION",
+  "S05_05_BELIEF_SHIFT",
+  "S05_06_EXIT",
 ] as const;
 
 export function isVideoScreenId(screenId: ScreenId): boolean {
@@ -258,7 +311,8 @@ export function isVideoScreenId(screenId: ScreenId): boolean {
     screenId === "S02_01_CONTINUATION" ||
     screenId === "S02_03_REWIND" ||
     screenId === "S03_01_SLEEP_CONTEXT" ||
-    screenId === "S03_03_WORK_CONTEXT"
+    screenId === "S03_03_WORK_CONTEXT" ||
+    screenId === "S05_01_RETURN_TO_CASE"
   );
 }
 

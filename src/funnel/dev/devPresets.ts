@@ -14,22 +14,44 @@ export interface DevPreset {
   state: FunnelState;
 }
 
-export const DEV_PRESETS: Record<string, DevPreset> = {
-  FRESH: {
-    id: "FRESH",
-    name: "FRESH (Inicio Limpio)",
-    description: "Estado limpio desde S01_01_INTRO sin decisiones guardadas.",
-    targetScreen: "S01_01_INTRO",
+function createPreset(
+  id: string,
+  name: string,
+  description: string,
+  targetScreen: ScreenId,
+  stateOverrides: Partial<FunnelState>
+): DevPreset {
+  return {
+    id,
+    name,
+    description,
+    targetScreen,
     state: {
       ...INITIAL_FUNNEL_STATE,
+      ...stateOverrides,
     },
-  },
-  AFTER_DECISION: {
-    id: "AFTER_DECISION",
-    name: "AFTER_DECISION (Decisión tomada)",
-    description: "Con initialDecision='give_space' colocado en S01_03_DECISION.",
-    targetScreen: "S01_04_INTERPRETATION",
-    state: {
+  };
+}
+
+export const DEV_PRESETS: Record<string, DevPreset> = {
+  FRESH: createPreset(
+    "FRESH",
+    "FRESH (Inicio Limpio)",
+    "Estado limpio desde S01_01_INTRO sin decisiones guardadas.",
+    "S01_01_INTRO",
+    {
+      currentSequence: "S01_EL_CASO",
+      currentScreen: "S01_01_INTRO",
+      caseStarted: false,
+    }
+  ),
+
+  AFTER_DECISION: createPreset(
+    "AFTER_DECISION",
+    "AFTER_DECISION (Decisión tomada)",
+    "Con initialDecision='give_space' colocado en S01_03_DECISION.",
+    "S01_04_INTERPRETATION",
+    {
       currentSequence: "S01_EL_CASO",
       currentScreen: "S01_04_INTERPRETATION",
       caseStarted: true,
@@ -37,23 +59,15 @@ export const DEV_PRESETS: Record<string, DevPreset> = {
         id: "give_space",
         label: "Le daría espacio.",
       },
-      initialInterpretation: null,
-      problemOriginGuess: null,
-      sequence02Completed: false,
-      sleepContextShift: null,
-      contextChangesAction: null,
-      sequence03Completed: false,
-      cycleUnderstanding: null,
-      sequence04Completed: false,
-      completedSequences: [],
-    },
-  },
-  AFTER_S01: {
-    id: "AFTER_S01",
-    name: "AFTER_S01 (Secuencia 01 Completa)",
-    description: "Con initialDecision + initialInterpretation completadas.",
-    targetScreen: "S01_05_EXIT",
-    state: {
+    }
+  ),
+
+  AFTER_S01: createPreset(
+    "AFTER_S01",
+    "AFTER_S01 (Secuencia 01 Completa)",
+    "Con initialDecision + initialInterpretation completadas.",
+    "S01_05_EXIT",
+    {
       currentSequence: "S01_EL_CASO",
       currentScreen: "S01_05_EXIT",
       caseStarted: true,
@@ -65,22 +79,16 @@ export const DEV_PRESETS: Record<string, DevPreset> = {
         id: "angry_with_me",
         label: "Está molesta conmigo.",
       },
-      problemOriginGuess: null,
-      sequence02Completed: false,
-      sleepContextShift: null,
-      contextChangesAction: null,
-      sequence03Completed: false,
-      cycleUnderstanding: null,
-      sequence04Completed: false,
       completedSequences: ["S01_EL_CASO"],
-    },
-  },
-  BEFORE_S02: {
-    id: "BEFORE_S02",
-    name: "BEFORE_S02 (Entrada a S02)",
-    description: "S01 completado, listo para iniciar S02_01_CONTINUATION.",
-    targetScreen: "S02_01_CONTINUATION",
-    state: {
+    }
+  ),
+
+  BEFORE_S02: createPreset(
+    "BEFORE_S02",
+    "BEFORE_S02 (Entrada a S02)",
+    "S01 completado, listo para iniciar S02_01_CONTINUATION.",
+    "S02_01_CONTINUATION",
+    {
       currentSequence: "S02_ALGO_SALIO_MAL",
       currentScreen: "S02_01_CONTINUATION",
       caseStarted: true,
@@ -92,22 +100,16 @@ export const DEV_PRESETS: Record<string, DevPreset> = {
         id: "angry_with_me",
         label: "Está molesta conmigo.",
       },
-      problemOriginGuess: null,
-      sequence02Completed: false,
-      sleepContextShift: null,
-      contextChangesAction: null,
-      sequence03Completed: false,
-      cycleUnderstanding: null,
-      sequence04Completed: false,
       completedSequences: ["S01_EL_CASO"],
-    },
-  },
-  AFTER_PROBLEM_ORIGIN: {
-    id: "AFTER_PROBLEM_ORIGIN",
-    name: "AFTER_PROBLEM_ORIGIN (Origen elegido)",
-    description: "Con problemOriginGuess seleccionado, en S02_03_REWIND.",
-    targetScreen: "S02_03_REWIND",
-    state: {
+    }
+  ),
+
+  AFTER_PROBLEM_ORIGIN: createPreset(
+    "AFTER_PROBLEM_ORIGIN",
+    "AFTER_PROBLEM_ORIGIN (Origen elegido)",
+    "Con problemOriginGuess seleccionado, en S02_03_REWIND.",
+    "S02_03_REWIND",
+    {
       currentSequence: "S02_ALGO_SALIO_MAL",
       currentScreen: "S02_03_REWIND",
       caseStarted: true,
@@ -123,21 +125,16 @@ export const DEV_PRESETS: Record<string, DevPreset> = {
         id: "asked_again",
         label: "Cuando volvió a preguntarle.",
       },
-      sequence02Completed: false,
-      sleepContextShift: null,
-      contextChangesAction: null,
-      sequence03Completed: false,
-      cycleUnderstanding: null,
-      sequence04Completed: false,
       completedSequences: ["S01_EL_CASO"],
-    },
-  },
-  AFTER_S02: {
-    id: "AFTER_S02",
-    name: "AFTER_S02 (Secuencia 02 Completa)",
-    description: "S02 completado, en pantalla de cierre S02_06_EXIT.",
-    targetScreen: "S02_06_EXIT",
-    state: {
+    }
+  ),
+
+  AFTER_S02: createPreset(
+    "AFTER_S02",
+    "AFTER_S02 (Secuencia 02 Completa)",
+    "S02 completado, en pantalla de cierre S02_06_EXIT.",
+    "S02_06_EXIT",
+    {
       currentSequence: "S02_ALGO_SALIO_MAL",
       currentScreen: "S02_06_EXIT",
       caseStarted: true,
@@ -154,20 +151,16 @@ export const DEV_PRESETS: Record<string, DevPreset> = {
         label: "Cuando volvió a preguntarle.",
       },
       sequence02Completed: true,
-      sleepContextShift: null,
-      contextChangesAction: null,
-      sequence03Completed: false,
-      cycleUnderstanding: null,
-      sequence04Completed: false,
       completedSequences: ["S01_EL_CASO", "S02_ALGO_SALIO_MAL"],
-    },
-  },
-  BEFORE_S03: {
-    id: "BEFORE_S03",
-    name: "BEFORE_S03 (Entrada a S03)",
-    description: "S02 completado, listo para iniciar S03_01_SLEEP_CONTEXT.",
-    targetScreen: "S03_01_SLEEP_CONTEXT",
-    state: {
+    }
+  ),
+
+  BEFORE_S03: createPreset(
+    "BEFORE_S03",
+    "BEFORE_S03 (Entrada a S03)",
+    "S02 completado, listo para iniciar S03_01_SLEEP_CONTEXT.",
+    "S03_01_SLEEP_CONTEXT",
+    {
       currentSequence: "S03_LO_QUE_NO_VISTE",
       currentScreen: "S03_01_SLEEP_CONTEXT",
       caseStarted: true,
@@ -184,20 +177,16 @@ export const DEV_PRESETS: Record<string, DevPreset> = {
         label: "Cuando volvió a preguntarle.",
       },
       sequence02Completed: true,
-      sleepContextShift: null,
-      contextChangesAction: null,
-      sequence03Completed: false,
-      cycleUnderstanding: null,
-      sequence04Completed: false,
       completedSequences: ["S01_EL_CASO", "S02_ALGO_SALIO_MAL"],
-    },
-  },
-  AFTER_SLEEP_CONTEXT: {
-    id: "AFTER_SLEEP_CONTEXT",
-    name: "AFTER_SLEEP_CONTEXT (Sueño visto)",
-    description: "sleepContextShift definido, en S03_03_WORK_CONTEXT.",
-    targetScreen: "S03_03_WORK_CONTEXT",
-    state: {
+    }
+  ),
+
+  AFTER_SLEEP_CONTEXT: createPreset(
+    "AFTER_SLEEP_CONTEXT",
+    "AFTER_SLEEP_CONTEXT (Sueño visto)",
+    "sleepContextShift definido, en S03_03_WORK_CONTEXT.",
+    "S03_03_WORK_CONTEXT",
+    {
       currentSequence: "S03_LO_QUE_NO_VISTE",
       currentScreen: "S03_03_WORK_CONTEXT",
       caseStarted: true,
@@ -215,19 +204,16 @@ export const DEV_PRESETS: Record<string, DevPreset> = {
       },
       sequence02Completed: true,
       sleepContextShift: "significant",
-      contextChangesAction: null,
-      sequence03Completed: false,
-      cycleUnderstanding: null,
-      sequence04Completed: false,
       completedSequences: ["S01_EL_CASO", "S02_ALGO_SALIO_MAL"],
-    },
-  },
-  AFTER_WORK_CONTEXT: {
-    id: "AFTER_WORK_CONTEXT",
-    name: "AFTER_WORK_CONTEXT (Trabajo visto)",
-    description: "sleepContextShift y contextChangesAction listos, en S03_05_RECONSTRUCTION.",
-    targetScreen: "S03_05_RECONSTRUCTION",
-    state: {
+    }
+  ),
+
+  AFTER_WORK_CONTEXT: createPreset(
+    "AFTER_WORK_CONTEXT",
+    "AFTER_WORK_CONTEXT (Trabajo visto)",
+    "sleepContextShift y contextChangesAction listos, en S03_05_RECONSTRUCTION.",
+    "S03_05_RECONSTRUCTION",
+    {
       currentSequence: "S03_LO_QUE_NO_VISTE",
       currentScreen: "S03_05_RECONSTRUCTION",
       caseStarted: true,
@@ -246,18 +232,16 @@ export const DEV_PRESETS: Record<string, DevPreset> = {
       sequence02Completed: true,
       sleepContextShift: "significant",
       contextChangesAction: "yes",
-      sequence03Completed: false,
-      cycleUnderstanding: null,
-      sequence04Completed: false,
       completedSequences: ["S01_EL_CASO", "S02_ALGO_SALIO_MAL"],
-    },
-  },
-  AFTER_S03: {
-    id: "AFTER_S03",
-    name: "AFTER_S03 (Secuencia 03 Completa)",
-    description: "S03 completado, en pantalla de cierre S03_07_EXIT.",
-    targetScreen: "S03_07_EXIT",
-    state: {
+    }
+  ),
+
+  AFTER_S03: createPreset(
+    "AFTER_S03",
+    "AFTER_S03 (Secuencia 03 Completa)",
+    "S03 completado, en pantalla de cierre S03_07_EXIT.",
+    "S03_07_EXIT",
+    {
       currentSequence: "S03_LO_QUE_NO_VISTE",
       currentScreen: "S03_07_EXIT",
       caseStarted: true,
@@ -277,21 +261,20 @@ export const DEV_PRESETS: Record<string, DevPreset> = {
       sleepContextShift: "significant",
       contextChangesAction: "yes",
       sequence03Completed: true,
-      cycleUnderstanding: null,
-      sequence04Completed: false,
       completedSequences: [
         "S01_EL_CASO",
         "S02_ALGO_SALIO_MAL",
         "S03_LO_QUE_NO_VISTE",
       ],
-    },
-  },
-  BEFORE_S04: {
-    id: "BEFORE_S04",
-    name: "BEFORE_S04 (Entrada a S04)",
-    description: "S03 completado, listo para iniciar S04_01_MISSING_PIECE.",
-    targetScreen: "S04_01_MISSING_PIECE",
-    state: {
+    }
+  ),
+
+  BEFORE_S04: createPreset(
+    "BEFORE_S04",
+    "BEFORE_S04 (Entrada a S04)",
+    "S03 completado, listo para iniciar S04_01_MISSING_PIECE.",
+    "S04_01_MISSING_PIECE",
+    {
       currentSequence: "S04_LA_PIEZA_INESPERADA",
       currentScreen: "S04_01_MISSING_PIECE",
       caseStarted: true,
@@ -311,21 +294,20 @@ export const DEV_PRESETS: Record<string, DevPreset> = {
       sleepContextShift: "significant",
       contextChangesAction: "yes",
       sequence03Completed: true,
-      cycleUnderstanding: null,
-      sequence04Completed: false,
       completedSequences: [
         "S01_EL_CASO",
         "S02_ALGO_SALIO_MAL",
         "S03_LO_QUE_NO_VISTE",
       ],
-    },
-  },
-  BEFORE_BELIEF_CHECK: {
-    id: "BEFORE_BELIEF_CHECK",
-    name: "BEFORE_BELIEF_CHECK (Antes del check)",
-    description: "En S04_06_BELIEF_CHECK sin respuesta previa.",
-    targetScreen: "S04_06_BELIEF_CHECK",
-    state: {
+    }
+  ),
+
+  BEFORE_BELIEF_CHECK: createPreset(
+    "BEFORE_BELIEF_CHECK",
+    "BEFORE_BELIEF_CHECK (Antes del check)",
+    "En S04_06_BELIEF_CHECK sin respuesta previa.",
+    "S04_06_BELIEF_CHECK",
+    {
       currentSequence: "S04_LA_PIEZA_INESPERADA",
       currentScreen: "S04_06_BELIEF_CHECK",
       caseStarted: true,
@@ -345,21 +327,20 @@ export const DEV_PRESETS: Record<string, DevPreset> = {
       sleepContextShift: "significant",
       contextChangesAction: "yes",
       sequence03Completed: true,
-      cycleUnderstanding: null,
-      sequence04Completed: false,
       completedSequences: [
         "S01_EL_CASO",
         "S02_ALGO_SALIO_MAL",
         "S03_LO_QUE_NO_VISTE",
       ],
-    },
-  },
-  BELIEF_PREDICT_FEELINGS: {
-    id: "BELIEF_PREDICT_FEELINGS",
-    name: "BELIEF_PREDICT_FEELINGS (Predicción)",
-    description: "cycleUnderstanding='predict_feelings', feedback visible.",
-    targetScreen: "S04_06_BELIEF_CHECK",
-    state: {
+    }
+  ),
+
+  BELIEF_PREDICT_FEELINGS: createPreset(
+    "BELIEF_PREDICT_FEELINGS",
+    "BELIEF_PREDICT_FEELINGS (Predicción)",
+    "cycleUnderstanding='predict_feelings', feedback visible.",
+    "S04_06_BELIEF_CHECK",
+    {
       currentSequence: "S04_LA_PIEZA_INESPERADA",
       currentScreen: "S04_06_BELIEF_CHECK",
       caseStarted: true,
@@ -380,20 +361,20 @@ export const DEV_PRESETS: Record<string, DevPreset> = {
       contextChangesAction: "yes",
       sequence03Completed: true,
       cycleUnderstanding: "predict_feelings",
-      sequence04Completed: false,
       completedSequences: [
         "S01_EL_CASO",
         "S02_ALGO_SALIO_MAL",
         "S03_LO_QUE_NO_VISTE",
       ],
-    },
-  },
-  BELIEF_ADD_CONTEXT: {
-    id: "BELIEF_ADD_CONTEXT",
-    name: "BELIEF_ADD_CONTEXT (Más contexto)",
-    description: "cycleUnderstanding='add_context', feedback visible.",
-    targetScreen: "S04_06_BELIEF_CHECK",
-    state: {
+    }
+  ),
+
+  BELIEF_ADD_CONTEXT: createPreset(
+    "BELIEF_ADD_CONTEXT",
+    "BELIEF_ADD_CONTEXT (Más contexto)",
+    "cycleUnderstanding='add_context', feedback visible.",
+    "S04_06_BELIEF_CHECK",
+    {
       currentSequence: "S04_LA_PIEZA_INESPERADA",
       currentScreen: "S04_06_BELIEF_CHECK",
       caseStarted: true,
@@ -414,20 +395,20 @@ export const DEV_PRESETS: Record<string, DevPreset> = {
       contextChangesAction: "yes",
       sequence03Completed: true,
       cycleUnderstanding: "add_context",
-      sequence04Completed: false,
       completedSequences: [
         "S01_EL_CASO",
         "S02_ALGO_SALIO_MAL",
         "S03_LO_QUE_NO_VISTE",
       ],
-    },
-  },
-  BELIEF_KNOW_APPROACH: {
-    id: "BELIEF_KNOW_APPROACH",
-    name: "BELIEF_KNOW_APPROACH (Acercamiento)",
-    description: "cycleUnderstanding='know_approach', feedback visible.",
-    targetScreen: "S04_06_BELIEF_CHECK",
-    state: {
+    }
+  ),
+
+  BELIEF_KNOW_APPROACH: createPreset(
+    "BELIEF_KNOW_APPROACH",
+    "BELIEF_KNOW_APPROACH (Saber cómo acercarme)",
+    "cycleUnderstanding='know_approach', feedback visible.",
+    "S04_06_BELIEF_CHECK",
+    {
       currentSequence: "S04_LA_PIEZA_INESPERADA",
       currentScreen: "S04_06_BELIEF_CHECK",
       caseStarted: true,
@@ -448,20 +429,20 @@ export const DEV_PRESETS: Record<string, DevPreset> = {
       contextChangesAction: "yes",
       sequence03Completed: true,
       cycleUnderstanding: "know_approach",
-      sequence04Completed: false,
       completedSequences: [
         "S01_EL_CASO",
         "S02_ALGO_SALIO_MAL",
         "S03_LO_QUE_NO_VISTE",
       ],
-    },
-  },
-  BELIEF_UNSURE: {
-    id: "BELIEF_UNSURE",
-    name: "BELIEF_UNSURE (No seguro)",
-    description: "cycleUnderstanding='unsure', feedback visible.",
-    targetScreen: "S04_06_BELIEF_CHECK",
-    state: {
+    }
+  ),
+
+  BELIEF_UNSURE: createPreset(
+    "BELIEF_UNSURE",
+    "BELIEF_UNSURE (No seguro - S04)",
+    "cycleUnderstanding='unsure', feedback visible.",
+    "S04_06_BELIEF_CHECK",
+    {
       currentSequence: "S04_LA_PIEZA_INESPERADA",
       currentScreen: "S04_06_BELIEF_CHECK",
       caseStarted: true,
@@ -482,20 +463,20 @@ export const DEV_PRESETS: Record<string, DevPreset> = {
       contextChangesAction: "yes",
       sequence03Completed: true,
       cycleUnderstanding: "unsure",
-      sequence04Completed: false,
       completedSequences: [
         "S01_EL_CASO",
         "S02_ALGO_SALIO_MAL",
         "S03_LO_QUE_NO_VISTE",
       ],
-    },
-  },
-  AFTER_S04: {
-    id: "AFTER_S04",
-    name: "AFTER_S04 (Secuencia 04 Completa)",
-    description: "S04 completado, en pantalla de cierre S04_08_EXIT.",
-    targetScreen: "S04_08_EXIT",
-    state: {
+    }
+  ),
+
+  AFTER_S04: createPreset(
+    "AFTER_S04",
+    "AFTER_S04 (Secuencia 04 Completa)",
+    "S04 completado, en pantalla de cierre S04_08_EXIT.",
+    "S04_08_EXIT",
+    {
       currentSequence: "S04_LA_PIEZA_INESPERADA",
       currentScreen: "S04_08_EXIT",
       caseStarted: true,
@@ -523,6 +504,338 @@ export const DEV_PRESETS: Record<string, DevPreset> = {
         "S03_LO_QUE_NO_VISTE",
         "S04_LA_PIEZA_INESPERADA",
       ],
-    },
-  },
+    }
+  ),
+
+  // ==========================================
+  // S05 PRESETS
+  // ==========================================
+  BEFORE_S05: createPreset(
+    "BEFORE_S05",
+    "BEFORE_S05 (Entrada a S05)",
+    "S04 completado, listo para iniciar S05_01_RETURN_TO_CASE.",
+    "S05_01_RETURN_TO_CASE",
+    {
+      currentSequence: "S05_VUELVE_A_MIRAR",
+      currentScreen: "S05_01_RETURN_TO_CASE",
+      caseStarted: true,
+      initialDecision: {
+        id: "give_space",
+        label: "Le daría espacio.",
+      },
+      initialInterpretation: {
+        id: "angry_with_me",
+        label: "Está molesta conmigo.",
+      },
+      problemOriginGuess: {
+        id: "asked_again",
+        label: "Cuando volvió a preguntarle.",
+      },
+      sequence02Completed: true,
+      sleepContextShift: "significant",
+      contextChangesAction: "yes",
+      sequence03Completed: true,
+      cycleUnderstanding: "add_context",
+      sequence04Completed: true,
+      secondDecision: null,
+      beliefShift: null,
+      sequence05Completed: false,
+      completedSequences: [
+        "S01_EL_CASO",
+        "S02_ALGO_SALIO_MAL",
+        "S03_LO_QUE_NO_VISTE",
+        "S04_LA_PIEZA_INESPERADA",
+      ],
+    }
+  ),
+
+  SECOND_DECISION_CHANGED: createPreset(
+    "SECOND_DECISION_CHANGED",
+    "SECOND_DECISION_CHANGED (Decisión cambió)",
+    "initial='give_space', second='ask_again', muestra rama A de comparación.",
+    "S05_03_DECISION_COMPARE",
+    {
+      currentSequence: "S05_VUELVE_A_MIRAR",
+      currentScreen: "S05_03_DECISION_COMPARE",
+      caseStarted: true,
+      initialDecision: {
+        id: "give_space",
+        label: "Le daría espacio.",
+      },
+      secondDecision: {
+        id: "ask_again",
+        label: "Le preguntaría otra vez.",
+      },
+      initialInterpretation: {
+        id: "angry_with_me",
+        label: "Está molesta conmigo.",
+      },
+      problemOriginGuess: {
+        id: "asked_again",
+        label: "Cuando volvió a preguntarle.",
+      },
+      sequence02Completed: true,
+      sleepContextShift: "significant",
+      contextChangesAction: "yes",
+      sequence03Completed: true,
+      cycleUnderstanding: "add_context",
+      sequence04Completed: true,
+      beliefShift: null,
+      sequence05Completed: false,
+      completedSequences: [
+        "S01_EL_CASO",
+        "S02_ALGO_SALIO_MAL",
+        "S03_LO_QUE_NO_VISTE",
+        "S04_LA_PIEZA_INESPERADA",
+      ],
+    }
+  ),
+
+  SECOND_DECISION_SAME: createPreset(
+    "SECOND_DECISION_SAME",
+    "SECOND_DECISION_SAME (Misma decisión)",
+    "initial='give_space', second='give_space', muestra rama B de comparación.",
+    "S05_03_DECISION_COMPARE",
+    {
+      currentSequence: "S05_VUELVE_A_MIRAR",
+      currentScreen: "S05_03_DECISION_COMPARE",
+      caseStarted: true,
+      initialDecision: {
+        id: "give_space",
+        label: "Le daría espacio.",
+      },
+      secondDecision: {
+        id: "give_space",
+        label: "Le daría espacio.",
+      },
+      initialInterpretation: {
+        id: "angry_with_me",
+        label: "Está molesta conmigo.",
+      },
+      problemOriginGuess: {
+        id: "asked_again",
+        label: "Cuando volvió a preguntarle.",
+      },
+      sequence02Completed: true,
+      sleepContextShift: "significant",
+      contextChangesAction: "yes",
+      sequence03Completed: true,
+      cycleUnderstanding: "add_context",
+      sequence04Completed: true,
+      beliefShift: null,
+      sequence05Completed: false,
+      completedSequences: [
+        "S01_EL_CASO",
+        "S02_ALGO_SALIO_MAL",
+        "S03_LO_QUE_NO_VISTE",
+        "S04_LA_PIEZA_INESPERADA",
+      ],
+    }
+  ),
+
+  SECOND_DECISION_NO_INITIAL: createPreset(
+    "SECOND_DECISION_NO_INITIAL",
+    "SECOND_DECISION_NO_INITIAL (Sin initialDecision previa)",
+    "initial=null, second='cheer_up', muestra rama C de fallback seguro.",
+    "S05_03_DECISION_COMPARE",
+    {
+      currentSequence: "S05_VUELVE_A_MIRAR",
+      currentScreen: "S05_03_DECISION_COMPARE",
+      caseStarted: true,
+      initialDecision: null,
+      secondDecision: {
+        id: "cheer_up",
+        label: "Intentaría animarla.",
+      },
+      initialInterpretation: null,
+      problemOriginGuess: {
+        id: "asked_again",
+        label: "Cuando volvió a preguntarle.",
+      },
+      sequence02Completed: true,
+      sleepContextShift: "significant",
+      contextChangesAction: "yes",
+      sequence03Completed: true,
+      cycleUnderstanding: "add_context",
+      sequence04Completed: true,
+      beliefShift: null,
+      sequence05Completed: false,
+      completedSequences: [
+        "S02_ALGO_SALIO_MAL",
+        "S03_LO_QUE_NO_VISTE",
+        "S04_LA_PIEZA_INESPERADA",
+      ],
+    }
+  ),
+
+  BELIEF_UNDERSTAND_FIRST: createPreset(
+    "BELIEF_UNDERSTAND_FIRST",
+    "BELIEF_UNDERSTAND_FIRST (Entender antes de reaccionar)",
+    "beliefShift='understand_first', feedback reflexivo visible.",
+    "S05_05_BELIEF_SHIFT",
+    {
+      currentSequence: "S05_VUELVE_A_MIRAR",
+      currentScreen: "S05_05_BELIEF_SHIFT",
+      caseStarted: true,
+      initialDecision: {
+        id: "give_space",
+        label: "Le daría espacio.",
+      },
+      secondDecision: {
+        id: "ask_again",
+        label: "Le preguntaría otra vez.",
+      },
+      sequence02Completed: true,
+      sleepContextShift: "significant",
+      contextChangesAction: "yes",
+      sequence03Completed: true,
+      cycleUnderstanding: "add_context",
+      sequence04Completed: true,
+      beliefShift: "understand_first",
+      sequence05Completed: false,
+      completedSequences: [
+        "S01_EL_CASO",
+        "S02_ALGO_SALIO_MAL",
+        "S03_LO_QUE_NO_VISTE",
+        "S04_LA_PIEZA_INESPERADA",
+      ],
+    }
+  ),
+
+  BELIEF_KNOW_WHAT_TO_DO: createPreset(
+    "BELIEF_KNOW_WHAT_TO_DO",
+    "BELIEF_KNOW_WHAT_TO_DO (Saber exactamente qué hacer)",
+    "beliefShift='know_what_to_do', feedback pedagógico visible.",
+    "S05_05_BELIEF_SHIFT",
+    {
+      currentSequence: "S05_VUELVE_A_MIRAR",
+      currentScreen: "S05_05_BELIEF_SHIFT",
+      caseStarted: true,
+      initialDecision: {
+        id: "give_space",
+        label: "Le daría espacio.",
+      },
+      secondDecision: {
+        id: "ask_again",
+        label: "Le preguntaría otra vez.",
+      },
+      sequence02Completed: true,
+      sleepContextShift: "significant",
+      contextChangesAction: "yes",
+      sequence03Completed: true,
+      cycleUnderstanding: "add_context",
+      sequence04Completed: true,
+      beliefShift: "know_what_to_do",
+      sequence05Completed: false,
+      completedSequences: [
+        "S01_EL_CASO",
+        "S02_ALGO_SALIO_MAL",
+        "S03_LO_QUE_NO_VISTE",
+        "S04_LA_PIEZA_INESPERADA",
+      ],
+    }
+  ),
+
+  BELIEF_AVOID_MISTAKES: createPreset(
+    "BELIEF_AVOID_MISTAKES",
+    "BELIEF_AVOID_MISTAKES (Evitar equivocarme)",
+    "beliefShift='avoid_mistakes', feedback constructivo visible.",
+    "S05_05_BELIEF_SHIFT",
+    {
+      currentSequence: "S05_VUELVE_A_MIRAR",
+      currentScreen: "S05_05_BELIEF_SHIFT",
+      caseStarted: true,
+      initialDecision: {
+        id: "give_space",
+        label: "Le daría espacio.",
+      },
+      secondDecision: {
+        id: "ask_again",
+        label: "Le preguntaría otra vez.",
+      },
+      sequence02Completed: true,
+      sleepContextShift: "significant",
+      contextChangesAction: "yes",
+      sequence03Completed: true,
+      cycleUnderstanding: "add_context",
+      sequence04Completed: true,
+      beliefShift: "avoid_mistakes",
+      sequence05Completed: false,
+      completedSequences: [
+        "S01_EL_CASO",
+        "S02_ALGO_SALIO_MAL",
+        "S03_LO_QUE_NO_VISTE",
+        "S04_LA_PIEZA_INESPERADA",
+      ],
+    }
+  ),
+
+  S05_BELIEF_UNSURE: createPreset(
+    "S05_BELIEF_UNSURE",
+    "S05_BELIEF_UNSURE (No seguro - S05)",
+    "beliefShift='unsure', feedback de acompañamiento visible.",
+    "S05_05_BELIEF_SHIFT",
+    {
+      currentSequence: "S05_VUELVE_A_MIRAR",
+      currentScreen: "S05_05_BELIEF_SHIFT",
+      caseStarted: true,
+      initialDecision: {
+        id: "give_space",
+        label: "Le daría espacio.",
+      },
+      secondDecision: {
+        id: "ask_again",
+        label: "Le preguntaría otra vez.",
+      },
+      sequence02Completed: true,
+      sleepContextShift: "significant",
+      contextChangesAction: "yes",
+      sequence03Completed: true,
+      cycleUnderstanding: "add_context",
+      sequence04Completed: true,
+      beliefShift: "unsure",
+      sequence05Completed: false,
+      completedSequences: [
+        "S01_EL_CASO",
+        "S02_ALGO_SALIO_MAL",
+        "S03_LO_QUE_NO_VISTE",
+        "S04_LA_PIEZA_INESPERADA",
+      ],
+    }
+  ),
+
+  AFTER_S05: createPreset(
+    "AFTER_S05",
+    "AFTER_S05 (Secuencia 05 Completa)",
+    "S05 completado, en pantalla de cierre S05_06_EXIT.",
+    "S05_06_EXIT",
+    {
+      currentSequence: "S05_VUELVE_A_MIRAR",
+      currentScreen: "S05_06_EXIT",
+      caseStarted: true,
+      initialDecision: {
+        id: "give_space",
+        label: "Le daría espacio.",
+      },
+      secondDecision: {
+        id: "ask_again",
+        label: "Le preguntaría otra vez.",
+      },
+      sequence02Completed: true,
+      sleepContextShift: "significant",
+      contextChangesAction: "yes",
+      sequence03Completed: true,
+      cycleUnderstanding: "add_context",
+      sequence04Completed: true,
+      beliefShift: "understand_first",
+      sequence05Completed: true,
+      completedSequences: [
+        "S01_EL_CASO",
+        "S02_ALGO_SALIO_MAL",
+        "S03_LO_QUE_NO_VISTE",
+        "S04_LA_PIEZA_INESPERADA",
+        "S05_VUELVE_A_MIRAR",
+      ],
+    }
+  ),
 };

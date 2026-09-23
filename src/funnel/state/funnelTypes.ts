@@ -49,6 +49,27 @@ export type CycleUnderstandingId =
   | "know_approach"
   | "unsure";
 
+export type SecondDecisionId = InitialDecisionId;
+
+export interface SecondDecisionValue {
+  id: SecondDecisionId;
+  label: string;
+}
+
+export type BeliefShiftId =
+  | "know_what_to_do"
+  | "understand_first"
+  | "avoid_mistakes"
+  | "unsure";
+
+export function getDecisionChanged(
+  initialDecision: InitialDecisionValue | null,
+  secondDecision: SecondDecisionValue | null
+): boolean | null {
+  if (!initialDecision || !secondDecision) return null;
+  return initialDecision.id !== secondDecision.id;
+}
+
 export interface FunnelState {
   currentSequence: SequenceId;
   currentScreen: ScreenId;
@@ -62,6 +83,9 @@ export interface FunnelState {
   sequence03Completed?: boolean;
   cycleUnderstanding: CycleUnderstandingId | null;
   sequence04Completed?: boolean;
+  secondDecision: SecondDecisionValue | null;
+  beliefShift: BeliefShiftId | null;
+  sequence05Completed?: boolean;
   completedSequences: SequenceId[];
 }
 
@@ -87,5 +111,8 @@ export const INITIAL_FUNNEL_STATE: FunnelState = {
   sequence03Completed: false,
   cycleUnderstanding: null,
   sequence04Completed: false,
+  secondDecision: null,
+  beliefShift: null,
+  sequence05Completed: false,
   completedSequences: [],
 };

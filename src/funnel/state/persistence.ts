@@ -73,6 +73,21 @@ export function loadPersistedState(): FunnelState {
           ? funnel.cycleUnderstanding
           : null,
       sequence04Completed: Boolean(funnel.sequence04Completed),
+      secondDecision:
+        funnel.secondDecision && typeof funnel.secondDecision === "object"
+          ? {
+              id: funnel.secondDecision.id,
+              label: funnel.secondDecision.label || "",
+            }
+          : null,
+      beliefShift:
+        funnel.beliefShift === "know_what_to_do" ||
+        funnel.beliefShift === "understand_first" ||
+        funnel.beliefShift === "avoid_mistakes" ||
+        funnel.beliefShift === "unsure"
+          ? funnel.beliefShift
+          : null,
+      sequence05Completed: Boolean(funnel.sequence05Completed),
       completedSequences: Array.isArray(funnel.completedSequences)
         ? funnel.completedSequences
         : [],
