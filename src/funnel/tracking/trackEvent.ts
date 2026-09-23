@@ -18,7 +18,15 @@ export type FunnelEventName =
   | "problem_origin_guess"
   | "interpretation_mirror_viewed"
   | "context_gap_teased"
-  | "sequence_02_completed";
+  | "sequence_02_completed"
+  | "sequence_03_started"
+  | "sleep_context_viewed"
+  | "sleep_context_shift"
+  | "work_context_viewed"
+  | "context_changes_action"
+  | "context_reconstruction_viewed"
+  | "context_mechanism_exposed"
+  | "sequence_03_completed";
 
 export interface FunnelEventPayload {
   event: FunnelEventName;

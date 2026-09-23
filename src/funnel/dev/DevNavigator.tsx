@@ -226,6 +226,18 @@ const DevNavigatorPanel: React.FC = () => {
               <span className="text-neutral-400">sequence02Completed:</span>
               <span className="text-neutral-200">{String(Boolean(state.sequence02Completed))}</span>
             </div>
+            <div className="flex justify-between pt-0.5">
+              <span className="text-neutral-400">sleepContextShift:</span>
+              <span className="text-neutral-200">{state.sleepContextShift ?? "null"}</span>
+            </div>
+            <div className="flex justify-between pt-0.5">
+              <span className="text-neutral-400">contextChangesAction:</span>
+              <span className="text-neutral-200">{state.contextChangesAction ?? "null"}</span>
+            </div>
+            <div className="flex justify-between pt-0.5">
+              <span className="text-neutral-400">sequence03Completed:</span>
+              <span className="text-neutral-200">{String(Boolean(state.sequence03Completed))}</span>
+            </div>
           </div>
 
           {/* Reset Controls */}

@@ -11,9 +11,8 @@ import React, { useEffect, useRef } from "react";
 import { useFunnel } from "../../state/FunnelContext";
 
 export const S02Exit: React.FC = () => {
-  const { markSequence02Completed } = useFunnel();
+  const { markSequence02Completed, setCurrentScreen } = useFunnel();
   const hasCompletedRef = useRef<boolean>(false);
-  const isDev = Boolean(import.meta.env.DEV);
 
   useEffect(() => {
     if (hasCompletedRef.current) return;
@@ -21,7 +20,16 @@ export const S02Exit: React.FC = () => {
 
     // Marks sequence02Completed and fires tracking events once
     markSequence02Completed();
-  }, [markSequence02Completed]);
+
+    // Narrative micro-pause before seamless transition to S03_01_SLEEP_CONTEXT
+    const timer = setTimeout(() => {
+      setCurrentScreen("S03_01_SLEEP_CONTEXT");
+    }, 2800);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [markSequence02Completed, setCurrentScreen]);
 
   return (
     <div
@@ -65,21 +73,6 @@ export const S02Exit: React.FC = () => {
           >
             Hay algo que no viste.
           </p>
-
-          {/* Dev indicator for QA inspection */}
-          {isDev && (
-            <div
-              id="dev-s02-boundary-indicator"
-              className="mt-10 p-4 rounded-lg bg-neutral-900/90 border border-neutral-800 text-neutral-400 text-xs text-center max-w-xs space-y-1.5"
-            >
-              <p className="font-mono text-emerald-400 font-semibold">
-                S02_COMPLETED_SUCCESSFULLY
-              </p>
-              <p className="font-sans text-neutral-400">
-                Secuencia 02 completada. Pantalla estable. S03 se integrará en la siguiente fase.
-              </p>
-            </div>
-          )}
         </div>
       </main>
 

@@ -35,6 +35,13 @@ import { S02Rewind } from "../../funnel/sequences/s02/S02Rewind";
 import { S02Mirror } from "../../funnel/sequences/s02/S02Mirror";
 import { S02Discovery } from "../../funnel/sequences/s02/S02Discovery";
 import { S02Exit } from "../../funnel/sequences/s02/S02Exit";
+import { S03SleepContext } from "../../funnel/sequences/s03/S03SleepContext";
+import { S03SleepShift } from "../../funnel/sequences/s03/S03SleepShift";
+import { S03WorkContext } from "../../funnel/sequences/s03/S03WorkContext";
+import { S03ActionShift } from "../../funnel/sequences/s03/S03ActionShift";
+import { S03Reconstruction } from "../../funnel/sequences/s03/S03Reconstruction";
+import { S03ContextDiscovery } from "../../funnel/sequences/s03/S03ContextDiscovery";
+import { S03Exit } from "../../funnel/sequences/s03/S03Exit";
 
 /**
  * Route sync component:
@@ -143,6 +150,34 @@ export const AppRoutes: React.FC = () => {
                   <Route
                     path="/funnel/s02/exit"
                     element={<S02Exit />}
+                  />
+                  <Route
+                    path="/funnel/s03/sleep-context"
+                    element={<S03SleepContext />}
+                  />
+                  <Route
+                    path="/funnel/s03/sleep-shift"
+                    element={<S03SleepShift />}
+                  />
+                  <Route
+                    path="/funnel/s03/work-context"
+                    element={<S03WorkContext />}
+                  />
+                  <Route
+                    path="/funnel/s03/action-shift"
+                    element={<S03ActionShift />}
+                  />
+                  <Route
+                    path="/funnel/s03/reconstruction"
+                    element={<S03Reconstruction />}
+                  />
+                  <Route
+                    path="/funnel/s03/context-discovery"
+                    element={<S03ContextDiscovery />}
+                  />
+                  <Route
+                    path="/funnel/s03/exit"
+                    element={<S03Exit />}
                   />
                   {/* Catch-all route */}
                   <Route

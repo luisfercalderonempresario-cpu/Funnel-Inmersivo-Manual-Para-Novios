@@ -52,6 +52,19 @@ export function loadPersistedState(): FunnelState {
             }
           : null,
       sequence02Completed: Boolean(funnel.sequence02Completed),
+      sleepContextShift:
+        funnel.sleepContextShift === "significant" ||
+        funnel.sleepContextShift === "some" ||
+        funnel.sleepContextShift === "little"
+          ? funnel.sleepContextShift
+          : null,
+      contextChangesAction:
+        funnel.contextChangesAction === "yes" ||
+        funnel.contextChangesAction === "probably" ||
+        funnel.contextChangesAction === "not_necessarily"
+          ? funnel.contextChangesAction
+          : null,
+      sequence03Completed: Boolean(funnel.sequence03Completed),
       completedSequences: Array.isArray(funnel.completedSequences)
         ? funnel.completedSequences
         : [],

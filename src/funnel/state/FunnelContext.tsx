@@ -30,6 +30,8 @@ import {
   InitialDecisionValue,
   InitialInterpretationValue,
   ProblemOriginGuessValue,
+  SleepContextShiftId,
+  ContextChangesActionId,
 } from "./funnelTypes";
 import { trackEvent } from "../tracking/trackEvent";
 
@@ -38,10 +40,13 @@ export interface FunnelContextValue {
   setInitialDecision: (decision: InitialDecisionValue) => void;
   setInitialInterpretation: (interpretation: InitialInterpretationValue) => void;
   setProblemOriginGuess: (guess: ProblemOriginGuessValue) => void;
+  setSleepContextShift: (shift: SleepContextShiftId) => void;
+  setContextChangesAction: (action: ContextChangesActionId) => void;
   setCurrentScreen: (screenId: ScreenId, options?: { isDev?: boolean }) => void;
   markCaseStarted: () => void;
   completeSequence: (sequenceId: SequenceId) => void;
   markSequence02Completed: () => void;
+  markSequence03Completed: () => void;
   resetS01: () => void;
   resetFunnel: () => void;
   applyPreset: (presetKey: string) => void;
@@ -156,6 +161,38 @@ export const FunnelProvider: React.FC<{ children: React.ReactNode }> = ({
     []
   );
 
+  const setSleepContextShift = useCallback(
+    (shift: SleepContextShiftId) => {
+      setState((prev) => ({
+        ...prev,
+        sleepContextShift: shift,
+      }));
+      trackEvent({
+        event: "sleep_context_shift",
+        sequence: "S03_LO_QUE_NO_VISTE",
+        screen: "S03_02_SLEEP_SHIFT",
+        value: shift,
+      });
+    },
+    []
+  );
+
+  const setContextChangesAction = useCallback(
+    (action: ContextChangesActionId) => {
+      setState((prev) => ({
+        ...prev,
+        contextChangesAction: action,
+      }));
+      trackEvent({
+        event: "context_changes_action",
+        sequence: "S03_LO_QUE_NO_VISTE",
+        screen: "S03_04_ACTION_SHIFT",
+        value: action,
+      });
+    },
+    []
+  );
+
   const completeSequence = useCallback(
     (sequenceId: SequenceId) => {
       setState((prev) => {
@@ -199,6 +236,25 @@ export const FunnelProvider: React.FC<{ children: React.ReactNode }> = ({
       event: "sequence_02_completed",
       sequence: "S02_ALGO_SALIO_MAL",
       screen: "S02_06_EXIT",
+    });
+  }, []);
+
+  const markSequence03Completed = useCallback(() => {
+    setState((prev) => {
+      const s03Seq: SequenceId = "S03_LO_QUE_NO_VISTE";
+      const completed: SequenceId[] = prev.completedSequences.includes(s03Seq)
+        ? prev.completedSequences
+        : [...prev.completedSequences, s03Seq];
+      return {
+        ...prev,
+        sequence03Completed: true,
+        completedSequences: completed,
+      };
+    });
+    trackEvent({
+      event: "sequence_03_completed",
+      sequence: "S03_LO_QUE_NO_VISTE",
+      screen: "S03_07_EXIT",
     });
   }, []);
 
@@ -270,10 +326,13 @@ export const FunnelProvider: React.FC<{ children: React.ReactNode }> = ({
     setInitialDecision,
     setInitialInterpretation,
     setProblemOriginGuess,
+    setSleepContextShift,
+    setContextChangesAction,
     setCurrentScreen,
     markCaseStarted,
     completeSequence,
     markSequence02Completed,
+    markSequence03Completed,
     resetS01,
     resetFunnel,
     applyPreset,

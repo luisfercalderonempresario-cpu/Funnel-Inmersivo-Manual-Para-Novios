@@ -39,6 +39,10 @@ export interface ProblemOriginGuessValue {
   label: string;
 }
 
+export type SleepContextShiftId = "significant" | "some" | "little";
+
+export type ContextChangesActionId = "yes" | "probably" | "not_necessarily";
+
 export interface FunnelState {
   currentSequence: SequenceId;
   currentScreen: ScreenId;
@@ -47,6 +51,9 @@ export interface FunnelState {
   initialInterpretation: InitialInterpretationValue | null;
   problemOriginGuess: ProblemOriginGuessValue | null;
   sequence02Completed?: boolean;
+  sleepContextShift: SleepContextShiftId | null;
+  contextChangesAction: ContextChangesActionId | null;
+  sequence03Completed?: boolean;
   completedSequences: SequenceId[];
 }
 
@@ -67,5 +74,8 @@ export const INITIAL_FUNNEL_STATE: FunnelState = {
   initialInterpretation: null,
   problemOriginGuess: null,
   sequence02Completed: false,
+  sleepContextShift: null,
+  contextChangesAction: null,
+  sequence03Completed: false,
   completedSequences: [],
 };

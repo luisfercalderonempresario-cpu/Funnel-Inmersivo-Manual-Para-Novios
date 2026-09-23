@@ -14,6 +14,11 @@ export const FUNNEL_SEQUENCES = {
     name: "S02 — ALGO SALIÓ MAL",
     order: 2,
   },
+  S03_LO_QUE_NO_VISTE: {
+    id: "S03_LO_QUE_NO_VISTE",
+    name: "S03 — LO QUE NO VISTE",
+    order: 3,
+  },
 } as const;
 
 export type SequenceId = keyof typeof FUNNEL_SEQUENCES;
@@ -104,6 +109,55 @@ export const FUNNEL_SCREENS = {
     route: "/funnel/s02/exit",
     stepIndex: 10,
   },
+  S03_01_SLEEP_CONTEXT: {
+    id: "S03_01_SLEEP_CONTEXT",
+    sequence: "S03_LO_QUE_NO_VISTE",
+    name: "Contexto de sueño",
+    route: "/funnel/s03/sleep-context",
+    stepIndex: 11,
+  },
+  S03_02_SLEEP_SHIFT: {
+    id: "S03_02_SLEEP_SHIFT",
+    sequence: "S03_LO_QUE_NO_VISTE",
+    name: "¿Cambia tu interpretación?",
+    route: "/funnel/s03/sleep-shift",
+    stepIndex: 12,
+  },
+  S03_03_WORK_CONTEXT: {
+    id: "S03_03_WORK_CONTEXT",
+    sequence: "S03_LO_QUE_NO_VISTE",
+    name: "Contexto laboral",
+    route: "/funnel/s03/work-context",
+    stepIndex: 13,
+  },
+  S03_04_ACTION_SHIFT: {
+    id: "S03_04_ACTION_SHIFT",
+    sequence: "S03_LO_QUE_NO_VISTE",
+    name: "¿Cambiaría tu acción?",
+    route: "/funnel/s03/action-shift",
+    stepIndex: 14,
+  },
+  S03_05_RECONSTRUCTION: {
+    id: "S03_05_RECONSTRUCTION",
+    sequence: "S03_LO_QUE_NO_VISTE",
+    name: "Reconstrucción",
+    route: "/funnel/s03/reconstruction",
+    stepIndex: 15,
+  },
+  S03_06_CONTEXT_DISCOVERY: {
+    id: "S03_06_CONTEXT_DISCOVERY",
+    sequence: "S03_LO_QUE_NO_VISTE",
+    name: "Eso es contexto",
+    route: "/funnel/s03/context-discovery",
+    stepIndex: 16,
+  },
+  S03_07_EXIT: {
+    id: "S03_07_EXIT",
+    sequence: "S03_LO_QUE_NO_VISTE",
+    name: "Salida S03",
+    route: "/funnel/s03/exit",
+    stepIndex: 17,
+  },
 } as const satisfies Record<string, ScreenDefinition>;
 
 export type ScreenId = keyof typeof FUNNEL_SCREENS;
@@ -120,13 +174,22 @@ export const SCREEN_ORDER: readonly ScreenId[] = [
   "S02_04_MIRROR",
   "S02_05_DISCOVERY",
   "S02_06_EXIT",
+  "S03_01_SLEEP_CONTEXT",
+  "S03_02_SLEEP_SHIFT",
+  "S03_03_WORK_CONTEXT",
+  "S03_04_ACTION_SHIFT",
+  "S03_05_RECONSTRUCTION",
+  "S03_06_CONTEXT_DISCOVERY",
+  "S03_07_EXIT",
 ] as const;
 
 export function isVideoScreenId(screenId: ScreenId): boolean {
   return (
     screenId === "S01_02_VIDEO" ||
     screenId === "S02_01_CONTINUATION" ||
-    screenId === "S02_03_REWIND"
+    screenId === "S02_03_REWIND" ||
+    screenId === "S03_01_SLEEP_CONTEXT" ||
+    screenId === "S03_03_WORK_CONTEXT"
   );
 }
 

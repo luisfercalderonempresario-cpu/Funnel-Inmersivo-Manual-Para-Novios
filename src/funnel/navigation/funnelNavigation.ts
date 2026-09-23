@@ -105,6 +105,65 @@ export function canAccessScreenInProduction(
     );
   }
 
+  // S03_01_SLEEP_CONTEXT requires S02 completed or already on screen
+  if (targetScreenId === "S03_01_SLEEP_CONTEXT") {
+    return (
+      Boolean(state.sequence02Completed) ||
+      state.completedSequences.includes("S02_ALGO_SALIO_MAL") ||
+      state.currentScreen === "S03_01_SLEEP_CONTEXT"
+    );
+  }
+
+  // S03_02_SLEEP_SHIFT requires S02 completed or already on screen
+  if (targetScreenId === "S03_02_SLEEP_SHIFT") {
+    return (
+      Boolean(state.sequence02Completed) ||
+      state.completedSequences.includes("S02_ALGO_SALIO_MAL") ||
+      state.currentScreen === "S03_02_SLEEP_SHIFT"
+    );
+  }
+
+  // S03_03_WORK_CONTEXT requires sleepContextShift or already on screen
+  if (targetScreenId === "S03_03_WORK_CONTEXT") {
+    return (
+      state.sleepContextShift !== null ||
+      state.currentScreen === "S03_03_WORK_CONTEXT"
+    );
+  }
+
+  // S03_04_ACTION_SHIFT requires sleepContextShift or already on screen
+  if (targetScreenId === "S03_04_ACTION_SHIFT") {
+    return (
+      state.sleepContextShift !== null ||
+      state.currentScreen === "S03_04_ACTION_SHIFT"
+    );
+  }
+
+  // S03_05_RECONSTRUCTION requires sleepContextShift & contextChangesAction or already on screen
+  if (targetScreenId === "S03_05_RECONSTRUCTION") {
+    return (
+      (state.sleepContextShift !== null && state.contextChangesAction !== null) ||
+      state.currentScreen === "S03_05_RECONSTRUCTION"
+    );
+  }
+
+  // S03_06_CONTEXT_DISCOVERY requires sleepContextShift & contextChangesAction or already on screen
+  if (targetScreenId === "S03_06_CONTEXT_DISCOVERY") {
+    return (
+      (state.sleepContextShift !== null && state.contextChangesAction !== null) ||
+      state.currentScreen === "S03_06_CONTEXT_DISCOVERY"
+    );
+  }
+
+  // S03_07_EXIT requires sleepContextShift & contextChangesAction, or sequence03Completed, or already on screen
+  if (targetScreenId === "S03_07_EXIT") {
+    return (
+      (state.sleepContextShift !== null && state.contextChangesAction !== null) ||
+      Boolean(state.sequence03Completed) ||
+      state.currentScreen === "S03_07_EXIT"
+    );
+  }
+
   return false;
 }
 

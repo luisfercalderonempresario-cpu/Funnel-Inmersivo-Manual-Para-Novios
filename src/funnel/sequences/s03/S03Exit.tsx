@@ -1,0 +1,90 @@
+/**
+ * S03_07_EXIT — Faltaba una pieza más
+ * Cinematic closure and cliffhanger for Sequence 03:
+ * "Pero todavía faltaba una pieza.
+ *  Una que probablemente él ni siquiera habría pensado en considerar.
+ *  Faltaba una pieza más."
+ * Stable endpoint for Sequence 03.
+ */
+
+import React, { useEffect, useRef } from "react";
+import { useFunnel } from "../../state/FunnelContext";
+
+export const S03Exit: React.FC = () => {
+  const { markSequence03Completed } = useFunnel();
+  const hasCompletedRef = useRef<boolean>(false);
+  const isDev = Boolean(import.meta.env.DEV);
+
+  useEffect(() => {
+    if (hasCompletedRef.current) return;
+    hasCompletedRef.current = true;
+
+    // Marks sequence03Completed and fires tracking events once
+    markSequence03Completed();
+  }, [markSequence03Completed]);
+
+  return (
+    <div
+      id="screen-s03-07-exit"
+      className="min-h-[100dvh] w-full flex flex-col justify-between px-6 py-10 sm:py-14 max-w-lg mx-auto select-none"
+      style={{
+        paddingTop: "max(2.5rem, env(safe-area-inset-top))",
+        paddingBottom: "max(2.5rem, env(safe-area-inset-bottom))",
+      }}
+    >
+      {/* Brand Header */}
+      <header className="pt-2">
+        <span
+          id="exit-s03-brand-label"
+          className="text-xs uppercase tracking-[0.25em] text-neutral-400 font-medium select-none"
+        >
+          MANUAL PARA NOVIOS
+        </span>
+      </header>
+
+      {/* Main Cinematic Revelation */}
+      <main className="my-auto py-12 flex flex-col items-center justify-center text-center">
+        <div className="flex flex-col items-center gap-6 animate-fade-in max-w-sm">
+          <p
+            id="exit-s03-phrase-1"
+            className="text-xl sm:text-2xl font-light text-neutral-300 tracking-tight leading-relaxed"
+          >
+            Pero todavía faltaba una pieza.
+          </p>
+
+          <p
+            id="exit-s03-phrase-2"
+            className="text-lg sm:text-xl font-light text-neutral-400 tracking-tight leading-relaxed"
+          >
+            Una que probablemente él ni siquiera habría pensado en considerar.
+          </p>
+
+          <p
+            id="exit-s03-phrase-cliffhanger"
+            className="text-2xl sm:text-3xl font-semibold text-white tracking-tight pt-4"
+          >
+            Faltaba una pieza más.
+          </p>
+
+          {/* Dev indicator for QA inspection */}
+          {isDev && (
+            <div
+              id="dev-s03-boundary-indicator"
+              className="mt-10 p-4 rounded-lg bg-neutral-900/90 border border-neutral-800 text-neutral-400 text-xs text-center max-w-xs space-y-1.5"
+            >
+              <p className="font-mono text-emerald-400 font-semibold">
+                S03_COMPLETED_SUCCESSFULLY
+              </p>
+              <p className="font-sans text-neutral-400">
+                Secuencia 03 completada. Pantalla estable. S04 se integrará en la siguiente fase.
+              </p>
+            </div>
+          )}
+        </div>
+      </main>
+
+      {/* Stable Empty Footer */}
+      <footer className="w-full min-h-12 pb-2" />
+    </div>
+  );
+};
