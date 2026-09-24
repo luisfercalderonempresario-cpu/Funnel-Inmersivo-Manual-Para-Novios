@@ -34,6 +34,11 @@ export const FUNNEL_SEQUENCES = {
     name: "S06 — AHORA PIENSA EN ELLA",
     order: 6,
   },
+  S07_Y_SI_EXISTIERA: {
+    id: "S07_Y_SI_EXISTIERA",
+    name: "S07 — ¿Y SI EXISTIERA?",
+    order: 7,
+  },
 } as const;
 
 export type SequenceId = keyof typeof FUNNEL_SEQUENCES;
@@ -306,6 +311,62 @@ export const FUNNEL_SCREENS = {
     route: "/funnel/s06/exit",
     stepIndex: 36,
   },
+  S07_01_SETUP: {
+    id: "S07_01_SETUP",
+    sequence: "S07_Y_SI_EXISTIERA",
+    name: "Volvamos a ese martes",
+    route: "/funnel/s07/setup",
+    stepIndex: 37,
+  },
+  S07_02_DEMONSTRATION: {
+    id: "S07_02_DEMONSTRATION",
+    sequence: "S07_Y_SI_EXISTIERA",
+    name: "Demostración",
+    route: "/funnel/s07/demonstration",
+    stepIndex: 38,
+  },
+  S07_03_MECHANISM: {
+    id: "S07_03_MECHANISM",
+    sequence: "S07_Y_SI_EXISTIERA",
+    name: "El mecanismo",
+    route: "/funnel/s07/mechanism",
+    stepIndex: 39,
+  },
+  S07_04_INTEREST: {
+    id: "S07_04_INTEREST",
+    sequence: "S07_Y_SI_EXISTIERA",
+    name: "¿Lo usarías?",
+    route: "/funnel/s07/interest",
+    stepIndex: 40,
+  },
+  S07_05_CONCERN: {
+    id: "S07_05_CONCERN",
+    sequence: "S07_Y_SI_EXISTIERA",
+    name: "¿De qué dependería?",
+    route: "/funnel/s07/concern",
+    stepIndex: 41,
+  },
+  S07_06_REVEAL: {
+    id: "S07_06_REVEAL",
+    sequence: "S07_Y_SI_EXISTIERA",
+    name: "Revelación",
+    route: "/funnel/s07/reveal",
+    stepIndex: 42,
+  },
+  S07_07_PERSONAL_VALUE: {
+    id: "S07_07_PERSONAL_VALUE",
+    sequence: "S07_Y_SI_EXISTIERA",
+    name: "Valor personal",
+    route: "/funnel/s07/personal-value",
+    stepIndex: 43,
+  },
+  S07_08_EXIT: {
+    id: "S07_08_EXIT",
+    sequence: "S07_Y_SI_EXISTIERA",
+    name: "Salida S07",
+    route: "/funnel/s07/exit",
+    stepIndex: 44,
+  },
 } as const satisfies Record<string, ScreenDefinition>;
 
 export type ScreenId = keyof typeof FUNNEL_SCREENS;
@@ -348,6 +409,14 @@ export const SCREEN_ORDER: readonly ScreenId[] = [
   "S06_03_DESIRE",
   "S06_04_REFLECTION",
   "S06_05_EXIT",
+  "S07_01_SETUP",
+  "S07_02_DEMONSTRATION",
+  "S07_03_MECHANISM",
+  "S07_04_INTEREST",
+  "S07_05_CONCERN",
+  "S07_06_REVEAL",
+  "S07_07_PERSONAL_VALUE",
+  "S07_08_EXIT",
 ] as const;
 
 export function isVideoScreenId(screenId: ScreenId): boolean {
@@ -357,7 +426,8 @@ export function isVideoScreenId(screenId: ScreenId): boolean {
     screenId === "S02_03_REWIND" ||
     screenId === "S03_01_SLEEP_CONTEXT" ||
     screenId === "S03_03_WORK_CONTEXT" ||
-    screenId === "S05_01_RETURN_TO_CASE"
+    screenId === "S05_01_RETURN_TO_CASE" ||
+    screenId === "S07_02_DEMONSTRATION"
   );
 }
 

@@ -284,6 +284,57 @@ export function canAccessScreenInProduction(
     );
   }
 
+  const hasCompletedS06 =
+    Boolean(state.sequence06Completed) ||
+    state.completedSequences.includes("S06_AHORA_PIENSA_EN_ELLA") ||
+    state.currentSequence === "S07_Y_SI_EXISTIERA";
+
+  // S07_01_SETUP, S07_02_DEMONSTRATION, S07_03_MECHANISM, S07_04_INTEREST
+  if (
+    targetScreenId === "S07_01_SETUP" ||
+    targetScreenId === "S07_02_DEMONSTRATION" ||
+    targetScreenId === "S07_03_MECHANISM" ||
+    targetScreenId === "S07_04_INTEREST"
+  ) {
+    return hasCompletedS06 || state.currentScreen === targetScreenId;
+  }
+
+  // S07_05_CONCERN: only normal when toolInterest === "depends"
+  if (targetScreenId === "S07_05_CONCERN") {
+    return (
+      hasCompletedS06 &&
+      (state.toolInterest === "depends" ||
+        state.currentScreen === "S07_05_CONCERN")
+    );
+  }
+
+  // S07_06_REVEAL: requires toolInterest !== null (or already on screen)
+  if (targetScreenId === "S07_06_REVEAL") {
+    return (
+      hasCompletedS06 &&
+      (state.toolInterest !== null || state.currentScreen === "S07_06_REVEAL")
+    );
+  }
+
+  // S07_07_PERSONAL_VALUE: requires toolInterest !== null (tolerates desiredTransformation === null via fallback)
+  if (targetScreenId === "S07_07_PERSONAL_VALUE") {
+    return (
+      hasCompletedS06 &&
+      (state.toolInterest !== null ||
+        state.currentScreen === "S07_07_PERSONAL_VALUE")
+    );
+  }
+
+  // S07_08_EXIT: requires toolInterest or sequence07Completed or already on screen
+  if (targetScreenId === "S07_08_EXIT") {
+    return (
+      hasCompletedS06 &&
+      (state.toolInterest !== null ||
+        Boolean(state.sequence07Completed) ||
+        state.currentScreen === "S07_08_EXIT")
+    );
+  }
+
   return false;
 }
 

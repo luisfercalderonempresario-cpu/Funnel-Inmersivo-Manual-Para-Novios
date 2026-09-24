@@ -13,7 +13,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useFunnel } from "../../state/FunnelContext";
 
 export const S06Exit: React.FC = () => {
-  const { markSequence06Completed } = useFunnel();
+  const { markSequence06Completed, setCurrentScreen } = useFunnel();
   const hasCompletedRef = useRef<boolean>(false);
   const isDev = Boolean(import.meta.env.DEV);
   const [stage, setStage] = useState<number>(0);
@@ -73,17 +73,27 @@ export const S06Exit: React.FC = () => {
         )}
       </main>
 
-      {/* Footer Area: Breathing space / QA Indicator in Dev */}
-      <footer className="pt-6">
+      {/* Footer Area: Breathing space / CTA to S07 */}
+      <footer className="pt-6 flex flex-col gap-3">
+        {stage >= 1 && (
+          <button
+            id="btn-s06-exit-continue"
+            type="button"
+            onClick={() => setCurrentScreen("S07_01_SETUP")}
+            className="w-full py-4 px-6 bg-white hover:bg-neutral-100 active:scale-[0.99] text-neutral-950 font-medium text-base rounded-md transition-all duration-200 shadow-lg cursor-pointer animate-fade-in"
+          >
+            Quiero verlo
+          </button>
+        )}
         {isDev ? (
           <div
             id="dev-s06-qa-indicator"
             className="p-3 rounded bg-neutral-900/60 border border-neutral-800 text-[11px] font-mono text-neutral-400 text-center select-none"
           >
-            [DEV QA] Fin de Secuencia 06 — S06_05_EXIT (Endpoint estable)
+            [DEV QA] Fin de Secuencia 06 — S06_05_EXIT → [Quiero verlo] entra a S07
           </div>
         ) : (
-          <div className="h-8" aria-hidden="true" />
+          <div className="h-4" aria-hidden="true" />
         )}
       </footer>
     </div>

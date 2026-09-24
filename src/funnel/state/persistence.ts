@@ -103,6 +103,21 @@ export function loadPersistedState(): FunnelState {
           ? funnel.desiredTransformation
           : null,
       sequence06Completed: Boolean(funnel.sequence06Completed),
+      toolInterest:
+        funnel.toolInterest === "yes" ||
+        funnel.toolInterest === "would_try" ||
+        funnel.toolInterest === "depends"
+          ? funnel.toolInterest
+          : null,
+      toolInterestConcern:
+        funnel.toolInterest === "depends" &&
+        (funnel.toolInterestConcern === "usefulness" ||
+          funnel.toolInterestConcern === "ease" ||
+          funnel.toolInterestConcern === "non_generalization" ||
+          funnel.toolInterestConcern === "price")
+          ? funnel.toolInterestConcern
+          : null,
+      sequence07Completed: Boolean(funnel.sequence07Completed),
       completedSequences: Array.isArray(funnel.completedSequences)
         ? funnel.completedSequences
         : [],

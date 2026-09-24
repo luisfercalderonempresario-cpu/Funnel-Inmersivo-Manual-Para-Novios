@@ -61,6 +61,14 @@ import { S06Recognition } from "../../funnel/sequences/s06/S06Recognition";
 import { S06Desire } from "../../funnel/sequences/s06/S06Desire";
 import { S06Reflection } from "../../funnel/sequences/s06/S06Reflection";
 import { S06Exit } from "../../funnel/sequences/s06/S06Exit";
+import { S07Setup } from "../../funnel/sequences/s07/S07Setup";
+import { S07Demonstration } from "../../funnel/sequences/s07/S07Demonstration";
+import { S07Mechanism } from "../../funnel/sequences/s07/S07Mechanism";
+import { S07Interest } from "../../funnel/sequences/s07/S07Interest";
+import { S07Concern } from "../../funnel/sequences/s07/S07Concern";
+import { S07Reveal } from "../../funnel/sequences/s07/S07Reveal";
+import { S07PersonalValue } from "../../funnel/sequences/s07/S07PersonalValue";
+import { S07Exit } from "../../funnel/sequences/s07/S07Exit";
 
 /**
  * Route sync component:
@@ -273,6 +281,38 @@ export const AppRoutes: React.FC = () => {
                   <Route
                     path="/funnel/s06/exit"
                     element={<S06Exit />}
+                  />
+                  <Route
+                    path="/funnel/s07/setup"
+                    element={<S07Setup />}
+                  />
+                  <Route
+                    path="/funnel/s07/demonstration"
+                    element={<S07Demonstration />}
+                  />
+                  <Route
+                    path="/funnel/s07/mechanism"
+                    element={<S07Mechanism />}
+                  />
+                  <Route
+                    path="/funnel/s07/interest"
+                    element={<S07Interest />}
+                  />
+                  <Route
+                    path="/funnel/s07/concern"
+                    element={<S07Concern />}
+                  />
+                  <Route
+                    path="/funnel/s07/reveal"
+                    element={<S07Reveal />}
+                  />
+                  <Route
+                    path="/funnel/s07/personal-value"
+                    element={<S07PersonalValue />}
+                  />
+                  <Route
+                    path="/funnel/s07/exit"
+                    element={<S07Exit />}
                   />
                   {/* Catch-all route */}
                   <Route

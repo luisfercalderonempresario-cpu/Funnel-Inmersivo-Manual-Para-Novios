@@ -37,6 +37,8 @@ import {
   BeliefShiftId,
   PersonalProblemRecognition,
   DesiredTransformation,
+  ToolInterestId,
+  ToolInterestConcernId,
   getDecisionChanged,
 } from "./funnelTypes";
 import { trackEvent } from "../tracking/trackEvent";
@@ -59,6 +61,11 @@ export interface FunnelContextValue {
     transformation: DesiredTransformation,
     label: string
   ) => void;
+  setToolInterest: (interest: ToolInterestId, label?: string) => void;
+  setToolInterestConcern: (
+    concern: ToolInterestConcernId,
+    label?: string
+  ) => void;
   setCurrentScreen: (screenId: ScreenId, options?: { isDev?: boolean }) => void;
   markCaseStarted: () => void;
   completeSequence: (sequenceId: SequenceId) => void;
@@ -67,6 +74,7 @@ export interface FunnelContextValue {
   markSequence04Completed: () => void;
   markSequence05Completed: () => void;
   markSequence06Completed: () => void;
+  markSequence07Completed: () => void;
   resetS01: () => void;
   resetFunnel: () => void;
   applyPreset: (presetKey: string) => void;
@@ -311,6 +319,52 @@ export const FunnelProvider: React.FC<{ children: React.ReactNode }> = ({
     []
   );
 
+  const setToolInterest = useCallback(
+    (interest: ToolInterestId, label?: string) => {
+      setState((prev) => ({
+        ...prev,
+        toolInterest: interest,
+        // When interest changes to yes or would_try, toolInterestConcern is cleared
+        toolInterestConcern: interest === "depends" ? prev.toolInterestConcern : null,
+      }));
+      if (interest !== null) {
+        trackEvent({
+          event: "tool_interest_selected",
+          sequence: "S07_Y_SI_EXISTIERA",
+          screen: "S07_04_INTEREST",
+          value: interest,
+          metadata: {
+            toolInterestId: interest,
+            toolInterestLabel: label ?? interest,
+          },
+        });
+      }
+    },
+    []
+  );
+
+  const setToolInterestConcern = useCallback(
+    (concern: ToolInterestConcernId, label?: string) => {
+      setState((prev) => ({
+        ...prev,
+        toolInterestConcern: concern,
+      }));
+      if (concern !== null) {
+        trackEvent({
+          event: "tool_interest_concern_selected",
+          sequence: "S07_Y_SI_EXISTIERA",
+          screen: "S07_05_CONCERN",
+          value: concern,
+          metadata: {
+            toolInterestConcernId: concern,
+            toolInterestConcernLabel: label ?? concern,
+          },
+        });
+      }
+    },
+    []
+  );
+
   const completeSequence = useCallback(
     (sequenceId: SequenceId) => {
       setState((prev) => {
@@ -433,6 +487,25 @@ export const FunnelProvider: React.FC<{ children: React.ReactNode }> = ({
     });
   }, []);
 
+  const markSequence07Completed = useCallback(() => {
+    setState((prev) => {
+      const s07Seq: SequenceId = "S07_Y_SI_EXISTIERA";
+      const completed: SequenceId[] = prev.completedSequences.includes(s07Seq)
+        ? prev.completedSequences
+        : [...prev.completedSequences, s07Seq];
+      return {
+        ...prev,
+        sequence07Completed: true,
+        completedSequences: completed,
+      };
+    });
+    trackEvent({
+      event: "sequence_07_completed",
+      sequence: "S07_Y_SI_EXISTIERA",
+      screen: "S07_08_EXIT",
+    });
+  }, []);
+
   const resetS01 = useCallback(() => {
     const newState: FunnelState = {
       ...state,
@@ -514,6 +587,8 @@ export const FunnelProvider: React.FC<{ children: React.ReactNode }> = ({
     setBeliefShift,
     setPersonalProblemRecognition,
     setDesiredTransformation,
+    setToolInterest,
+    setToolInterestConcern,
     setCurrentScreen,
     markCaseStarted,
     completeSequence,
@@ -522,6 +597,7 @@ export const FunnelProvider: React.FC<{ children: React.ReactNode }> = ({
     markSequence04Completed,
     markSequence05Completed,
     markSequence06Completed,
+    markSequence07Completed,
     resetS01,
     resetFunnel,
     applyPreset,

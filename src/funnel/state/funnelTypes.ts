@@ -76,6 +76,15 @@ export type DesiredTransformation =
   | "feel_supported"
   | null;
 
+export type ToolInterestId = "yes" | "would_try" | "depends" | null;
+
+export type ToolInterestConcernId =
+  | "usefulness"
+  | "ease"
+  | "non_generalization"
+  | "price"
+  | null;
+
 export function getDecisionChanged(
   initialDecision: InitialDecisionValue | null,
   secondDecision: SecondDecisionValue | null
@@ -103,6 +112,9 @@ export interface FunnelState {
   personalProblemRecognition: PersonalProblemRecognition;
   desiredTransformation: DesiredTransformation;
   sequence06Completed?: boolean;
+  toolInterest: ToolInterestId;
+  toolInterestConcern: ToolInterestConcernId;
+  sequence07Completed?: boolean;
   completedSequences: SequenceId[];
 }
 
@@ -134,5 +146,8 @@ export const INITIAL_FUNNEL_STATE: FunnelState = {
   personalProblemRecognition: null,
   desiredTransformation: null,
   sequence06Completed: false,
+  toolInterest: null,
+  toolInterestConcern: null,
+  sequence07Completed: false,
   completedSequences: [],
 };
