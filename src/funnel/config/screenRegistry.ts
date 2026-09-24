@@ -39,6 +39,11 @@ export const FUNNEL_SEQUENCES = {
     name: "S07 — ¿Y SI EXISTIERA?",
     order: 7,
   },
+  S08_PRUEBA_REAL: {
+    id: "S08_PRUEBA_REAL",
+    name: "S08-A — PRUEBA REAL",
+    order: 8,
+  },
 } as const;
 
 export type SequenceId = keyof typeof FUNNEL_SEQUENCES;
@@ -367,6 +372,69 @@ export const FUNNEL_SCREENS = {
     route: "/funnel/s07/exit",
     stepIndex: 44,
   },
+  S08_01_ENTRY: {
+    id: "S08_01_ENTRY",
+    sequence: "S08_PRUEBA_REAL",
+    name: "Entrada a Contexto™",
+    route: "/funnel/s08/entry",
+    stepIndex: 45,
+  },
+  S08_02_DATE_KNOWLEDGE: {
+    id: "S08_02_DATE_KNOWLEDGE",
+    sequence: "S08_PRUEBA_REAL",
+    name: "¿Sabes la fecha?",
+    route: "/funnel/s08/date-knowledge",
+    stepIndex: 46,
+  },
+  S08_03_EXACT_DATE: {
+    id: "S08_03_EXACT_DATE",
+    sequence: "S08_PRUEBA_REAL",
+    name: "Fecha exacta",
+    route: "/funnel/s08/exact-date",
+    stepIndex: 47,
+  },
+  S08_04_APPROXIMATE_DATE: {
+    id: "S08_04_APPROXIMATE_DATE",
+    sequence: "S08_PRUEBA_REAL",
+    name: "Fecha aproximada",
+    route: "/funnel/s08/approximate-date",
+    stepIndex: 48,
+  },
+  S08_05_EXAMPLE: {
+    id: "S08_05_EXAMPLE",
+    sequence: "S08_PRUEBA_REAL",
+    name: "Modo ejemplo",
+    route: "/funnel/s08/example",
+    stepIndex: 49,
+  },
+  S08_06_PREPARING: {
+    id: "S08_06_PREPARING",
+    sequence: "S08_PRUEBA_REAL",
+    name: "Preparando contexto",
+    route: "/funnel/s08/preparing",
+    stepIndex: 50,
+  },
+  S08_07_TODAY: {
+    id: "S08_07_TODAY",
+    sequence: "S08_PRUEBA_REAL",
+    name: "Contexto de Hoy",
+    route: "/funnel/s08/today",
+    stepIndex: 51,
+  },
+  S08_08_VALUE: {
+    id: "S08_08_VALUE",
+    sequence: "S08_PRUEBA_REAL",
+    name: "Valor de la orientación",
+    route: "/funnel/s08/value",
+    stepIndex: 52,
+  },
+  S08_09_TRIAL_EXIT: {
+    id: "S08_09_TRIAL_EXIT",
+    sequence: "S08_PRUEBA_REAL",
+    name: "Salida de prueba",
+    route: "/funnel/s08/trial-exit",
+    stepIndex: 53,
+  },
 } as const satisfies Record<string, ScreenDefinition>;
 
 export type ScreenId = keyof typeof FUNNEL_SCREENS;
@@ -417,6 +485,15 @@ export const SCREEN_ORDER: readonly ScreenId[] = [
   "S07_06_REVEAL",
   "S07_07_PERSONAL_VALUE",
   "S07_08_EXIT",
+  "S08_01_ENTRY",
+  "S08_02_DATE_KNOWLEDGE",
+  "S08_03_EXACT_DATE",
+  "S08_04_APPROXIMATE_DATE",
+  "S08_05_EXAMPLE",
+  "S08_06_PREPARING",
+  "S08_07_TODAY",
+  "S08_08_VALUE",
+  "S08_09_TRIAL_EXIT",
 ] as const;
 
 export function isVideoScreenId(screenId: ScreenId): boolean {

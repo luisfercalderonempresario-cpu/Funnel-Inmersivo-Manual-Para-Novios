@@ -13,9 +13,8 @@ import { useFunnel } from "../../state/FunnelContext";
 import { trackEvent } from "../../tracking/trackEvent";
 
 export const S07Exit: React.FC = () => {
-  const { markSequence07Completed } = useFunnel();
+  const { markSequence07Completed, startTrial } = useFunnel();
   const [stage, setStage] = useState<number>(0);
-  const [trialRequested, setTrialRequested] = useState<boolean>(false);
   const hasCompletedRef = useRef<boolean>(false);
   const hasTrackedInviteRef = useRef<boolean>(false);
   const isDev = Boolean(import.meta.env.DEV);
@@ -48,8 +47,7 @@ export const S07Exit: React.FC = () => {
   }, [markSequence07Completed]);
 
   const handleTrialClick = () => {
-    // Safe terminal behavior: S08 does not exist yet. Keep user in state with positive feedback.
-    setTrialRequested(true);
+    startTrial();
   };
 
   return (
@@ -127,20 +125,6 @@ export const S07Exit: React.FC = () => {
             >
               <span>PROBAR CONTEXTO™</span>
             </button>
-
-            {trialRequested && (
-              <div
-                id="s07-trial-feedback"
-                className="p-4 bg-neutral-900/90 border border-neutral-700/80 rounded-md text-center space-y-1 animate-fade-in"
-              >
-                <p className="text-white text-sm font-medium">
-                  Preparando tu experiencia personalizada
-                </p>
-                <p className="text-neutral-400 text-xs">
-                  S07 completada con éxito. La experiencia interactiva comenzará en S08.
-                </p>
-              </div>
-            )}
           </div>
         )}
 

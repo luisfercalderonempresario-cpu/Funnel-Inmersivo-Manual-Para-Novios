@@ -85,6 +85,14 @@ export type ToolInterestConcernId =
   | "price"
   | null;
 
+export type DateKnowledge = "exact" | "approximate" | "unknown" | null;
+
+export type InputConfidence = "exact" | "approximate" | "example" | null;
+
+export type EstimatedPhase = "menstrual" | "follicular" | "ovulatory" | "luteal" | null;
+
+export type TrialValueResponse = "yes" | "probably" | "unsure" | null;
+
 export function getDecisionChanged(
   initialDecision: InitialDecisionValue | null,
   secondDecision: SecondDecisionValue | null
@@ -115,6 +123,19 @@ export interface FunnelState {
   toolInterest: ToolInterestId;
   toolInterestConcern: ToolInterestConcernId;
   sequence07Completed?: boolean;
+  // S08-A Trial State
+  dateKnowledge: DateKnowledge;
+  lastPeriodStartDate: string | null;
+  approximateWeeksAgo: 1 | 2 | 3 | 4 | null;
+  inputConfidence: InputConfidence;
+  estimatedCycleDay: number | null;
+  estimatedPhase: EstimatedPhase;
+  exampleMode: boolean;
+  trialValueResponse: TrialValueResponse;
+  trialStarted: boolean;
+  trialCompleted: boolean;
+  productValueExperienced: boolean;
+  calculatedForDate: string | null;
   completedSequences: SequenceId[];
 }
 
@@ -149,5 +170,17 @@ export const INITIAL_FUNNEL_STATE: FunnelState = {
   toolInterest: null,
   toolInterestConcern: null,
   sequence07Completed: false,
+  dateKnowledge: null,
+  lastPeriodStartDate: null,
+  approximateWeeksAgo: null,
+  inputConfidence: null,
+  estimatedCycleDay: null,
+  estimatedPhase: null,
+  exampleMode: false,
+  trialValueResponse: null,
+  trialStarted: false,
+  trialCompleted: false,
+  productValueExperienced: false,
+  calculatedForDate: null,
   completedSequences: [],
 };

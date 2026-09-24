@@ -69,6 +69,15 @@ import { S07Concern } from "../../funnel/sequences/s07/S07Concern";
 import { S07Reveal } from "../../funnel/sequences/s07/S07Reveal";
 import { S07PersonalValue } from "../../funnel/sequences/s07/S07PersonalValue";
 import { S07Exit } from "../../funnel/sequences/s07/S07Exit";
+import { S08Entry } from "../../funnel/sequences/s08/S08Entry";
+import { S08DateKnowledge } from "../../funnel/sequences/s08/S08DateKnowledge";
+import { S08ExactDate } from "../../funnel/sequences/s08/S08ExactDate";
+import { S08ApproximateDate } from "../../funnel/sequences/s08/S08ApproximateDate";
+import { S08Example } from "../../funnel/sequences/s08/S08Example";
+import { S08Preparing } from "../../funnel/sequences/s08/S08Preparing";
+import { S08Today } from "../../funnel/sequences/s08/S08Today";
+import { S08Value } from "../../funnel/sequences/s08/S08Value";
+import { S08TrialExit } from "../../funnel/sequences/s08/S08TrialExit";
 
 /**
  * Route sync component:
@@ -313,6 +322,42 @@ export const AppRoutes: React.FC = () => {
                   <Route
                     path="/funnel/s07/exit"
                     element={<S07Exit />}
+                  />
+                  <Route
+                    path="/funnel/s08/entry"
+                    element={<S08Entry />}
+                  />
+                  <Route
+                    path="/funnel/s08/date-knowledge"
+                    element={<S08DateKnowledge />}
+                  />
+                  <Route
+                    path="/funnel/s08/exact-date"
+                    element={<S08ExactDate />}
+                  />
+                  <Route
+                    path="/funnel/s08/approximate-date"
+                    element={<S08ApproximateDate />}
+                  />
+                  <Route
+                    path="/funnel/s08/example"
+                    element={<S08Example />}
+                  />
+                  <Route
+                    path="/funnel/s08/preparing"
+                    element={<S08Preparing />}
+                  />
+                  <Route
+                    path="/funnel/s08/today"
+                    element={<S08Today />}
+                  />
+                  <Route
+                    path="/funnel/s08/value"
+                    element={<S08Value />}
+                  />
+                  <Route
+                    path="/funnel/s08/trial-exit"
+                    element={<S08TrialExit />}
                   />
                   {/* Catch-all route */}
                   <Route

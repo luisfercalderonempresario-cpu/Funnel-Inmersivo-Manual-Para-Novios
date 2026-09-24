@@ -335,6 +335,84 @@ export function canAccessScreenInProduction(
     );
   }
 
+  // --- S08-A Production Gates ---
+
+  const hasCompletedS07 =
+    Boolean(state.sequence07Completed) ||
+    state.completedSequences.includes("S07_Y_SI_EXISTIERA") ||
+    Boolean(state.trialStarted) ||
+    state.currentSequence === "S08_PRUEBA_REAL";
+
+  if (targetScreenId === "S08_01_ENTRY" || targetScreenId === "S08_02_DATE_KNOWLEDGE") {
+    return hasCompletedS07 || state.currentScreen === targetScreenId;
+  }
+
+  if (targetScreenId === "S08_03_EXACT_DATE") {
+    return (
+      hasCompletedS07 &&
+      (state.dateKnowledge === "exact" || state.currentScreen === "S08_03_EXACT_DATE")
+    );
+  }
+
+  if (targetScreenId === "S08_04_APPROXIMATE_DATE") {
+    return (
+      hasCompletedS07 &&
+      (state.dateKnowledge === "approximate" ||
+        state.currentScreen === "S08_04_APPROXIMATE_DATE")
+    );
+  }
+
+  if (targetScreenId === "S08_05_EXAMPLE") {
+    return (
+      hasCompletedS07 &&
+      (state.dateKnowledge === "unknown" ||
+        state.exampleMode ||
+        state.currentScreen === "S08_05_EXAMPLE")
+    );
+  }
+
+  if (targetScreenId === "S08_06_PREPARING") {
+    const hasReference =
+      Boolean(state.lastPeriodStartDate) ||
+      state.approximateWeeksAgo !== null ||
+      state.exampleMode;
+    return hasCompletedS07 && (hasReference || state.currentScreen === "S08_06_PREPARING");
+  }
+
+  // TODAY requires valid 1–28 day + phase, OR exampleMode (Section 52)
+  if (targetScreenId === "S08_07_TODAY") {
+    const hasValidEstimate =
+      typeof state.estimatedCycleDay === "number" &&
+      state.estimatedCycleDay >= 1 &&
+      state.estimatedCycleDay <= 28 &&
+      state.estimatedPhase !== null;
+
+    const hasValidExample = state.exampleMode && state.estimatedPhase !== null;
+
+    return (
+      hasCompletedS07 &&
+      (hasValidEstimate || hasValidExample || state.currentScreen === "S08_07_TODAY")
+    );
+  }
+
+  if (targetScreenId === "S08_08_VALUE") {
+    return (
+      hasCompletedS07 &&
+      (state.estimatedPhase !== null ||
+        state.exampleMode ||
+        state.currentScreen === "S08_08_VALUE")
+    );
+  }
+
+  if (targetScreenId === "S08_09_TRIAL_EXIT") {
+    return (
+      hasCompletedS07 &&
+      (state.trialValueResponse !== null ||
+        Boolean(state.trialCompleted) ||
+        state.currentScreen === "S08_09_TRIAL_EXIT")
+    );
+  }
+
   return false;
 }
 

@@ -39,9 +39,20 @@ import {
   DesiredTransformation,
   ToolInterestId,
   ToolInterestConcernId,
+  DateKnowledge,
+  InputConfidence,
+  EstimatedPhase,
+  TrialValueResponse,
   getDecisionChanged,
 } from "./funnelTypes";
 import { trackEvent } from "../tracking/trackEvent";
+import {
+  calculateCycleFromExactDate,
+  calculateCycleFromApproximateWeeks,
+  validateExactDate,
+  getTodayLocalDateString,
+  EXAMPLE_CYCLE_STATE,
+} from "../utils/cycleCalculations";
 
 export interface FunnelContextValue {
   state: FunnelState;
@@ -66,6 +77,23 @@ export interface FunnelContextValue {
     concern: ToolInterestConcernId,
     label?: string
   ) => void;
+  // S08-A Methods
+  startTrial: () => void;
+  setDateKnowledge: (knowledge: DateKnowledge) => void;
+  submitExactDate: (dateStr: string) => {
+    valid: boolean;
+    cycleDay?: number;
+    isOutOfRange?: boolean;
+    errorMessage?: string;
+  };
+  selectApproximateWeeks: (weeks: 1 | 2 | 3 | 4) => {
+    cycleDay: number;
+    isOutOfRange: boolean;
+  };
+  selectExampleMode: () => void;
+  setTrialValueResponse: (response: TrialValueResponse) => void;
+  markTrialCompleted: () => void;
+  resetTrialReference: () => void;
   setCurrentScreen: (screenId: ScreenId, options?: { isDev?: boolean }) => void;
   markCaseStarted: () => void;
   completeSequence: (sequenceId: SequenceId) => void;
@@ -506,6 +534,246 @@ export const FunnelProvider: React.FC<{ children: React.ReactNode }> = ({
     });
   }, []);
 
+  // --- S08-A Trial Methods ---
+
+  const startTrial = useCallback(() => {
+    setState((prev) => {
+      const nextState: FunnelState = {
+        ...prev,
+        currentSequence: "S08_PRUEBA_REAL",
+        currentScreen: "S08_01_ENTRY",
+        trialStarted: true,
+      };
+      savePersistedState(nextState);
+      return nextState;
+    });
+
+    trackEvent({
+      event: "trial_started",
+      sequence: "S08_PRUEBA_REAL",
+      screen: "S08_01_ENTRY",
+    });
+
+    navigate("/funnel/s08/entry");
+  }, [navigate]);
+
+  const setDateKnowledge = useCallback((knowledge: DateKnowledge) => {
+    setState((prev) => {
+      const nextState: FunnelState = {
+        ...prev,
+        dateKnowledge: knowledge,
+        // Branch hygiene (Section 44)
+        ...(knowledge === "unknown"
+          ? {
+              lastPeriodStartDate: null,
+              approximateWeeksAgo: null,
+            }
+          : knowledge === "approximate"
+          ? {
+              lastPeriodStartDate: null,
+              exampleMode: false,
+            }
+          : {
+              approximateWeeksAgo: null,
+              exampleMode: false,
+            }),
+      };
+      savePersistedState(nextState);
+      return nextState;
+    });
+
+    if (knowledge !== null) {
+      trackEvent({
+        event: "date_knowledge_selected",
+        sequence: "S08_PRUEBA_REAL",
+        screen: "S08_02_DATE_KNOWLEDGE",
+        value: knowledge,
+        metadata: { dateKnowledge: knowledge },
+      });
+    }
+  }, []);
+
+  const submitExactDate = useCallback((dateStr: string) => {
+    const today = getTodayLocalDateString();
+    const validation = validateExactDate(dateStr, today);
+
+    if (!validation.valid) {
+      return {
+        valid: false,
+        errorMessage: validation.errorMessage,
+      };
+    }
+
+    const calc = calculateCycleFromExactDate(dateStr, today);
+
+    setState((prev) => {
+      const nextState: FunnelState = {
+        ...prev,
+        lastPeriodStartDate: dateStr,
+        inputConfidence: "exact",
+        exampleMode: false,
+        approximateWeeksAgo: null,
+        estimatedCycleDay: calc.cycleDay,
+        estimatedPhase: calc.phase,
+        calculatedForDate: today,
+        trialValueResponse: null,
+        trialCompleted: false,
+        productValueExperienced: false,
+      };
+      savePersistedState(nextState);
+      return nextState;
+    });
+
+    // Track without exposing raw date string (Section 45 Privacy)
+    trackEvent({
+      event: "exact_date_submitted",
+      sequence: "S08_PRUEBA_REAL",
+      screen: "S08_03_EXACT_DATE",
+      metadata: {
+        cycleDay: calc.cycleDay,
+        isOutOfRange: calc.isOutOfRange,
+      },
+    });
+
+    return {
+      valid: true,
+      cycleDay: calc.cycleDay,
+      isOutOfRange: calc.isOutOfRange,
+    };
+  }, []);
+
+  const selectApproximateWeeks = useCallback((weeks: 1 | 2 | 3 | 4) => {
+    const calc = calculateCycleFromApproximateWeeks(weeks);
+
+    setState((prev) => {
+      const nextState: FunnelState = {
+        ...prev,
+        approximateWeeksAgo: weeks,
+        inputConfidence: "approximate",
+        exampleMode: false,
+        lastPeriodStartDate: null,
+        estimatedCycleDay: calc.cycleDay,
+        estimatedPhase: calc.phase,
+        calculatedForDate: null,
+        trialValueResponse: null,
+        trialCompleted: false,
+        productValueExperienced: false,
+      };
+      savePersistedState(nextState);
+      return nextState;
+    });
+
+    trackEvent({
+      event: "approximate_date_selected",
+      sequence: "S08_PRUEBA_REAL",
+      screen: "S08_04_APPROXIMATE_DATE",
+      value: weeks,
+      metadata: { approximateWeeksAgo: weeks },
+    });
+
+    return {
+      cycleDay: calc.cycleDay,
+      isOutOfRange: calc.isOutOfRange,
+    };
+  }, []);
+
+  const selectExampleMode = useCallback(() => {
+    setState((prev) => {
+      const nextState: FunnelState = {
+        ...prev,
+        exampleMode: true,
+        inputConfidence: "example",
+        lastPeriodStartDate: null,
+        approximateWeeksAgo: null,
+        estimatedCycleDay: EXAMPLE_CYCLE_STATE.cycleDay,
+        estimatedPhase: EXAMPLE_CYCLE_STATE.phase,
+        calculatedForDate: null,
+        trialValueResponse: null,
+        trialCompleted: false,
+        productValueExperienced: false,
+      };
+      savePersistedState(nextState);
+      return nextState;
+    });
+
+    trackEvent({
+      event: "example_trial_selected",
+      sequence: "S08_PRUEBA_REAL",
+      screen: "S08_05_EXAMPLE",
+    });
+  }, []);
+
+  const setTrialValueResponse = useCallback((response: TrialValueResponse) => {
+    const isValueExperienced = response === "yes" || response === "probably";
+
+    setState((prev) => {
+      const nextState: FunnelState = {
+        ...prev,
+        trialValueResponse: response,
+        productValueExperienced: isValueExperienced,
+      };
+      savePersistedState(nextState);
+      return nextState;
+    });
+
+    if (response !== null) {
+      trackEvent({
+        event: "trial_value_response",
+        sequence: "S08_PRUEBA_REAL",
+        screen: "S08_08_VALUE",
+        value: response,
+        metadata: { trialValueResponse: response },
+      });
+
+      if (isValueExperienced) {
+        trackEvent({
+          event: "product_value_experienced",
+          sequence: "S08_PRUEBA_REAL",
+          screen: "S08_08_VALUE",
+          value: response,
+        });
+      }
+    }
+  }, []);
+
+  const markTrialCompleted = useCallback(() => {
+    setState((prev) => {
+      const nextState: FunnelState = {
+        ...prev,
+        trialCompleted: true,
+      };
+      savePersistedState(nextState);
+      return nextState;
+    });
+
+    trackEvent({
+      event: "trial_completed",
+      sequence: "S08_PRUEBA_REAL",
+      screen: "S08_09_TRIAL_EXIT",
+    });
+  }, []);
+
+  const resetTrialReference = useCallback(() => {
+    setState((prev) => {
+      const nextState: FunnelState = {
+        ...prev,
+        dateKnowledge: null,
+        lastPeriodStartDate: null,
+        approximateWeeksAgo: null,
+        inputConfidence: null,
+        estimatedCycleDay: null,
+        estimatedPhase: null,
+        exampleMode: false,
+        trialValueResponse: null,
+        trialCompleted: false,
+        productValueExperienced: false,
+        calculatedForDate: null,
+      };
+      savePersistedState(nextState);
+      return nextState;
+    });
+  }, []);
+
   const resetS01 = useCallback(() => {
     const newState: FunnelState = {
       ...state,
@@ -589,6 +857,14 @@ export const FunnelProvider: React.FC<{ children: React.ReactNode }> = ({
     setDesiredTransformation,
     setToolInterest,
     setToolInterestConcern,
+    startTrial,
+    setDateKnowledge,
+    submitExactDate,
+    selectApproximateWeeks,
+    selectExampleMode,
+    setTrialValueResponse,
+    markTrialCompleted,
+    resetTrialReference,
     setCurrentScreen,
     markCaseStarted,
     completeSequence,

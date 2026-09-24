@@ -4,6 +4,11 @@
  */
 
 import { ContextoStorageSchema, FunnelState, INITIAL_FUNNEL_STATE } from "./funnelTypes";
+import {
+  calculateCycleFromExactDate,
+  getTodayLocalDateString,
+  EXAMPLE_CYCLE_STATE,
+} from "../utils/cycleCalculations";
 
 export const STORAGE_KEY = "CONTEXTO_STATE_V1";
 
@@ -26,7 +31,7 @@ export function loadPersistedState(): FunnelState {
     const funnel = parsed.funnel;
 
     // Validate minimal structural integrity
-    return {
+    const result: FunnelState = {
       currentSequence: funnel.currentSequence || INITIAL_FUNNEL_STATE.currentSequence,
       currentScreen: funnel.currentScreen || INITIAL_FUNNEL_STATE.currentScreen,
       caseStarted: Boolean(funnel.caseStarted),
@@ -118,10 +123,74 @@ export function loadPersistedState(): FunnelState {
           ? funnel.toolInterestConcern
           : null,
       sequence07Completed: Boolean(funnel.sequence07Completed),
+      // S08-A Trial State Hydration
+      dateKnowledge:
+        funnel.dateKnowledge === "exact" ||
+        funnel.dateKnowledge === "approximate" ||
+        funnel.dateKnowledge === "unknown"
+          ? funnel.dateKnowledge
+          : null,
+      lastPeriodStartDate:
+        typeof funnel.lastPeriodStartDate === "string" &&
+        /^\d{4}-\d{2}-\d{2}$/.test(funnel.lastPeriodStartDate)
+          ? funnel.lastPeriodStartDate
+          : null,
+      approximateWeeksAgo:
+        funnel.approximateWeeksAgo === 1 ||
+        funnel.approximateWeeksAgo === 2 ||
+        funnel.approximateWeeksAgo === 3 ||
+        funnel.approximateWeeksAgo === 4
+          ? funnel.approximateWeeksAgo
+          : null,
+      inputConfidence:
+        funnel.inputConfidence === "exact" ||
+        funnel.inputConfidence === "approximate" ||
+        funnel.inputConfidence === "example"
+          ? funnel.inputConfidence
+          : null,
+      exampleMode: Boolean(funnel.exampleMode),
+      trialValueResponse:
+        funnel.trialValueResponse === "yes" ||
+        funnel.trialValueResponse === "probably" ||
+        funnel.trialValueResponse === "unsure"
+          ? funnel.trialValueResponse
+          : null,
+      trialStarted: Boolean(funnel.trialStarted),
+      trialCompleted: Boolean(funnel.trialCompleted),
+      productValueExperienced: Boolean(funnel.productValueExperienced),
+      calculatedForDate:
+        typeof funnel.calculatedForDate === "string" ? funnel.calculatedForDate : null,
+      estimatedCycleDay:
+        typeof funnel.estimatedCycleDay === "number" ? funnel.estimatedCycleDay : null,
+      estimatedPhase:
+        funnel.estimatedPhase === "menstrual" ||
+        funnel.estimatedPhase === "follicular" ||
+        funnel.estimatedPhase === "ovulatory" ||
+        funnel.estimatedPhase === "luteal"
+          ? funnel.estimatedPhase
+          : null,
       completedSequences: Array.isArray(funnel.completedSequences)
         ? funnel.completedSequences
         : [],
     };
+
+    // Recalculation on local calendar day shift (Section 54)
+    const today = getTodayLocalDateString();
+    if (
+      result.inputConfidence === "exact" &&
+      result.lastPeriodStartDate &&
+      result.calculatedForDate !== today
+    ) {
+      const calc = calculateCycleFromExactDate(result.lastPeriodStartDate, today);
+      result.estimatedCycleDay = calc.cycleDay;
+      result.estimatedPhase = calc.phase;
+      result.calculatedForDate = today;
+    } else if (result.exampleMode) {
+      result.estimatedCycleDay = EXAMPLE_CYCLE_STATE.cycleDay;
+      result.estimatedPhase = EXAMPLE_CYCLE_STATE.phase;
+    }
+
+    return result;
   } catch (err) {
     // If JSON is corrupt or localStorage is blocked in iframe/private mode
     console.warn("[MPN Persistence] Safe fallback to initial state:", err);

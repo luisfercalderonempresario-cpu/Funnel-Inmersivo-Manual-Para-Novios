@@ -286,6 +286,38 @@ const DevNavigatorPanel: React.FC = () => {
               <span className="text-neutral-400">sequence07Completed:</span>
               <span className="text-neutral-200">{String(Boolean(state.sequence07Completed))}</span>
             </div>
+            <div className="flex justify-between pt-0.5">
+              <span className="text-neutral-400">trialStarted:</span>
+              <span className="text-neutral-200">{String(Boolean(state.trialStarted))}</span>
+            </div>
+            <div className="flex justify-between pt-0.5">
+              <span className="text-neutral-400">dateKnowledge:</span>
+              <span className="text-neutral-200">{state.dateKnowledge ?? "null"}</span>
+            </div>
+            <div className="flex justify-between pt-0.5">
+              <span className="text-neutral-400">cycleDay / phase:</span>
+              <span className="text-neutral-200">
+                {state.estimatedCycleDay !== null ? `Day ${state.estimatedCycleDay}` : "null"} / {state.estimatedPhase ?? "null"}
+              </span>
+            </div>
+            <div className="flex justify-between pt-0.5">
+              <span className="text-neutral-400">inputConfidence / example:</span>
+              <span className="text-neutral-200">
+                {state.inputConfidence ?? "null"} / {String(Boolean(state.exampleMode))}
+              </span>
+            </div>
+            <div className="flex justify-between pt-0.5">
+              <span className="text-neutral-400">trialValueResponse:</span>
+              <span className="text-neutral-200">{state.trialValueResponse ?? "null"}</span>
+            </div>
+            <div className="flex justify-between pt-0.5">
+              <span className="text-neutral-400">productValueExperienced:</span>
+              <span className="text-neutral-200">{String(Boolean(state.productValueExperienced))}</span>
+            </div>
+            <div className="flex justify-between pt-0.5">
+              <span className="text-neutral-400">trialCompleted:</span>
+              <span className="text-emerald-400 font-semibold">{String(Boolean(state.trialCompleted))}</span>
+            </div>
           </div>
 
           {/* Reset Controls */}
