@@ -93,6 +93,8 @@ export type EstimatedPhase = "menstrual" | "follicular" | "ovulatory" | "luteal"
 
 export type TrialValueResponse = "yes" | "probably" | "unsure" | null;
 
+export type CheckoutSource = "offer" | "guarantee" | "final_close" | null;
+
 export function getDecisionChanged(
   initialDecision: InitialDecisionValue | null,
   secondDecision: SecondDecisionValue | null
@@ -136,6 +138,11 @@ export interface FunnelState {
   trialCompleted: boolean;
   productValueExperienced: boolean;
   calculatedForDate: string | null;
+  // S08-B Offer State
+  offerStarted: boolean;
+  offerViewed: boolean;
+  checkoutIntent: boolean;
+  checkoutSource: CheckoutSource;
   completedSequences: SequenceId[];
 }
 
@@ -182,5 +189,9 @@ export const INITIAL_FUNNEL_STATE: FunnelState = {
   trialCompleted: false,
   productValueExperienced: false,
   calculatedForDate: null,
+  offerStarted: false,
+  offerViewed: false,
+  checkoutIntent: false,
+  checkoutSource: null,
   completedSequences: [],
 };

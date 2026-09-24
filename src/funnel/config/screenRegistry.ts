@@ -44,6 +44,11 @@ export const FUNNEL_SEQUENCES = {
     name: "S08-A — PRUEBA REAL",
     order: 8,
   },
+  S08B_OFFER: {
+    id: "S08B_OFFER",
+    name: "S08-B — OFERTA",
+    order: 9,
+  },
 } as const;
 
 export type SequenceId = keyof typeof FUNNEL_SEQUENCES;
@@ -435,6 +440,83 @@ export const FUNNEL_SCREENS = {
     route: "/funnel/s08/trial-exit",
     stepIndex: 53,
   },
+  S08B_01_BRIDGE: {
+    id: "S08B_01_BRIDGE",
+    sequence: "S08B_OFFER",
+    name: "Puente a la oferta",
+    route: "/funnel/s08/offer/bridge",
+    stepIndex: 54,
+  },
+  S08B_02_PERSONAL_GOAL: {
+    id: "S08B_02_PERSONAL_GOAL",
+    sequence: "S08B_OFFER",
+    name: "Objetivo personal",
+    route: "/funnel/s08/offer/personal-goal",
+    stepIndex: 55,
+  },
+  S08B_03_EXPANSION: {
+    id: "S08B_03_EXPANSION",
+    sequence: "S08B_OFFER",
+    name: "Expansión",
+    route: "/funnel/s08/offer/expansion",
+    stepIndex: 56,
+  },
+  S08B_04_PRODUCT: {
+    id: "S08B_04_PRODUCT",
+    sequence: "S08B_OFFER",
+    name: "Contexto™ completo",
+    route: "/funnel/s08/offer/product",
+    stepIndex: 57,
+  },
+  S08B_05_GUARDRAIL: {
+    id: "S08B_05_GUARDRAIL",
+    sequence: "S08B_OFFER",
+    name: "Límites de Contexto™",
+    route: "/funnel/s08/offer/guardrail",
+    stepIndex: 58,
+  },
+  S08B_06_BONUS: {
+    id: "S08B_06_BONUS",
+    sequence: "S08B_OFFER",
+    name: "Guía para conocer la fecha",
+    route: "/funnel/s08/offer/bonus",
+    stepIndex: 59,
+  },
+  S08B_07_VALUE_BRIDGE: {
+    id: "S08B_07_VALUE_BRIDGE",
+    sequence: "S08B_OFFER",
+    name: "Puente de valor",
+    route: "/funnel/s08/offer/value-bridge",
+    stepIndex: 60,
+  },
+  S08B_08_OFFER: {
+    id: "S08B_08_OFFER",
+    sequence: "S08B_OFFER",
+    name: "Oferta Contexto™",
+    route: "/funnel/s08/offer/offer",
+    stepIndex: 61,
+  },
+  S08B_09_GUARANTEE: {
+    id: "S08B_09_GUARANTEE",
+    sequence: "S08B_OFFER",
+    name: "Garantía de 7 días",
+    route: "/funnel/s08/offer/guarantee",
+    stepIndex: 62,
+  },
+  S08B_10_FINAL_CLOSE: {
+    id: "S08B_10_FINAL_CLOSE",
+    sequence: "S08B_OFFER",
+    name: "Cierre final",
+    route: "/funnel/s08/offer/final-close",
+    stepIndex: 63,
+  },
+  S08B_11_CHECKOUT_HANDOFF: {
+    id: "S08B_11_CHECKOUT_HANDOFF",
+    sequence: "S08B_OFFER",
+    name: "Handoff a checkout",
+    route: "/funnel/s08/offer/checkout",
+    stepIndex: 64,
+  },
 } as const satisfies Record<string, ScreenDefinition>;
 
 export type ScreenId = keyof typeof FUNNEL_SCREENS;
@@ -494,6 +576,17 @@ export const SCREEN_ORDER: readonly ScreenId[] = [
   "S08_07_TODAY",
   "S08_08_VALUE",
   "S08_09_TRIAL_EXIT",
+  "S08B_01_BRIDGE",
+  "S08B_02_PERSONAL_GOAL",
+  "S08B_03_EXPANSION",
+  "S08B_04_PRODUCT",
+  "S08B_05_GUARDRAIL",
+  "S08B_06_BONUS",
+  "S08B_07_VALUE_BRIDGE",
+  "S08B_08_OFFER",
+  "S08B_09_GUARANTEE",
+  "S08B_10_FINAL_CLOSE",
+  "S08B_11_CHECKOUT_HANDOFF",
 ] as const;
 
 export function isVideoScreenId(screenId: ScreenId): boolean {

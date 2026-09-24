@@ -318,6 +318,20 @@ const DevNavigatorPanel: React.FC = () => {
               <span className="text-neutral-400">trialCompleted:</span>
               <span className="text-emerald-400 font-semibold">{String(Boolean(state.trialCompleted))}</span>
             </div>
+            <div className="flex justify-between pt-0.5">
+              <span className="text-neutral-400">offerStarted:</span>
+              <span className="text-neutral-200">{String(Boolean(state.offerStarted))}</span>
+            </div>
+            <div className="flex justify-between pt-0.5">
+              <span className="text-neutral-400">offerViewed:</span>
+              <span className="text-neutral-200">{String(Boolean(state.offerViewed))}</span>
+            </div>
+            <div className="flex justify-between pt-0.5">
+              <span className="text-neutral-400">checkoutIntent / source:</span>
+              <span className="text-neutral-200">
+                {String(Boolean(state.checkoutIntent))} / {state.checkoutSource ?? "null"}
+              </span>
+            </div>
           </div>
 
           {/* Reset Controls */}

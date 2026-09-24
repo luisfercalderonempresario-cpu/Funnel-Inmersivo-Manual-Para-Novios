@@ -94,6 +94,10 @@ export interface FunnelContextValue {
   setTrialValueResponse: (response: TrialValueResponse) => void;
   markTrialCompleted: () => void;
   resetTrialReference: () => void;
+  // S08-B Offer Methods
+  startOffer: () => void;
+  markOfferViewed: () => void;
+  initiateCheckout: (source: "offer" | "guarantee" | "final_close") => void;
   setCurrentScreen: (screenId: ScreenId, options?: { isDev?: boolean }) => void;
   markCaseStarted: () => void;
   completeSequence: (sequenceId: SequenceId) => void;
@@ -774,6 +778,88 @@ export const FunnelProvider: React.FC<{ children: React.ReactNode }> = ({
     });
   }, []);
 
+  // --- S08-B Offer Methods ---
+
+  const startOffer = useCallback(() => {
+    setState((prev) => {
+      const nextState: FunnelState = {
+        ...prev,
+        currentSequence: "S08B_OFFER",
+        currentScreen: "S08B_01_BRIDGE",
+        offerStarted: true,
+      };
+      savePersistedState(nextState);
+      return nextState;
+    });
+
+    trackEvent({
+      event: "offer_started",
+      sequence: "S08B_OFFER",
+      screen: "S08B_01_BRIDGE",
+    });
+
+    navigate("/funnel/s08/offer/bridge");
+  }, [navigate]);
+
+  const markOfferViewed = useCallback(() => {
+    setState((prev) => {
+      if (prev.offerViewed) return prev;
+      const nextState: FunnelState = {
+        ...prev,
+        offerViewed: true,
+      };
+      savePersistedState(nextState);
+      return nextState;
+    });
+
+    trackEvent({
+      event: "offer_viewed",
+      sequence: "S08B_OFFER",
+      screen: "S08B_08_OFFER",
+      metadata: {
+        desiredTransformation: state.desiredTransformation,
+        trialValueResponse: state.trialValueResponse,
+        productValueExperienced: state.productValueExperienced,
+      },
+    });
+  }, [state.desiredTransformation, state.trialValueResponse, state.productValueExperienced]);
+
+  const initiateCheckout = useCallback(
+    (source: "offer" | "guarantee" | "final_close") => {
+      setState((prev) => {
+        const nextState: FunnelState = {
+          ...prev,
+          currentSequence: "S08B_OFFER",
+          currentScreen: "S08B_11_CHECKOUT_HANDOFF",
+          checkoutIntent: true,
+          checkoutSource: source,
+        };
+        savePersistedState(nextState);
+        return nextState;
+      });
+
+      trackEvent({
+        event: "purchase_cta_clicked",
+        sequence: "S08B_OFFER",
+        screen:
+          source === "offer"
+            ? "S08B_08_OFFER"
+            : source === "guarantee"
+            ? "S08B_09_GUARANTEE"
+            : "S08B_10_FINAL_CLOSE",
+        metadata: {
+          checkoutSource: source,
+          desiredTransformation: state.desiredTransformation,
+          trialValueResponse: state.trialValueResponse,
+          productValueExperienced: state.productValueExperienced,
+        },
+      });
+
+      navigate("/funnel/s08/offer/checkout");
+    },
+    [navigate, state.desiredTransformation, state.trialValueResponse, state.productValueExperienced]
+  );
+
   const resetS01 = useCallback(() => {
     const newState: FunnelState = {
       ...state,
@@ -865,6 +951,9 @@ export const FunnelProvider: React.FC<{ children: React.ReactNode }> = ({
     setTrialValueResponse,
     markTrialCompleted,
     resetTrialReference,
+    startOffer,
+    markOfferViewed,
+    initiateCheckout,
     setCurrentScreen,
     markCaseStarted,
     completeSequence,

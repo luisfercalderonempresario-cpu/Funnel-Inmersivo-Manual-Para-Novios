@@ -169,6 +169,15 @@ export function loadPersistedState(): FunnelState {
         funnel.estimatedPhase === "luteal"
           ? funnel.estimatedPhase
           : null,
+      offerStarted: Boolean(funnel.offerStarted),
+      offerViewed: Boolean(funnel.offerViewed),
+      checkoutIntent: Boolean(funnel.checkoutIntent),
+      checkoutSource:
+        funnel.checkoutSource === "offer" ||
+        funnel.checkoutSource === "guarantee" ||
+        funnel.checkoutSource === "final_close"
+          ? funnel.checkoutSource
+          : null,
       completedSequences: Array.isArray(funnel.completedSequences)
         ? funnel.completedSequences
         : [],

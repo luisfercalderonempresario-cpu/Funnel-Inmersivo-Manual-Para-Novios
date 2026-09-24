@@ -413,6 +413,36 @@ export function canAccessScreenInProduction(
     );
   }
 
+  // --- S08-B Offer Production Gates ---
+
+  const hasCompletedS08A =
+    Boolean(state.trialCompleted) ||
+    Boolean(state.offerStarted) ||
+    state.currentSequence === "S08B_OFFER" ||
+    state.completedSequences.includes("S08_PRUEBA_REAL");
+
+  if (targetScreenId === "S08B_01_BRIDGE") {
+    return hasCompletedS08A || state.currentScreen === "S08B_01_BRIDGE";
+  }
+
+  if (
+    targetScreenId === "S08B_02_PERSONAL_GOAL" ||
+    targetScreenId === "S08B_03_EXPANSION" ||
+    targetScreenId === "S08B_04_PRODUCT" ||
+    targetScreenId === "S08B_05_GUARDRAIL" ||
+    targetScreenId === "S08B_06_BONUS" ||
+    targetScreenId === "S08B_07_VALUE_BRIDGE" ||
+    targetScreenId === "S08B_08_OFFER" ||
+    targetScreenId === "S08B_09_GUARANTEE" ||
+    targetScreenId === "S08B_10_FINAL_CLOSE" ||
+    targetScreenId === "S08B_11_CHECKOUT_HANDOFF"
+  ) {
+    return (
+      (hasCompletedS08A && (Boolean(state.offerStarted) || state.currentSequence === "S08B_OFFER")) ||
+      state.currentScreen === targetScreenId
+    );
+  }
+
   return false;
 }
 

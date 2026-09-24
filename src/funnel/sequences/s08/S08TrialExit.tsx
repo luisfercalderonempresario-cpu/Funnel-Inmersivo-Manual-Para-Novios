@@ -8,7 +8,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useFunnel } from "../../state/FunnelContext";
 
 export const S08TrialExit: React.FC = () => {
-  const { markTrialCompleted } = useFunnel();
+  const { markTrialCompleted, startOffer } = useFunnel();
   const [stage, setStage] = useState<number>(0);
   const hasCompletedRef = useRef<boolean>(false);
   const isDev = Boolean(import.meta.env.DEV);
@@ -81,21 +81,27 @@ export const S08TrialExit: React.FC = () => {
             <p className="text-white text-sm sm:text-base font-medium">
               Esto fue solo HOY.
             </p>
-            <p className="text-neutral-400 text-xs sm:text-sm mt-1">
-              Un ciclo completo acompaña cada día de manera continua.
-            </p>
           </div>
         )}
       </main>
 
-      {/* Terminal Footer */}
+      {/* Terminal Footer with S08-B Connection CTA */}
       <footer className="space-y-4 pb-4 sm:pb-6">
+        <button
+          id="btn-s08-view-offer-inclusion"
+          type="button"
+          onClick={startOffer}
+          className="w-full py-4 px-6 rounded-lg bg-white text-neutral-950 font-medium text-sm sm:text-base tracking-wide hover:bg-neutral-200 active:scale-[0.99] transition-all cursor-pointer shadow-lg text-center"
+        >
+          VER QUÉ MÁS INCLUYE
+        </button>
+
         {isDev && (
           <div
             id="dev-s08-qa-indicator"
             className="p-3 rounded bg-neutral-900/60 border border-neutral-800 text-[11px] font-mono text-neutral-400 text-center select-none"
           >
-            [DEV QA] Fin de S08-A — S08_09_TRIAL_EXIT (Prueba Real completada con éxito)
+            [DEV QA] S08_09_TRIAL_EXIT — Pulsa &apos;VER QUÉ MÁS INCLUYE&apos; para entrar a S08-B (Oferta)
           </div>
         )}
       </footer>

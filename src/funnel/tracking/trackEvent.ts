@@ -65,7 +65,14 @@ export type FunnelEventName =
   | "today_context_viewed"
   | "trial_value_response"
   | "product_value_experienced"
-  | "trial_completed";
+  | "trial_completed"
+  | "offer_started"
+  | "product_expansion_viewed"
+  | "bonus_viewed"
+  | "offer_viewed"
+  | "guarantee_viewed"
+  | "purchase_cta_clicked"
+  | "checkout_started";
 
 export interface FunnelEventPayload {
   event: FunnelEventName;

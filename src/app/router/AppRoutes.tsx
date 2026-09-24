@@ -78,6 +78,17 @@ import { S08Preparing } from "../../funnel/sequences/s08/S08Preparing";
 import { S08Today } from "../../funnel/sequences/s08/S08Today";
 import { S08Value } from "../../funnel/sequences/s08/S08Value";
 import { S08TrialExit } from "../../funnel/sequences/s08/S08TrialExit";
+import { S08BBridge } from "../../funnel/sequences/s08b/S08BBridge";
+import { S08BPersonalGoal } from "../../funnel/sequences/s08b/S08BPersonalGoal";
+import { S08BExpansion } from "../../funnel/sequences/s08b/S08BExpansion";
+import { S08BProduct } from "../../funnel/sequences/s08b/S08BProduct";
+import { S08BGuardrail } from "../../funnel/sequences/s08b/S08BGuardrail";
+import { S08BBonus } from "../../funnel/sequences/s08b/S08BBonus";
+import { S08BValueBridge } from "../../funnel/sequences/s08b/S08BValueBridge";
+import { S08BOffer } from "../../funnel/sequences/s08b/S08BOffer";
+import { S08BGuarantee } from "../../funnel/sequences/s08b/S08BGuarantee";
+import { S08BFinalClose } from "../../funnel/sequences/s08b/S08BFinalClose";
+import { S08BCheckoutHandoff } from "../../funnel/sequences/s08b/S08BCheckoutHandoff";
 
 /**
  * Route sync component:
@@ -358,6 +369,50 @@ export const AppRoutes: React.FC = () => {
                   <Route
                     path="/funnel/s08/trial-exit"
                     element={<S08TrialExit />}
+                  />
+                  <Route
+                    path="/funnel/s08/offer/bridge"
+                    element={<S08BBridge />}
+                  />
+                  <Route
+                    path="/funnel/s08/offer/personal-goal"
+                    element={<S08BPersonalGoal />}
+                  />
+                  <Route
+                    path="/funnel/s08/offer/expansion"
+                    element={<S08BExpansion />}
+                  />
+                  <Route
+                    path="/funnel/s08/offer/product"
+                    element={<S08BProduct />}
+                  />
+                  <Route
+                    path="/funnel/s08/offer/guardrail"
+                    element={<S08BGuardrail />}
+                  />
+                  <Route
+                    path="/funnel/s08/offer/bonus"
+                    element={<S08BBonus />}
+                  />
+                  <Route
+                    path="/funnel/s08/offer/value-bridge"
+                    element={<S08BValueBridge />}
+                  />
+                  <Route
+                    path="/funnel/s08/offer/offer"
+                    element={<S08BOffer />}
+                  />
+                  <Route
+                    path="/funnel/s08/offer/guarantee"
+                    element={<S08BGuarantee />}
+                  />
+                  <Route
+                    path="/funnel/s08/offer/final-close"
+                    element={<S08BFinalClose />}
+                  />
+                  <Route
+                    path="/funnel/s08/offer/checkout"
+                    element={<S08BCheckoutHandoff />}
                   />
                   {/* Catch-all route */}
                   <Route

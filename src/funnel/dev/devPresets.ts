@@ -1999,4 +1999,235 @@ export const DEV_PRESETS: Record<string, DevPreset> = {
       ],
     }
   ),
+
+  S08B_FRESH: createPreset(
+    "S08B_FRESH",
+    "S08B_FRESH (Entrada a Oferta)",
+    "Listo en S08B_01_BRIDGE tras completar S08-A.",
+    "S08B_01_BRIDGE",
+    {
+      currentSequence: "S08B_OFFER",
+      currentScreen: "S08B_01_BRIDGE",
+      caseStarted: true,
+      sequence02Completed: true,
+      sequence03Completed: true,
+      sequence04Completed: true,
+      sequence05Completed: true,
+      personalProblemRecognition: "yes",
+      desiredTransformation: "understand_better",
+      sequence06Completed: true,
+      toolInterest: "yes",
+      sequence07Completed: true,
+      trialStarted: true,
+      trialCompleted: true,
+      productValueExperienced: true,
+      offerStarted: true,
+      completedSequences: [
+        "S01_EL_CASO",
+        "S02_ALGO_SALIO_MAL",
+        "S03_LO_QUE_NO_VISTE",
+        "S04_LA_PIEZA_INESPERADA",
+        "S05_VUELVE_A_MIRAR",
+        "S06_AHORA_PIENSA_EN_ELLA",
+        "S07_Y_SI_EXISTIERA",
+        "S08_PRUEBA_REAL",
+      ],
+    }
+  ),
+
+  S08B_GOAL_UNDERSTAND: createPreset(
+    "S08B_GOAL_UNDERSTAND",
+    "S08B_GOAL (Entenderla mejor)",
+    "En S08B_02 con desiredTransformation='understand_better'.",
+    "S08B_02_PERSONAL_GOAL",
+    {
+      currentSequence: "S08B_OFFER",
+      currentScreen: "S08B_02_PERSONAL_GOAL",
+      caseStarted: true,
+      desiredTransformation: "understand_better",
+      trialCompleted: true,
+      offerStarted: true,
+    }
+  ),
+
+  S08B_GOAL_LISTEN: createPreset(
+    "S08B_GOAL_LISTEN",
+    "S08B_GOAL (Escucharla mejor)",
+    "En S08B_02 con desiredTransformation='listen_better'.",
+    "S08B_02_PERSONAL_GOAL",
+    {
+      currentSequence: "S08B_OFFER",
+      currentScreen: "S08B_02_PERSONAL_GOAL",
+      caseStarted: true,
+      desiredTransformation: "listen_better",
+      trialCompleted: true,
+      offerStarted: true,
+    }
+  ),
+
+  S08B_GOAL_CALM: createPreset(
+    "S08B_GOAL_CALM",
+    "S08B_GOAL (Reaccionar con calma)",
+    "En S08B_02 con desiredTransformation='react_calmly'.",
+    "S08B_02_PERSONAL_GOAL",
+    {
+      currentSequence: "S08B_OFFER",
+      currentScreen: "S08B_02_PERSONAL_GOAL",
+      caseStarted: true,
+      desiredTransformation: "react_calmly",
+      trialCompleted: true,
+      offerStarted: true,
+    }
+  ),
+
+  S08B_GOAL_SPACE: createPreset(
+    "S08B_GOAL_SPACE",
+    "S08B_GOAL (Acercarte / espacio)",
+    "En S08B_02 con desiredTransformation='approach_or_space'.",
+    "S08B_02_PERSONAL_GOAL",
+    {
+      currentSequence: "S08B_OFFER",
+      currentScreen: "S08B_02_PERSONAL_GOAL",
+      caseStarted: true,
+      desiredTransformation: "approach_or_space",
+      trialCompleted: true,
+      offerStarted: true,
+    }
+  ),
+
+  S08B_GOAL_SUPPORT: createPreset(
+    "S08B_GOAL_SUPPORT",
+    "S08B_GOAL (Sentir acompañada)",
+    "En S08B_02 con desiredTransformation='feel_supported'.",
+    "S08B_02_PERSONAL_GOAL",
+    {
+      currentSequence: "S08B_OFFER",
+      currentScreen: "S08B_02_PERSONAL_GOAL",
+      caseStarted: true,
+      desiredTransformation: "feel_supported",
+      trialCompleted: true,
+      offerStarted: true,
+    }
+  ),
+
+  S08B_GOAL_FALLBACK: createPreset(
+    "S08B_GOAL_FALLBACK",
+    "S08B_GOAL (Fallback)",
+    "En S08B_02 sin transformación previa guardada.",
+    "S08B_02_PERSONAL_GOAL",
+    {
+      currentSequence: "S08B_OFFER",
+      currentScreen: "S08B_02_PERSONAL_GOAL",
+      caseStarted: true,
+      desiredTransformation: null,
+      trialCompleted: true,
+      offerStarted: true,
+    }
+  ),
+
+  S08B_VALUE_YES: createPreset(
+    "S08B_VALUE_YES",
+    "S08B_VALUE (Respuesta Sí)",
+    "En S08B_07 con trialValueResponse='yes'.",
+    "S08B_07_VALUE_BRIDGE",
+    {
+      currentSequence: "S08B_OFFER",
+      currentScreen: "S08B_07_VALUE_BRIDGE",
+      caseStarted: true,
+      trialValueResponse: "yes",
+      productValueExperienced: true,
+      trialCompleted: true,
+      offerStarted: true,
+    }
+  ),
+
+  S08B_VALUE_PROBABLY: createPreset(
+    "S08B_VALUE_PROBABLY",
+    "S08B_VALUE (Respuesta Probablemente)",
+    "En S08B_07 con trialValueResponse='probably'.",
+    "S08B_07_VALUE_BRIDGE",
+    {
+      currentSequence: "S08B_OFFER",
+      currentScreen: "S08B_07_VALUE_BRIDGE",
+      caseStarted: true,
+      trialValueResponse: "probably",
+      productValueExperienced: true,
+      trialCompleted: true,
+      offerStarted: true,
+    }
+  ),
+
+  S08B_VALUE_UNSURE: createPreset(
+    "S08B_VALUE_UNSURE",
+    "S08B_VALUE (Respuesta Inseguro)",
+    "En S08B_07 con trialValueResponse='unsure'.",
+    "S08B_07_VALUE_BRIDGE",
+    {
+      currentSequence: "S08B_OFFER",
+      currentScreen: "S08B_07_VALUE_BRIDGE",
+      caseStarted: true,
+      trialValueResponse: "unsure",
+      productValueExperienced: false,
+      trialCompleted: true,
+      offerStarted: true,
+    }
+  ),
+
+  S08B_OFFER_VIEW: createPreset(
+    "S08B_OFFER_VIEW",
+    "S08B_OFFER (Pantalla de Oferta $9,99)",
+    "En S08B_08_OFFER con precio y checkout listos.",
+    "S08B_08_OFFER",
+    {
+      currentSequence: "S08B_OFFER",
+      currentScreen: "S08B_08_OFFER",
+      caseStarted: true,
+      trialCompleted: true,
+      offerStarted: true,
+    }
+  ),
+
+  S08B_GUARANTEE_VIEW: createPreset(
+    "S08B_GUARANTEE_VIEW",
+    "S08B_GUARANTEE (Garantía 7 días)",
+    "En S08B_09_GUARANTEE.",
+    "S08B_09_GUARANTEE",
+    {
+      currentSequence: "S08B_OFFER",
+      currentScreen: "S08B_09_GUARANTEE",
+      caseStarted: true,
+      trialCompleted: true,
+      offerStarted: true,
+    }
+  ),
+
+  S08B_FINAL_CLOSE_VIEW: createPreset(
+    "S08B_FINAL_CLOSE_VIEW",
+    "S08B_FINAL_CLOSE (Cierre Final Caso)",
+    "En S08B_10_FINAL_CLOSE.",
+    "S08B_10_FINAL_CLOSE",
+    {
+      currentSequence: "S08B_OFFER",
+      currentScreen: "S08B_10_FINAL_CLOSE",
+      caseStarted: true,
+      trialCompleted: true,
+      offerStarted: true,
+    }
+  ),
+
+  S08B_CHECKOUT_HANDOFF: createPreset(
+    "S08B_CHECKOUT_HANDOFF",
+    "S08B_CHECKOUT (Handoff a Hotmart)",
+    "En S08B_11_CHECKOUT_HANDOFF con checkoutSource='offer'.",
+    "S08B_11_CHECKOUT_HANDOFF",
+    {
+      currentSequence: "S08B_OFFER",
+      currentScreen: "S08B_11_CHECKOUT_HANDOFF",
+      caseStarted: true,
+      trialCompleted: true,
+      offerStarted: true,
+      checkoutIntent: true,
+      checkoutSource: "offer",
+    }
+  ),
 };
