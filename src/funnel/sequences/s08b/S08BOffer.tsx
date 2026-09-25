@@ -58,9 +58,14 @@ export const S08BOffer: React.FC = () => {
           <h1 className="text-2xl sm:text-3xl text-white font-serif leading-snug">
             Aprende a comprender antes de reaccionar.
           </h1>
-          <p className="text-neutral-300 text-xs sm:text-sm leading-relaxed">
-            Lleva contigo la herramienta que acabas de probar y úsala cuando necesites un poco más de contexto.
-          </p>
+          <div className="space-y-2 pt-1 text-xs sm:text-sm leading-relaxed">
+            <p className="text-neutral-300">
+              Lleva contigo la herramienta que acabas de probar y úsala cuando necesites un poco más de contexto.
+            </p>
+            <p className="text-neutral-200">
+              Todo por $9,99 USD en un solo pago: menos de lo que fácilmente puedes gastar en una cena fuera de casa.
+            </p>
+          </div>
         </div>
 
         {/* Inclusiones */}
