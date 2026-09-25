@@ -21,6 +21,7 @@ export const S04Exit: React.FC = () => {
 
   // Progressive reveal (0: Initial, 1: Context delta, 2: The Core Question)
   const [stage, setStage] = useState<number>(0);
+  const [showContinue, setShowContinue] = useState<boolean>(false);
 
   useEffect(() => {
     if (!hasCompletedRef.current) {
@@ -30,16 +31,17 @@ export const S04Exit: React.FC = () => {
 
     const t1 = setTimeout(() => setStage(1), 800);
     const t2 = setTimeout(() => setStage(2), 2200);
+    // Breathing room (~1s after stage 2 is visible), then reveal [CONTINUAR]
     const t3 = setTimeout(() => {
-      setCurrentScreen("S05_01_RETURN_TO_CASE");
-    }, 4400);
+      setShowContinue(true);
+    }, 3200);
 
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
       clearTimeout(t3);
     };
-  }, [markSequence04Completed, setCurrentScreen]);
+  }, [markSequence04Completed]);
 
   return (
     <div
@@ -128,8 +130,21 @@ export const S04Exit: React.FC = () => {
         )}
       </main>
 
-      {/* Stable Empty Footer */}
-      <footer className="w-full min-h-12 pb-2" />
+      {/* Footer with manual continue */}
+      <footer className="w-full min-h-12 pb-2">
+        {showContinue && (
+          <div className="animate-fade-in">
+            <button
+              id="btn-s04-exit-continue"
+              type="button"
+              onClick={() => setCurrentScreen("S05_01_RETURN_TO_CASE")}
+              className="w-full py-4 px-6 rounded-lg bg-white text-neutral-950 font-medium text-sm sm:text-base tracking-wide hover:bg-neutral-200 active:scale-[0.99] transition-all cursor-pointer shadow-lg text-center"
+            >
+              CONTINUAR
+            </button>
+          </div>
+        )}
+      </footer>
     </div>
   );
 };

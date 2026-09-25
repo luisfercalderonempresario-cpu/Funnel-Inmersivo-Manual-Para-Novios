@@ -144,12 +144,12 @@ export const S08BOffer: React.FC = () => {
           Pago procesado de forma segura a través de Hotmart.
         </p>
 
-        <div className="pt-1 text-center">
+        <div className="pt-1">
           <button
             id="btn-s08b-offer-view-guarantee"
             type="button"
             onClick={handleViewGuarantee}
-            className="text-xs text-neutral-400 hover:text-neutral-200 underline underline-offset-4 cursor-pointer transition-colors py-1"
+            className="w-full py-3 px-4 rounded-lg bg-neutral-900/60 hover:bg-neutral-800 border border-neutral-700/80 hover:border-neutral-500 text-neutral-200 hover:text-white text-xs sm:text-sm font-medium tracking-wider uppercase transition-all cursor-pointer text-center"
           >
             VER GARANTÍA
           </button>

@@ -74,20 +74,20 @@ export const S02ProblemOrigin: React.FC = () => {
     // Save answer BEFORE transitioning
     setProblemOriginGuess(value);
 
-    // Phase 1: brief selection acknowledgement, then "Tiene sentido."
+    // Phase 1: brief selection acknowledgement, then "Tiene sentido." (visible for 2.0s)
     timer1Ref.current = setTimeout(() => {
       setFeedbackPhase("sense");
     }, 400);
 
-    // Phase 2: "Pero mira algo."
+    // Phase 2: "Pero mira algo." (visible for 2.2s)
     timer2Ref.current = setTimeout(() => {
       setFeedbackPhase("look");
-    }, 1500);
+    }, 2400);
 
-    // Phase 3: Transition to S02_03_REWIND
+    // Phase 3: Transition to S02_03_REWIND (+2s real reading time total)
     timer3Ref.current = setTimeout(() => {
       setCurrentScreen("S02_03_REWIND");
-    }, 2600);
+    }, 4600);
   };
 
   return (

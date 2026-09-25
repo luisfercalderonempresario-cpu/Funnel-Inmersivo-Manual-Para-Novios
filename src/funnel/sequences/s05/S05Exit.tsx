@@ -23,6 +23,7 @@ export const S05Exit: React.FC = () => {
   // 1: Personal echo ("Tal vez alguna vez viste algo en ella...")
   // 2: The Shift ("Ahora deja este caso por un momento... Piensa en ella.")
   const [stage, setStage] = useState<number>(0);
+  const [showContinue, setShowContinue] = useState<boolean>(false);
 
   useEffect(() => {
     if (!hasCompletedRef.current) {
@@ -32,17 +33,17 @@ export const S05Exit: React.FC = () => {
 
     const t1 = setTimeout(() => setStage(1), 1000);
     const t2 = setTimeout(() => setStage(2), 2600);
-    // Canonical narrative progression to S06_01_PERSONALIZE
+    // Breathing room (~1s after stage 2 is visible), then reveal [CONTINUAR]
     const t3 = setTimeout(() => {
-      setCurrentScreen("S06_01_PERSONALIZE");
-    }, 4800);
+      setShowContinue(true);
+    }, 3600);
 
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
       clearTimeout(t3);
     };
-  }, [markSequence05Completed, setCurrentScreen]);
+  }, [markSequence05Completed]);
 
   return (
     <div
@@ -124,8 +125,21 @@ export const S05Exit: React.FC = () => {
         )}
       </main>
 
-      {/* Stable Empty Footer */}
-      <footer className="w-full min-h-12 pb-2" />
+      {/* Footer with manual continue */}
+      <footer className="w-full min-h-12 pb-2">
+        {showContinue && (
+          <div className="animate-fade-in">
+            <button
+              id="btn-s05-exit-continue"
+              type="button"
+              onClick={() => setCurrentScreen("S06_01_PERSONALIZE")}
+              className="w-full py-4 px-6 rounded-lg bg-white text-neutral-950 font-medium text-sm sm:text-base tracking-wide hover:bg-neutral-200 active:scale-[0.99] transition-all cursor-pointer shadow-lg text-center"
+            >
+              CONTINUAR
+            </button>
+          </div>
+        )}
+      </footer>
     </div>
   );
 };

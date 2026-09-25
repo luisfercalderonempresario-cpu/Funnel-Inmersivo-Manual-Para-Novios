@@ -10,6 +10,7 @@ import { useFunnel } from "../../state/FunnelContext";
 export const S01Exit: React.FC = () => {
   const { completeSequence, setCurrentScreen } = useFunnel();
   const [phase, setPhase] = useState<"sense" | "pause" | "reveal">("sense");
+  const [showContinue, setShowContinue] = useState<boolean>(false);
 
   useEffect(() => {
     // Record sequence completion
@@ -25,17 +26,17 @@ export const S01Exit: React.FC = () => {
       setPhase("reveal");
     }, 1800);
 
-    // Seamless bridge to S02 Continuation (1.4s after "Veamos qué pasa." is revealed)
+    // After content is visible, wait ~1s breathing room, then reveal [CONTINUAR]
     const timer3 = setTimeout(() => {
-      setCurrentScreen("S02_01_CONTINUATION");
-    }, 3200);
+      setShowContinue(true);
+    }, 2800);
 
     return () => {
       clearTimeout(timer1);
       clearTimeout(timer2);
       clearTimeout(timer3);
     };
-  }, [completeSequence, setCurrentScreen]);
+  }, [completeSequence]);
 
   return (
     <div
@@ -83,7 +84,20 @@ export const S01Exit: React.FC = () => {
         )}
       </main>
 
-      <footer className="w-full min-h-12 pb-2" />
+      <footer className="w-full min-h-12 pb-2">
+        {showContinue && (
+          <div className="animate-fade-in">
+            <button
+              id="btn-s01-exit-continue"
+              type="button"
+              onClick={() => setCurrentScreen("S02_01_CONTINUATION")}
+              className="w-full py-4 px-6 rounded-lg bg-white text-neutral-950 font-medium text-sm sm:text-base tracking-wide hover:bg-neutral-200 active:scale-[0.99] transition-all cursor-pointer shadow-lg text-center"
+            >
+              CONTINUAR
+            </button>
+          </div>
+        )}
+      </footer>
     </div>
   );
 };

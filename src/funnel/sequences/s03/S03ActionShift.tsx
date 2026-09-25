@@ -61,20 +61,20 @@ export const S03ActionShift: React.FC = () => {
     // Save answer BEFORE transitioning
     setContextChangesAction(option.id);
 
-    // Phase 1: "Puede que hicieras algo distinto, o puede que hicieras exactamente lo mismo."
+    // Phase 1: "Puede que hicieras algo distinto, o puede que hicieras exactamente lo mismo." (visible for 2.8s)
     timer1Ref.current = setTimeout(() => {
       setFeedbackPhase("maybe_different");
     }, 400);
 
-    // Phase 2: "Pero ahora sabes algo que antes no sabías."
+    // Phase 2: "Pero ahora sabes algo que antes no sabías." (visible for 2.4s)
     timer2Ref.current = setTimeout(() => {
       setFeedbackPhase("now_you_know");
-    }, 2200);
+    }, 3200);
 
-    // Phase 3: Transition to S03_05_RECONSTRUCTION
+    // Phase 3: Transition to S03_05_RECONSTRUCTION (+2s real reading time total)
     timer3Ref.current = setTimeout(() => {
       setCurrentScreen("S03_05_RECONSTRUCTION");
-    }, 3600);
+    }, 5600);
   };
 
   return (

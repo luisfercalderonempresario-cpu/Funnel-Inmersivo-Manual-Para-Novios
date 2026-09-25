@@ -28,11 +28,12 @@ export const S08Preparing: React.FC = () => {
       });
     }
 
-    const t1 = setTimeout(() => setPhaseIndex(1), 600);
-    const t2 = setTimeout(() => setPhaseIndex(2), 1200);
+    // Progression expectation timings (2.8s total, in 2.5–3.0s target)
+    const t1 = setTimeout(() => setPhaseIndex(1), 800);
+    const t2 = setTimeout(() => setPhaseIndex(2), 1800);
     const t3 = setTimeout(() => {
       setCurrentScreen("S08_07_TODAY");
-    }, 1700);
+    }, 2800);
 
     return () => {
       clearTimeout(t1);

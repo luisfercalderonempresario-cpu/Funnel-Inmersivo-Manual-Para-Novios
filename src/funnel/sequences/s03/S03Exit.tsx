@@ -7,12 +7,13 @@
  * Stable endpoint for Sequence 03.
  */
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useFunnel } from "../../state/FunnelContext";
 
 export const S03Exit: React.FC = () => {
   const { markSequence03Completed, setCurrentScreen } = useFunnel();
   const hasCompletedRef = useRef<boolean>(false);
+  const [showContinue, setShowContinue] = useState<boolean>(false);
 
   useEffect(() => {
     if (hasCompletedRef.current) return;
@@ -21,15 +22,15 @@ export const S03Exit: React.FC = () => {
     // Marks sequence03Completed and fires tracking events once
     markSequence03Completed();
 
-    // Narrative pause before seamless transition into Sequence 04
+    // Breathing room (~1s after text is fully visible), then reveal [CONTINUAR]
     const timer = setTimeout(() => {
-      setCurrentScreen("S04_01_MISSING_PIECE");
-    }, 2800);
+      setShowContinue(true);
+    }, 1800);
 
     return () => {
       clearTimeout(timer);
     };
-  }, [markSequence03Completed, setCurrentScreen]);
+  }, [markSequence03Completed]);
 
   return (
     <div
@@ -76,8 +77,21 @@ export const S03Exit: React.FC = () => {
         </div>
       </main>
 
-      {/* Stable Empty Footer */}
-      <footer className="w-full min-h-12 pb-2" />
+      {/* Footer with manual continue */}
+      <footer className="w-full min-h-12 pb-2">
+        {showContinue && (
+          <div className="animate-fade-in">
+            <button
+              id="btn-s03-exit-continue"
+              type="button"
+              onClick={() => setCurrentScreen("S04_01_MISSING_PIECE")}
+              className="w-full py-4 px-6 rounded-lg bg-white text-neutral-950 font-medium text-sm sm:text-base tracking-wide hover:bg-neutral-200 active:scale-[0.99] transition-all cursor-pointer shadow-lg text-center"
+            >
+              CONTINUAR
+            </button>
+          </div>
+        )}
+      </footer>
     </div>
   );
 };

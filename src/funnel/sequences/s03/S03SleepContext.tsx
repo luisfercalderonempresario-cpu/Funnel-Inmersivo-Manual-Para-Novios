@@ -123,9 +123,10 @@ export const S03SleepContext: React.FC = () => {
       });
     }
 
+    // Revelation beat: increased by +2s for comfortable reading time (5200ms)
     const timer = setTimeout(() => {
       setCurrentScreen("S03_02_SLEEP_SHIFT");
-    }, 3200);
+    }, 5200);
 
     return () => {
       clearTimeout(timer);

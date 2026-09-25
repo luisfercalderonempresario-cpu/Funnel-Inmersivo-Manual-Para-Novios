@@ -61,20 +61,20 @@ export const S03SleepShift: React.FC = () => {
     // Save answer BEFORE transitioning
     setSleepContextShift(option.id);
 
-    // Phase 1: "Ahora sabes algo que él no sabía."
+    // Phase 1: "Ahora sabes algo que él no sabía." (visible for 2.0s)
     timer1Ref.current = setTimeout(() => {
       setFeedbackPhase("know_something");
     }, 400);
 
-    // Phase 2: "Pero eso no era todo."
+    // Phase 2: "Pero eso no era todo." (visible for 2.5s)
     timer2Ref.current = setTimeout(() => {
       setFeedbackPhase("not_all");
-    }, 1700);
+    }, 2400);
 
-    // Phase 3: Transition to S03_03_WORK_CONTEXT
+    // Phase 3: Transition to S03_03_WORK_CONTEXT (+2s real reading time total)
     timer3Ref.current = setTimeout(() => {
       setCurrentScreen("S03_03_WORK_CONTEXT");
-    }, 2900);
+    }, 4900);
   };
 
   return (

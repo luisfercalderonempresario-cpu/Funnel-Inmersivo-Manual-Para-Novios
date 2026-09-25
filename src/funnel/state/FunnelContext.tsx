@@ -53,6 +53,7 @@ import {
   getTodayLocalDateString,
   EXAMPLE_CYCLE_STATE,
 } from "../utils/cycleCalculations";
+import { OFFER_CONFIG } from "../config/offerConfig";
 
 export interface FunnelContextValue {
   state: FunnelState;
@@ -829,10 +830,14 @@ export const FunnelProvider: React.FC<{ children: React.ReactNode }> = ({
       setState((prev) => {
         const nextState: FunnelState = {
           ...prev,
-          currentSequence: "S08B_OFFER",
-          currentScreen: "S08B_11_CHECKOUT_HANDOFF",
           checkoutIntent: true,
           checkoutSource: source,
+          ...(source === "final_close"
+            ? {
+                currentSequence: "S08B_OFFER",
+                currentScreen: "S08B_11_CHECKOUT_HANDOFF",
+              }
+            : {}),
         };
         savePersistedState(nextState);
         return nextState;
@@ -855,7 +860,29 @@ export const FunnelProvider: React.FC<{ children: React.ReactNode }> = ({
         },
       });
 
-      navigate("/funnel/s08/offer/checkout");
+      if (source === "offer" || source === "guarantee") {
+        // Offer and Guarantee open checkout in a new tab, keeping current screen intact
+        trackEvent({
+          event: "checkout_started",
+          sequence: "S08B_OFFER",
+          screen:
+            source === "offer"
+              ? "S08B_08_OFFER"
+              : "S08B_09_GUARANTEE",
+          metadata: {
+            checkoutSource: source,
+            desiredTransformation: state.desiredTransformation,
+            trialValueResponse: state.trialValueResponse,
+            productValueExperienced: state.productValueExperienced,
+            openInNewTab: true,
+          },
+        });
+
+        window.open(OFFER_CONFIG.CHECKOUT_URL, "_blank", "noopener,noreferrer");
+      } else {
+        // Final Close preserves checkout in the SAME tab via technical handoff
+        navigate("/funnel/s08/offer/checkout");
+      }
     },
     [navigate, state.desiredTransformation, state.trialValueResponse, state.productValueExperienced]
   );
