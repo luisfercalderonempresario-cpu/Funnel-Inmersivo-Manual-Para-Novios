@@ -78,7 +78,7 @@ export const S08BBonus: React.FC = () => {
           <div className="p-5 bg-neutral-900/80 border border-neutral-800 rounded-xl space-y-4 animate-fade-in">
             <div>
               <span className="text-[11px] font-mono uppercase tracking-widest text-emerald-400 font-semibold">
-                INCLUIDO CON CONTEXTO™
+                BONO INCLUIDO CON CONTEXTO™
               </span>
               <h2 className="text-white text-lg font-serif mt-1">
                 Guía para conocer la fecha

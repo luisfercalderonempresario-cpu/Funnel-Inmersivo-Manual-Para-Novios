@@ -118,9 +118,12 @@ export const S02ProblemOrigin: React.FC = () => {
               <span className="text-xs uppercase tracking-[0.15em] text-neutral-400 font-medium">
                 Punto de fricción
               </span>
+              <p className="text-base sm:text-lg font-light text-neutral-300 leading-relaxed">
+                Ella evidentemente se molestó más.
+              </p>
               <h1
                 id="origin-heading"
-                className="text-2xl sm:text-3xl font-light text-white tracking-tight leading-snug"
+                className="text-2xl sm:text-3xl font-normal text-white tracking-tight leading-snug pt-1"
               >
                 ¿Dónde crees que empezó el problema?
               </h1>

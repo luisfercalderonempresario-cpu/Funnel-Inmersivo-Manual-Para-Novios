@@ -67,7 +67,7 @@ export const S06Desire: React.FC = () => {
             id="desire-lead-line"
             className="text-neutral-400 text-sm sm:text-base font-light tracking-wide"
           >
-            Si pudieras mejorar una sola cosa…
+            Si pudieras mejorar una sola cosa en tu relación…
           </p>
           <h1
             id="desire-title"

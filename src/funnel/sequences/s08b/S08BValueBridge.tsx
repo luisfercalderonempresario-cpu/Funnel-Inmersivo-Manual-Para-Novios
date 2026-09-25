@@ -20,7 +20,7 @@ export const S08BValueBridge: React.FC = () => {
         return (
           <>
             <p className="text-neutral-400 text-xs font-mono uppercase tracking-wider">
-              DESPUÉS DE PROBARLO DIJISTE: &lsquo;SÍ.&rsquo;
+              Y RECUERDA QUE DESPUÉS DE PROBARLO DIJISTE: &lsquo;SÍ.&rsquo;
             </p>
             <h1 className="text-2xl sm:text-3xl text-white font-serif leading-snug">
               Ya viste cómo una pequeña pieza de contexto podría ayudarte en esos momentos en que no sabes muy bien qué hacer.

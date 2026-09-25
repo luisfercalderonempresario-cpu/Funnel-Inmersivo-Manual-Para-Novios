@@ -113,10 +113,10 @@ export const S02Discovery: React.FC = () => {
             ↓
           </div>
 
-          {/* Step 3: Lo que todavía no conocías */}
+          {/* Step 3: Pero tal vez faltaba algo */}
           <div className="p-4 rounded-lg bg-neutral-900/40 border border-dashed border-neutral-700/80 flex items-center justify-between">
             <span className="text-[11px] uppercase tracking-[0.18em] text-neutral-400 font-semibold">
-              LO QUE TODAVÍA NO CONOCÍAS
+              PERO TAL VEZ FALTABA ALGO
             </span>
             <span className="text-xl font-bold text-neutral-300 font-mono">
               ?

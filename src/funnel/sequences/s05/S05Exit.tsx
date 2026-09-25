@@ -104,7 +104,7 @@ export const S05Exit: React.FC = () => {
               id="exit-s05-climax"
               className="text-3xl sm:text-4xl font-semibold text-white tracking-tight leading-tight"
             >
-              Piensa en ella.
+              Piensa en tu novia.
             </h1>
           </div>
         )}

@@ -47,13 +47,19 @@ export const S01Intro: React.FC = () => {
       }}
     >
       {/* Top Brand Marker */}
-      <header className="pt-2">
+      <header className="pt-2 flex flex-col gap-0.5 select-none">
         <h1
           id="mpn-title"
-          className="text-xs tracking-[0.25em] uppercase text-neutral-400 font-medium select-none"
+          className="text-xs tracking-[0.25em] uppercase text-neutral-400 font-medium"
         >
           MANUAL PARA NOVIOS
         </h1>
+        <span
+          id="mpn-page-indicator"
+          className="text-[11px] tracking-widest text-neutral-400 font-mono"
+        >
+          Página 256
+        </span>
       </header>
 
       {/* Main Narrative Statement */}

@@ -87,7 +87,7 @@ export const S04AskBetter: React.FC = () => {
         {stage >= 1 && (
           <div className="flex flex-col gap-3.5 animate-fade-in">
             <p className="text-sm font-medium text-neutral-300">
-              Pero si recuerdas que puede haber más contexto…
+              Pero si recuerdas que puede haber más contexto, cambiaría tu pregunta así…
             </p>
 
             {/* Contrast 1 */}

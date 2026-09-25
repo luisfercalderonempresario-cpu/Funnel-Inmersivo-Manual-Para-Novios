@@ -100,7 +100,7 @@ export const S08BProduct: React.FC = () => {
               No empezar desde cero cada vez.
             </p>
             <p className="text-neutral-400 text-xs sm:text-sm leading-relaxed">
-              Conserva contexto y aprende de lo que realmente les resulta útil.
+              Contexto™ conserva la información que proporcionas para que no tengas que empezar desde cero y pueda ofrecerte una orientación cada vez más contextualizada a su relación.
             </p>
           </div>
 
@@ -120,10 +120,10 @@ export const S08BProduct: React.FC = () => {
 
         {/* Closing Copy */}
         <div className="pt-2 space-y-2 text-neutral-400 text-xs sm:text-sm leading-relaxed">
-          <p>Todo diseñado para consultarse en poco tiempo.</p>
-          <p>Porque la idea no es que pases más tiempo mirando una app.</p>
+          <p>Todo diseñado para consultarse en menos de 2 minutos al día.</p>
+          <p>Porque la idea no es que pases más tiempo en una app.</p>
           <p className="text-neutral-300 font-medium">
-            Es ayudarte a llegar mejor a la conversación que realmente importa.
+            Es ayudarte a llegar mejor a la conversación que realmente importa y evitar que reacciones mal.
           </p>
         </div>
       </main>

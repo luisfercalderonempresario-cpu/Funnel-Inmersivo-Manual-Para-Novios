@@ -82,8 +82,8 @@ export const S04BeliefCheck: React.FC = () => {
       {/* Main Content */}
       <main className="my-auto py-6 flex flex-col gap-6">
         <div className="flex flex-col gap-2">
-          <span className="text-[11px] uppercase tracking-widest text-neutral-400 font-mono">
-            Una pregunta importante
+          <span className="text-[11px] uppercase tracking-widest text-neutral-400 font-mono leading-relaxed">
+            Ahora quiero hacerte una pregunta importante
           </span>
           <h1
             id="belief-check-question"

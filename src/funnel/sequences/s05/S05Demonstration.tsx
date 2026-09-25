@@ -104,8 +104,8 @@ export const S05Demonstration: React.FC = () => {
             id="demo-mechanism-box"
             className="p-5 rounded-xl bg-neutral-900/90 border border-neutral-800 flex flex-col gap-4 animate-fade-in"
           >
-            <span className="text-[10px] uppercase tracking-widest text-neutral-400 font-mono">
-              El cambio de dinámica
+            <span className="text-xs uppercase tracking-wider text-neutral-400 font-mono leading-relaxed">
+              Y ese espacio cambia la dinámica así:
             </span>
 
             {/* Before pattern (faded / sober) */}

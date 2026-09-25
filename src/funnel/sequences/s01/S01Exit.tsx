@@ -78,7 +78,7 @@ export const S01Exit: React.FC = () => {
               id="exit-phrase-reveal"
               className="text-2xl sm:text-3xl font-normal text-white tracking-tight"
             >
-              Veamos qué pasa.
+              Veamos qué pasa después.
             </p>
           </div>
         )}

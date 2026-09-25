@@ -53,7 +53,7 @@ export const S02Mirror: React.FC = () => {
             id="mirror-headline"
             className="text-2xl sm:text-3xl font-light text-white tracking-tight leading-snug"
           >
-            Tú también tuviste que interpretar.
+            Con lo que acabas de ver que pasó, tú también tuviste que interpretar.
           </h1>
         </div>
 

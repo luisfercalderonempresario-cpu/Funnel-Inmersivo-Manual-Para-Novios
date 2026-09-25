@@ -90,9 +90,9 @@ export const S01Decision: React.FC = () => {
       <main className="my-auto py-6 flex flex-col gap-6">
         <h2
           id="decision-question-heading"
-          className="text-2xl sm:text-3xl font-semibold text-white tracking-tight"
+          className="text-2xl sm:text-3xl font-semibold text-white tracking-tight leading-snug"
         >
-          ¿QUÉ HARÍAS TÚ?
+          ¿Qué harías tú en esta situación?
         </h2>
 
         {/* Options List */}
